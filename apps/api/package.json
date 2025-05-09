@@ -31,5 +31,8 @@
     "extends": [
       "@repo/typescript-config/base"
     ]
+  },
+  "prisma": {
+    "schema": "./prisma"
   }
 }

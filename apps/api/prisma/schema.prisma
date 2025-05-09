@@ -14,140 +14,140 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id           String   @id @default(uuid())
-  email        String   @unique
-  name         String?
-  passwordHash String?  @map("password_hash")
-  avatarUrl    String?  @map("avatar_url")
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+// model User {
+//   id           String   @id @default(uuid())
+//   email        String   @unique
+//   name         String?
+//   passwordHash String?  @map("password_hash")
+//   avatarUrl    String?  @map("avatar_url")
+//   createdAt    DateTime @default(now()) @map("created_at")
+//   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  accounts            Account[]
-  organizations_owned Organization[]
-  projects_owned      Project[]
-  memberships         Member[]
-  invites             Invite[]
-  tokens              Token[]
-  githubId            String?        @unique @map("github_id")
+//   accounts            Account[]
+//   organizations_owned Organization[]
+//   projects_owned      Project[]
+//   memberships         Member[]
+//   invites             Invite[]
+//   tokens              Token[]
+//   githubId            String?        @unique @map("github_id")
 
-  @@map("users")
-}
+//   @@map("users")
+// }
 
-enum TokenType {
-  PASSWORD_RECOVER
-}
+// enum TokenType {
+//   PASSWORD_RECOVER
+// }
 
-model Token {
-  id        String    @id @default(uuid())
-  type      TokenType
-  createdAt DateTime  @default(now()) @map("created_at")
-  expiresAt DateTime? @map("expires_at")
+// model Token {
+//   id        String    @id @default(uuid())
+//   type      TokenType
+//   createdAt DateTime  @default(now()) @map("created_at")
+//   expiresAt DateTime? @map("expires_at")
 
-  owner  User   @relation(fields: [userId], references: [id])
-  userId String @map("user_id")
+//   owner  User   @relation(fields: [userId], references: [id])
+//   userId String @map("user_id")
 
-  @@map("tokens")
-}
+//   @@map("tokens")
+// }
 
-enum AccountProvider {
-  GITHUB
-}
+// enum AccountProvider {
+//   GITHUB
+// }
 
-model Account {
-  id                String          @id @default(uuid())
-  provider          AccountProvider
-  providerAccountId String          @unique @map("provider_account_id")
+// model Account {
+//   id                String          @id @default(uuid())
+//   provider          AccountProvider
+//   providerAccountId String          @unique @map("provider_account_id")
 
-  owner  User   @relation(fields: [userId], references: [id])
-  userId String @map("user_id")
+//   owner  User   @relation(fields: [userId], references: [id])
+//   userId String @map("user_id")
 
-  @@unique([provider, userId])
-  @@map("accounts")
-}
+//   @@unique([provider, userId])
+//   @@map("accounts")
+// }
 
-enum Role {
-  ADMIN
-  MEMBER
-  BILLING
-}
+// enum Role {
+//   ADMIN
+//   MEMBER
+//   BILLING
+// }
 
-model Invite {
-  id        String   @id @default(uuid())
-  email     String
-  role      Role
-  createdAt DateTime @default(now()) @map("created_at")
+// model Invite {
+//   id        String   @id @default(uuid())
+//   email     String
+//   role      Role
+//   createdAt DateTime @default(now()) @map("created_at")
 
-  inviter User?   @relation(fields: [userId], references: [id])
-  userId  String? @map("user_id")
+//   inviter User?   @relation(fields: [userId], references: [id])
+//   userId  String? @map("user_id")
 
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
+//   organization   Organization @relation(fields: [organizationId], references: [id])
+//   organizationId String
 
-  @@unique([email, organizationId])
-  @@index([email])
-  @@map("invites")
-}
+//   @@unique([email, organizationId])
+//   @@index([email])
+//   @@map("invites")
+// }
 
-model Member {
-  id   String @id @default(uuid())
-  role Role   @default(MEMBER)
+// model Member {
+//   id   String @id @default(uuid())
+//   role Role   @default(MEMBER)
 
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String       @map("organization_id")
+//   organization   Organization @relation(fields: [organizationId], references: [id])
+//   organizationId String       @map("organization_id")
 
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @map("user_id")
+//   user   User   @relation(fields: [userId], references: [id])
+//   userId String @map("user_id")
 
-  @@unique([userId, organizationId])
-  @@map("members")
-}
+//   @@unique([userId, organizationId])
+//   @@map("members")
+// }
 
-model Organization {
-  id                        String   @id @default(uuid())
-  name                      String
-  slug                      String   @unique
-  domain                    String?  @unique
-  shouldAttachUsersByDomain Boolean  @default(false) @map("should_attach_users_by_domain")
-  avatarUrl                 String?  @map("avatar_url")
-  createdAt                 DateTime @default(now()) @map("created_at")
-  updatedAt                 DateTime @updatedAt @map("updated_at")
+// model Organization {
+//   id                        String   @id @default(uuid())
+//   name                      String
+//   slug                      String   @unique
+//   domain                    String?  @unique
+//   shouldAttachUsersByDomain Boolean  @default(false) @map("should_attach_users_by_domain")
+//   avatarUrl                 String?  @map("avatar_url")
+//   createdAt                 DateTime @default(now()) @map("created_at")
+//   updatedAt                 DateTime @updatedAt @map("updated_at")
 
-  owner  User   @relation(fields: [userId], references: [id])
-  userId String @map("user_id")
+//   owner  User   @relation(fields: [userId], references: [id])
+//   userId String @map("user_id")
 
-  invites     Invite[]
-  members     Member[]
-  projects    Project[]
-  billingInfo BillingInfo?
+//   invites     Invite[]
+//   members     Member[]
+//   projects    Project[]
+//   billingInfo BillingInfo?
 
-  @@map("organizations")
-}
+//   @@map("organizations")
+// }
 
-model Project {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  slug        String   @unique
-  avatarUrl   String?  @map("avatar_url")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+// model Project {
+//   id          String   @id @default(uuid())
+//   name        String
+//   description String?
+//   slug        String   @unique
+//   avatarUrl   String?  @map("avatar_url")
+//   createdAt   DateTime @default(now()) @map("created_at")
+//   updatedAt   DateTime @updatedAt @map("updated_at")
 
-  owner  User   @relation(fields: [userId], references: [id])
-  userId String @map("user_id")
+//   owner  User   @relation(fields: [userId], references: [id])
+//   userId String @map("user_id")
 
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String       @map("organization_id")
+//   organization   Organization @relation(fields: [organizationId], references: [id])
+//   organizationId String       @map("organization_id")
 
-  @@map("projects")
-}
+//   @@map("projects")
+// }
 
-model BillingInfo {
-  id             String       @id @default(uuid())
-  organizationId String       @unique
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+// model BillingInfo {
+//   id             String       @id @default(uuid())
+//   organizationId String       @unique
+//   organization   Organization @relation(fields: [organizationId], references: [id])
+//   createdAt      DateTime     @default(now())
+//   updatedAt      DateTime     @updatedAt
 
-  @@map("billing_info")
-}
+//   @@map("billing_info")
+// }

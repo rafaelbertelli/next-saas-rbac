@@ -1,0 +1,15 @@
+// Enumerations used across the application
+
+enum Role {
+  ADMIN
+  MEMBER
+  BILLING
+}
+
+enum TokenType {
+  PASSWORD_RECOVER
+}
+
+enum AccountProvider {
+  GITHUB
+}
