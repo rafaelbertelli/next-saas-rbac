@@ -1,0 +1,150 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Guidelines for creating structured implementation plans
+globs: ["*"]
+alwaysApply: true
+---
+
+# Rules for Implementation Plans
+
+## Language Preference
+- Generate implementation plans in Portuguese (Brazilian) for the current user
+- Team members can modify this line to their preferred language as needed
+
+## Initial Steps
+
+- When asked to create an implementation plan, carefully analyze the requirements
+- Identify the main functionality and necessary components
+- Verify available tools and libraries (Andes, Nordic, Fury, etc.)
+- Consult MCP documentation for component patterns and best practices
+- Create a new markdown file in the `.notes/implementation-plan` folder
+
+## Plan File Structure
+
+1. **File Location and Naming**
+   - Create plans in the `.notes/implementation-plan` folder
+   - Use the following naming convention: `YYYY-MM-DD-feature-name-plan.md`
+   - Example: `2024-07-15-conditional-fields-plan.md`
+
+2. **Plan Format**
+   ```markdown
+   # Implementation Plan: [Feature Name]
+
+   ## Context and Objective
+   
+   [Clear description of the problem and implementation objective]
+   
+   ## Technologies and Components
+   
+   - [Required libraries and components (Andes, Nordic, Fury)]
+   - [Reference to relevant documentation]
+   
+   ## Implementation Steps
+   
+   ### 1. [First Step Name]
+   
+   **File**: `path/to/the/file`
+   
+   **Estimate**: [Estimated time and complexity level]
+   
+   [Detailed description of what will be done]
+   
+   ```typescript
+   // Code example or pseudocode
+   ```
+   
+   ### 2. [Second Step Name]
+   
+   **File**: `path/to/the/file`
+   
+   **Estimate**: [Estimated time and complexity level]
+   
+   ...
+   
+   ## Tests
+   
+   [Testing strategy to be implemented]
+   
+   **Testing Estimate**: [Estimated time for test implementation]
+   
+   ## Impact and Dependencies
+   
+   [Impact on other components and possible dependencies]
+   
+   ## Total Estimate
+   
+   **Total Estimated Time**: [Sum of all time estimates]
+   **Overall Complexity Level**: [Low/Medium/High]
+   
+   ## Summary of Changes
+   
+   1. [Summary of first item]
+   2. [Summary of second item]
+   ...
+   ```
+
+3. **Code Sections**
+   - Include code examples with appropriate formatting
+   - Use syntax highlighting for the correct file type
+   - Highlight relevant parts with comments
+
+4. **Effort and Time Estimates**
+   - For each implementation step, include:
+     - Time estimate in hours/days
+     - Complexity level (Low/Medium/High)
+     - Potential technical challenges
+   - Provide a consolidated total estimate at the end of the plan
+   - Consider factors that may affect implementation time
+
+## Content Guidelines
+
+1. **Initial Analysis**
+   - Analyze requirements and reference images
+   - Identify existing components that can be reused
+   - Map the current code structure before proposing changes
+
+2. **Component Usage**
+   - Prioritize using Andes, Nordic components and other internal libraries
+   - Consult MCP Servers for component documentation:
+     - Andes UI (mcp_mcp-frontend-toro_andes_docs)
+     - Nordic (mcp_mcp-frontend-toro_nordic_docs)
+     - Fury for services
+
+3. **Plan Formatting**
+   - Organize steps in logical implementation order
+   - Clearly number each step
+   - Specify the complete path for each file to be modified
+   - Include code examples for each modification
+   - Add time and effort estimates for each step
+
+4. **Design Considerations**
+   - Follow existing visual patterns
+   - Maintain consistency with the company's design system
+   - Consider accessibility in implementations
+
+5. **Integration with Existing Systems**
+   - Explain how the new functionality integrates with existing code
+   - Detail changes in types and interfaces
+   - Consider the impact on other parts of the system
+
+## Best Practices
+
+- Write plans in the preferred language specified in the Language Preference section
+- Include visual examples or diagrams when necessary
+- Consider edge cases and error handling
+- Include testing strategies for the implementation
+- Highlight possible points of attention or challenges
+- Provide realistic estimates based on experience and complexity
+
+## Output Format
+
+- Generate detailed plans with incremental steps
+- Include code examples for each step
+- Create flow diagrams when necessary
+- Reference official documentation when relevant
+- Follow existing code conventions in the project
+- Include clear effort and time estimates for each step

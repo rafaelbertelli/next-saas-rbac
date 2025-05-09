@@ -1,0 +1,148 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Guidelines for creating ADR (Architecture Decision Record)
+globs: ["*"]
+alwaysApply: true
+---
+
+# ADR (Architecture Decision Record) Guidelines
+
+## Language Preference
+- Generate ADRs in Portuguese (Brazilian) for the current user
+- Team members can modify this line to their preferred language as needed
+
+## Purpose and Scope
+- Document important architectural decisions that impact the codebase
+- Maintain a historical record of decision-making processes
+- Provide context for future developers and stakeholders
+
+## When to Create ADRs
+- When implementing significant architectural changes
+- When choosing between multiple viable technical approaches
+- When adopting new technologies, frameworks, or patterns
+- When making decisions that affect multiple components or teams
+
+## ADR File Structure
+
+1. **File Location and Naming**
+   - Create ADRs in the `.notes/adr` folder
+   - Use the following naming convention: `YYYY-MM-DD-NNN-title.md` where NNN is a sequential number
+   - Example: `2024-07-15-001-state-management-approach.md`
+
+2. **ADR Template Format**
+   ```markdown
+   # ADR-NNN: [Title of the Decision]
+
+   ## Status
+   [Proposed | Accepted | Deprecated | Superseded by ADR-XXX]
+   
+   ## Date
+   YYYY-MM-DD
+   
+   ## Context
+   [Description of the problem and context that led to this decision]
+   
+   ## Decision Drivers
+   * [Driver 1]
+   * [Driver 2]
+   * [...]
+   
+   ## Options Considered
+   ### Option 1: [Title]
+   * **Pros**:
+     * [Pro 1]
+     * [Pro 2]
+   * **Cons**:
+     * [Con 1]
+     * [Con 2]
+   
+   ### Option 2: [Title]
+   * **Pros**:
+     * [Pro 1]
+     * [Pro 2]
+   * **Cons**:
+     * [Con 1]
+     * [Con 2]
+   
+   ## Decision
+   [The selected option with justification]
+   
+   ## Consequences
+   ### Positive
+   * [Positive consequence 1]
+   * [Positive consequence 2]
+   
+   ### Negative
+   * [Negative consequence 1]
+   * [Negative consequence 2]
+   
+   ## Implementation
+   [Brief description of how this will be implemented]
+   
+   ## Related ADRs
+   * [Links to related ADRs]
+   
+   ## References
+   * [Reference links, documentation, discussions]
+   ```
+
+## Interactive ADR Creation Process
+
+1. **Initial Analysis**
+   - When a decision point is identified, present the need for an ADR
+   - Ask clarifying questions about the problem context and constraints
+   - Help gather necessary information about available options
+
+2. **Options Exploration**
+   - For each option, prompt for:
+     - Description of the approach
+     - Expected benefits and advantages
+     - Potential drawbacks and challenges
+     - Implementation complexity
+     - Long-term maintenance considerations
+
+3. **Decision Facilitation**
+   - Present comparative analysis of options
+   - Ask for final decision and rationale
+   - Document the chosen approach with justification
+
+4. **Consequences Analysis**
+   - Prompt for both positive and negative consequences
+   - Consider technical debt implications
+   - Document trade-offs accepted with the decision
+
+5. **Implementation Planning**
+   - Ask about implementation approach
+   - Document any phased rollout or migration steps
+   - Note dependencies and affected components
+
+## Best Practices
+
+- Write ADRs in clear, concise language
+- Focus on documenting the "why" not just the "what"
+- Record context that may not be obvious to future readers
+- Document trade-offs explicitly
+- Keep technical details at an appropriate level (not too detailed, not too abstract)
+- Link to external references, discussions, and relevant documents
+- Update ADR status when decisions change
+
+## Questions to Ask During ADR Creation
+
+- What is the specific problem we're trying to solve?
+- What constraints are we operating under?
+- What alternatives were considered and why were they rejected?
+- How does this decision align with our architectural principles?
+- What are the most significant risks of this approach?
+- How will we measure the success of this decision?
+- Who will be affected by this decision?
+- What is the expected lifespan of this decision?
+
+## Follow-up Process
+
+- Revisit ADRs periodically to evaluate if decisions remain valid
+- Update status if approaches are deprecated or superseded
+- Link new ADRs to older ones when they build upon previous decisions

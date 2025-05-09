@@ -1,0 +1,270 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Frontend development guidelines and best practices
+globs: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx", "**/*.scss", "**/*.css"]
+alwaysApply: true
+---
+
+# Development Guidelines
+
+## Technology Stack
+
+### Core Technologies & Skills
+
+- Node, Fastify, Express, Nextjs
+- Webpack
+- ReactJS, Vite, NextJS
+- TypeScript, JavaScript
+- HTML, SCSS, module css
+- Zod
+- React Hook Form
+- Prisma ORM
+- Backend For Frontend
+- SOLID
+- DRY
+- KISS
+- Design Patterns
+- Docker
+- Observability
+- Web Security
+
+## Development Process
+
+### Analysis
+
+- Think step by step
+- Document planning in a new markdown report file in the `.notes/development-process` folder
+- Confirm approach before coding
+
+### Implementation
+
+- Write complete and functional code
+- Do not use TODOs or placeholders
+- Include all necessary imports
+- Follow DRY principles
+- Prioritize readability over performance
+- Use ES6+ syntax for imports/exports
+
+## Code Patterns
+
+### Functions and Variables
+
+- Define TypeScript types when possible
+- Use early returns
+- Prefix event handlers with "handle"
+
+### Array Methods
+
+- Use explicit returns with curly braces
+
+```typescript
+// ✅ Correct:
+array.map((item) => {
+  return item.value;
+});
+```
+
+### Styling
+
+- Use SCSS classes or css module, due to project pattern
+
+### Performance
+
+- Use React.memo for components with stable props
+- Implement virtualization for long lists
+- Optimize re-renders with useMemo and useCallback
+
+```typescript
+const memoizedTransform = useMemo(() => {
+  return data.map(transformFunction);
+}, [data]);
+```
+
+## Test Patterns
+
+### Testing Framework
+
+- **Unit Tests**: Jest
+- **Component Tests**: React Testing Library
+- **Hook Tests**: @testing-library/react
+
+### Initial Test Setup
+
+```typescript
+// Required imports
+import { render, screen } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
+import { act } from 'react';
+
+// Mock dependencies
+jest.mock('../@shared/stateManagement/ComponentData');
+jest.mock('../@shared/validations/fieldType');
+
+// Setup and cleanup
+beforeEach(() => {
+  jest.clearAllMocks();
+  jest.mocked(validateTextField).mockReturnValue([]);
+});
+```
+
+### Test Organization
+
+- Group related tests with `describe` blocks
+- Always use `it` (not `test`)
+- Follow AAA pattern (Arrange-Act-Assert)
+
+```typescript
+it('should initialize with given value', () => {
+  // Arrange
+  const field = new FieldBuilder().build();
+  const initialValue = 'Initial Value';
+
+  // Act
+  const { result } = renderHook(() =>
+    useTextField({ field, value: initialValue }),
+  );
+
+  // Assert
+  expect(result.current.textFieldValue).toBe(initialValue);
+});
+```
+
+### File Structure
+
+- Use `.spec.ts` or `.spec.tsx` extension
+- Place test files in the same folder as the source file
+- Follow naming convention:
+
+```
+┣ utils/
+┃ ┣ group-children.ts
+┃ ┣ group-children.spec.ts
+```
+
+### Builder Pattern
+
+```typescript
+const field = new FieldBuilder()
+  .withAllowNumbers(true)
+  .withAllowLetters(false)
+  .withAllowSpecialChars(false)
+  .build();
+```
+
+### Mocking
+
+```typescript
+// ✅ Correct:
+jest.mocked(useComponentData).mockReturnValue({
+  handleUpdateField: jest.fn(),
+} as unknown as UseComponentDataProps);
+```
+
+## UI/UX Patterns
+
+### Framework Integration
+
+- Prefer lib UI components when available
+- Follow lib UI design guides
+- Maintain visual consistency with the design system
+
+### Accessibility
+
+- Follow WCAG 2.1
+- Implement ARIA labels
+- Ensure keyboard navigation
+
+## BFF Patterns
+
+### Frontend-BFF Communication Structure
+
+#### Response Handling
+
+- Define interfaces for responses
+- Handle errors consistently
+- Transform data when needed
+
+```typescript
+interface ServiceResponse<T> {
+  data: T;
+  errors?: Array<ErrorType>;
+}
+
+const { data, errors } = await app.post<ServiceResponse<T>>(
+  '/api/endpoint',
+  payload,
+);
+```
+
+### API Handler Patterns
+
+#### Handler Structure
+
+- Use TypeScript types for request/response
+- Implement consistent error handling
+- Include appropriate logging
+- Use authentication context
+
+```typescript
+export async function handler(req: Request, res: Response) {
+  const { context } = req;
+  const authenticatedUser = req.auth?.user as AuthenticatedUser;
+
+  try {
+    const response = await service(/* params */);
+    res.json(response);
+  } catch (e: unknown) {
+    const err = e as Error;
+
+    if (!(e instanceof CustomError)) {
+      log.error('API: Operation description', {
+        user_id: authenticatedUser?.userId,
+        error_message: err.message,
+        error_stack: err.stack,
+        ...context,
+      });
+    }
+
+    const error = handleErrors(err);
+    res.status(error.status).json({ message: error.message });
+  }
+}
+```
+
+### Security Patterns
+
+- Implement consistent authentication
+- Use HTTPS for all calls
+- Validate input and output data
+
+```typescript
+const secureCall = async (data: DataType) => {
+  validateInput(data);
+  const response = await restclient.post('/api/endpoint', data);
+  validateOutput(response);
+  return response;
+};
+```
+
+## Documentation and Tools
+
+### Access Permissions
+
+- Full access to node_modules for:
+  - Documentation reference
+  - Type checking
+  - Implementation examples
+
+### Additional Guidelines
+
+- Write test descriptions in English
+- Keep tests independent
+- Test success and error paths
+- Focus on testing behavior, not implementation
+- Mock global objects when necessary
+- Don't mock what is already globally mocked
+
