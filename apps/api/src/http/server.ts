@@ -1,6 +1,9 @@
 import { fastifyCors } from "@fastify/cors";
+import { fastifySwagger } from "@fastify/swagger";
+import fastifySwaggerUI from "@fastify/swagger-ui";
 import Fastify from "fastify";
 import {
+  jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
   ZodTypeProvider,
@@ -19,6 +22,22 @@ app.setValidatorCompiler(validatorCompiler);
 // Register the CORS plugin
 app.register(fastifyCors, {
   origin: "*",
+});
+
+app.register(fastifySwagger, {
+  openapi: {
+    info: {
+      title: "Next.js SaaS",
+      description: "Fullstack SaaS app with multi-tenant & RBAC.",
+      version: "1.0.0",
+    },
+    servers: [],
+  },
+  transform: jsonSchemaTransform,
+});
+
+app.register(fastifySwaggerUI, {
+  routePrefix: "/docs",
 });
 
 // Register the routes
