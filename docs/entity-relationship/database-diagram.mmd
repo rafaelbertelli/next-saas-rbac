@@ -1,0 +1,91 @@
+erDiagram
+
+User ||--o{ Token : "has"
+User ||--o{ Account : "has"
+User ||--o{ Project : "owns"
+User ||--o{ Member : "has role through"
+Organization ||--o{ Project : "contains"
+Organization ||--o{ Member : "has"
+Organization ||--o{ Invite : "creates"
+Organization ||--|| BillingInfo : "has"
+User ||--o{ Organization : "owns"
+Invite }o--o| User : "sent by"
+
+    User {
+        string id PK "uuid"
+        string email "unique"
+        string name "nullable"
+        string passwordHash "nullable"
+        string avatarUrl "nullable"
+        string githubId "unique, nullable"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Organization {
+        string id PK "uuid"
+        string name
+        string slug "unique"
+        string domain "unique, nullable"
+        string avatarUrl "nullable"
+        boolean shouldAttachUsersByDomain
+        string ownerId FK "references User.id"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Member {
+        string id PK "uuid"
+        enum role "ADMIN, MEMBER, BILLING"
+        string userId FK "references User.id"
+        string organizationId FK "references Organization.id"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Project {
+        string id PK "uuid"
+        string name
+        string slug "unique"
+        string description "nullable"
+        string avatarUrl "nullable"
+        string ownerId FK "references User.id"
+        string organizationId FK "references Organization.id"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Invite {
+        string id PK "uuid"
+        string email
+        enum role "ADMIN, MEMBER, BILLING"
+        string inviterId FK "nullable, references User.id"
+        string organizationId FK "references Organization.id"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Account {
+        string id PK "uuid"
+        enum provider "GITHUB"
+        string providerAccountId "unique"
+        string ownerId FK "references User.id"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    BillingInfo {
+        string id PK "uuid"
+        string organizationId FK "unique, references Organization.id"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Token {
+        string id PK "uuid"
+        enum type "PASSWORD_RECOVER"
+        string ownerId FK "references User.id"
+        datetime createdAt
+        datetime updatedAt
+        datetime expiresAt "nullable"
+    }
