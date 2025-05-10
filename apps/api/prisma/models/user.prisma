@@ -1,33 +1,36 @@
 // User-related models
 
 model User {
-  id           String   @id @default(uuid())
-  email        String   @unique
+  id           String  @id @default(uuid())
+  email        String  @unique
   name         String?
-  passwordHash String?  @map("password_hash")
-  avatarUrl    String?  @map("avatar_url")
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  passwordHash String? @map("password_hash")
+  avatarUrl    String? @map("avatar_url")
 
-  accounts            Account[]
   organizations_owned Organization[]
-  projects_owned      Project[]
   memberships         Member[]
+  accounts            Account[]
+  projects_owned      Project[]
   invites             Invite[]
   tokens              Token[]
   githubId            String?        @unique @map("github_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("users")
 }
 
 model Token {
-  id        String    @id @default(uuid())
-  type      TokenType
-  createdAt DateTime  @default(now()) @map("created_at")
-  expiresAt DateTime? @map("expires_at")
+  id   String    @id @default(uuid())
+  type TokenType
 
-  owner  User   @relation(fields: [userId], references: [id])
-  userId String @map("user_id")
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String @map("owner_id")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  expiresAt DateTime? @map("expires_at")
 
   @@map("tokens")
 }

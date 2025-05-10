@@ -1,11 +1,13 @@
 // Billing-related models
 
 model BillingInfo {
-  id             String       @id @default(uuid())
-  organizationId String       @unique
+  id String @id @default(uuid())
+
   organization   Organization @relation(fields: [organizationId], references: [id])
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  organizationId String       @unique @map("organization_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("billing_info")
 }
