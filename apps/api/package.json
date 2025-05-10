@@ -20,6 +20,7 @@
     "zod": "^3.24.4"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.7.0",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^22.14.0",
@@ -38,6 +39,7 @@
     ]
   },
   "prisma": {
-    "schema": "./prisma"
+    "schema": "./prisma",
+    "seed": "tsx prisma/seed/seed-db.ts"
   }
 }
