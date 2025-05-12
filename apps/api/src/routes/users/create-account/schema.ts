@@ -1,7 +1,8 @@
+import { userSchema } from "@/entities/User";
 import { z } from "zod";
 
 export const createAccountSchema = {
-  tags: ["auth"],
+  tags: ["users"],
   summary: "Create a new account",
   description: "Create a new account with the given name, email and password",
   body: z.object({
@@ -9,4 +10,15 @@ export const createAccountSchema = {
     email: z.string().email(),
     password: z.string().min(6),
   }),
+  response: {
+    201: z.object({
+      message: z.string(),
+      data: z.object({
+        user: userSchema,
+      }),
+    }),
+    409: z.object({
+      message: z.string(),
+    }),
+  },
 };

@@ -4,3 +4,5 @@ node_modules
 
 # Keep the generated Prisma Client + query engine out of version control
 generated
+
+*.key

@@ -1,4 +1,5 @@
 import { fastifyCors } from "@fastify/cors";
+import fastifyJwt from "@fastify/jwt";
 import { fastifySwagger } from "@fastify/swagger";
 import fastifySwaggerUI from "@fastify/swagger-ui";
 import Fastify from "fastify";
@@ -8,7 +9,7 @@ import {
   validatorCompiler,
   ZodTypeProvider,
 } from "fastify-type-provider-zod";
-import { routes } from "./routes";
+import { routes } from "../routes";
 
 // Create the Fastify app
 const app = Fastify({
@@ -38,6 +39,12 @@ app.register(fastifySwagger, {
 
 app.register(fastifySwaggerUI, {
   routePrefix: "/docs",
+});
+
+const jwtSecret = process.env.JWT_SECRET || "";
+app.register(fastifyJwt, {
+  secret: jwtSecret,
+  sign: { algorithm: "HS256" },
 });
 
 // Register the routes

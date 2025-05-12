@@ -1,13 +1,16 @@
-import prisma from "@/lib/prisma/prisma-connection";
+import prisma from "@/infra/prisma/prisma-connection";
 import { hash } from "bcryptjs";
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { createAccountSchema } from "./schema";
 
 export const createAccount = async (app: FastifyInstance) => {
-  app
-    .withTypeProvider<ZodTypeProvider>()
-    .post("/users", { schema: createAccountSchema }, async (request, reply) => {
+  app.withTypeProvider<ZodTypeProvider>().post(
+    "/users",
+    {
+      schema: createAccountSchema,
+    },
+    async (request, reply) => {
       const { name, email, password } = request.body;
 
       const userWithSameEmail = await prisma.user.findUnique({
@@ -47,8 +50,11 @@ export const createAccount = async (app: FastifyInstance) => {
       });
 
       return reply.status(201).send({
-        message: "User created successfully",
-        data: user,
+        message: "success",
+        data: {
+          user,
+        },
       });
-    });
+    }
+  );
 };
