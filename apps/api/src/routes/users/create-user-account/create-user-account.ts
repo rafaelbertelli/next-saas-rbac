@@ -5,7 +5,7 @@ import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { createAccountSchema } from "./schema";
 
-export const createAccount = async (app: FastifyInstance) => {
+export const createUserAccount = async (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().post(
     "/users",
     {
@@ -21,7 +21,7 @@ export const createAccount = async (app: FastifyInstance) => {
       });
 
       if (userWithSameEmail) {
-        throw new ConflictError("Invalid credentials");
+        throw new ConflictError("User already exists");
       }
 
       const [_, domain] = email.split("@");
@@ -49,7 +49,6 @@ export const createAccount = async (app: FastifyInstance) => {
       });
 
       return reply.status(201).send({
-        message: "success",
         data: {
           user,
         },

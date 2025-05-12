@@ -7,7 +7,7 @@ import { authenticateWithEmailAndPasswordSchema } from "./schema";
 
 export async function authenticateWithEmailAndPassword(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
-    "/sessions/email-and-password",
+    "/session/email-and-password",
     {
       schema: authenticateWithEmailAndPasswordSchema,
     },

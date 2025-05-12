@@ -3,16 +3,16 @@ import prisma from "@/infra/prisma/prisma-connection";
 import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
-import { profileSchema } from "./schema";
+import { userProfileSchema } from "./schema";
 
-export const profile = async (app: FastifyInstance) => {
+export const userProfile = async (app: FastifyInstance) => {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(authMiddleware)
     .get(
-      "/users/profile",
+      "/users/user-profile",
       {
-        schema: profileSchema,
+        schema: userProfileSchema,
       },
       async (request, reply) => {
         const userId = await request.getCurrentUserId();
@@ -34,7 +34,6 @@ export const profile = async (app: FastifyInstance) => {
         }
 
         return reply.status(200).send({
-          message: "success",
           data: {
             user,
           },

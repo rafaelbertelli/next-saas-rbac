@@ -12,7 +12,6 @@ export const createAccountSchema = {
   }),
   response: {
     201: z.object({
-      message: z.string(),
       data: z.object({
         user: userSchema,
       }),
