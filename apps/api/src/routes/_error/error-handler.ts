@@ -1,0 +1,40 @@
+import type { FastifyInstance } from "fastify";
+import { ZodError } from "zod";
+import { BadRequestError } from "./4xx/bad-request-error";
+import { ConflictError } from "./4xx/conflict-error";
+import { UnauthorizedError } from "./4xx/unauthorized-error";
+
+type FastifyErrorHandler = FastifyInstance["errorHandler"];
+
+export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
+  if (error instanceof ZodError) {
+    return reply.status(400).send({
+      message: "Validation error",
+      details: error.flatten().fieldErrors,
+    });
+  }
+
+  if (error instanceof BadRequestError) {
+    return reply.status(error.statusCode).send({
+      message: error.message,
+    });
+  }
+
+  if (error instanceof UnauthorizedError) {
+    return reply.status(error.statusCode).send({
+      message: error.message,
+    });
+  }
+
+  if (error instanceof ConflictError) {
+    return reply.status(error.statusCode).send({
+      message: error.message,
+    });
+  }
+
+  request.log.error(error);
+
+  return reply.status(500).send({
+    message: "Internal server error",
+  });
+};

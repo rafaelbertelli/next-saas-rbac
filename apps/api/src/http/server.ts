@@ -1,3 +1,4 @@
+import { errorHandler } from "@/routes/_error/error-handler";
 import { fastifyCors } from "@fastify/cors";
 import fastifyJwt from "@fastify/jwt";
 import { fastifySwagger } from "@fastify/swagger";
@@ -19,6 +20,9 @@ const app = Fastify({
 // Set the serializer and validator compilers
 app.setSerializerCompiler(serializerCompiler);
 app.setValidatorCompiler(validatorCompiler);
+
+// Register the error handler
+app.setErrorHandler(errorHandler);
 
 // Register the CORS plugin
 app.register(fastifyCors, {
