@@ -1,4 +1,5 @@
 import prisma from "@/infra/prisma/prisma-connection";
+import { UnauthorizedError } from "@/routes/_error/4xx/unauthorized-error";
 import { compare } from "bcryptjs";
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
@@ -20,15 +21,13 @@ export async function authenticateWithEmailAndPassword(app: FastifyInstance) {
       });
 
       if (!userFromEmail) {
-        return reply.status(401).send({
-          message: "Invalid credentials",
-        });
+        throw new UnauthorizedError("Invalid credentials");
       }
 
       if (userFromEmail.passwordHash === null) {
-        return reply.status(401).send({
-          message: "User does not have a password. Use social login.",
-        });
+        throw new UnauthorizedError(
+          "User does not have a password. Use social login."
+        );
       }
 
       const isPasswordValid = await compare(
@@ -37,20 +36,12 @@ export async function authenticateWithEmailAndPassword(app: FastifyInstance) {
       );
 
       if (!isPasswordValid) {
-        return reply.status(401).send({
-          message: "Invalid credentials",
-        });
+        throw new UnauthorizedError("Invalid credentials");
       }
 
       const token = await reply.jwtSign(
-        {
-          sub: userFromEmail.id,
-        },
-        {
-          sign: {
-            expiresIn: "7d",
-          },
-        }
+        { sub: userFromEmail.id },
+        { sign: { expiresIn: "7d" } }
       );
 
       return reply.status(201).send({

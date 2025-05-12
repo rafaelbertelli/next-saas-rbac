@@ -1,4 +1,5 @@
 import prisma from "@/infra/prisma/prisma-connection";
+import { ConflictError } from "@/routes/_error/4xx/conflict-error";
 import { hash } from "bcryptjs";
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
@@ -20,9 +21,7 @@ export const createAccount = async (app: FastifyInstance) => {
       });
 
       if (userWithSameEmail) {
-        return reply.status(409).send({
-          message: "User with same email already exists",
-        });
+        throw new ConflictError("Invalid credentials");
       }
 
       const [_, domain] = email.split("@");

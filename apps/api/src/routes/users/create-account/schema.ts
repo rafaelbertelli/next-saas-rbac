@@ -1,4 +1,4 @@
-import { userSchema } from "@/entities/User";
+import { userSchema } from "@/entities/User.entity";
 import { z } from "zod";
 
 export const createAccountSchema = {
