@@ -18,11 +18,14 @@ export async function passwordRecover(app: FastifyInstance) {
         },
       });
 
-      console.log(userFromEmail);
-
       if (!userFromEmail) {
+        request.log.error({
+          message: "User not found",
+          email,
+        });
+
         // we don't want to tell the user that the email is not registered
-        return reply.status(201).send();
+        return reply.status(204).send();
       }
 
       const expiresAt10Minutes = new Date(Date.now() + 1000 * 60 * 10);
@@ -35,11 +38,9 @@ export async function passwordRecover(app: FastifyInstance) {
       });
 
       // send email to user with recover link
-      console.log(
-        `https://app.dev.workos.com/session/password-recover/${token.id}`
-      );
+      console.log(token.id);
 
-      return reply.status(201).send();
+      return reply.status(204).send();
     }
   );
 }

@@ -25,6 +25,11 @@ export async function authenticateWithEmailAndPassword(app: FastifyInstance) {
       }
 
       if (userFromEmail.passwordHash === null) {
+        request.log.error({
+          message: "authenticate with email and password",
+          userId: userFromEmail.id,
+        });
+
         throw new UnauthorizedError(
           "User does not have a password. Use social login."
         );
@@ -36,6 +41,11 @@ export async function authenticateWithEmailAndPassword(app: FastifyInstance) {
       );
 
       if (!isPasswordValid) {
+        request.log.error({
+          message: "authenticate with email and password",
+          userId: userFromEmail.id,
+        });
+
         throw new UnauthorizedError("Invalid credentials");
       }
 

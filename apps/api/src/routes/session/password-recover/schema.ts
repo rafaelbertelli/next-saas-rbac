@@ -7,6 +7,6 @@ export const passwordRecoverSchema = {
     email: z.string().email(),
   }),
   response: {
-    201: z.null(),
+    204: z.null(),
   },
 };
