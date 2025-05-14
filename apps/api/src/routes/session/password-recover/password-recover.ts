@@ -1,4 +1,4 @@
-import prisma from "@/infra/prisma/prisma-connection";
+import { prisma } from "@/infra/prisma/prisma-connection";
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { passwordRecoverSchema } from "./schema";

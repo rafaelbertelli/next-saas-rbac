@@ -1,4 +1,4 @@
-import prisma from "@/infra/prisma/prisma-connection";
+import { prisma } from "@/infra/prisma/prisma-connection";
 import { UnauthorizedError } from "@/routes/_error/4xx/unauthorized-error";
 import { compare } from "bcryptjs";
 import { FastifyInstance } from "fastify";

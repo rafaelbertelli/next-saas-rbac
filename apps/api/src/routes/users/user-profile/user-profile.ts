@@ -1,5 +1,5 @@
 import { authMiddleware } from "@/http/middlewares/auth";
-import prisma from "@/infra/prisma/prisma-connection";
+import { prisma } from "@/infra/prisma/prisma-connection";
 import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";

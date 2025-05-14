@@ -1,4 +1,4 @@
-import prisma from "@/infra/prisma/prisma-connection";
+import { prisma } from "@/infra/prisma/prisma-connection";
 import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
 import { UnauthorizedError } from "@/routes/_error/4xx/unauthorized-error";
 import { hash } from "bcryptjs";

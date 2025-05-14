@@ -1,4 +1,4 @@
-import prisma from "@/infra/prisma/prisma-connection";
+import { prisma } from "@/infra/prisma/prisma-connection";
 import { BadRequestError } from "@/routes/_error/4xx/bad-request-error";
 import { BadGatewayError } from "@/routes/_error/5xx/bad-gateway-error";
 import { env } from "@repo/env";

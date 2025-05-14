@@ -1,4 +1,4 @@
-import prisma from "@/infra/prisma/prisma-connection";
+import { prisma } from "@/infra/prisma/prisma-connection";
 import { ConflictError } from "@/routes/_error/4xx/conflict-error";
 import { hash } from "bcryptjs";
 import { FastifyInstance } from "fastify";
