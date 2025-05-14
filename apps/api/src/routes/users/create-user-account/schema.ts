@@ -1,4 +1,3 @@
-import { userSchema } from "@/entities/User.entity";
 import { z } from "zod";
 
 export const createAccountSchema = {
@@ -13,7 +12,12 @@ export const createAccountSchema = {
   response: {
     201: z.object({
       data: z.object({
-        user: userSchema,
+        user: z.object({
+          id: z.string().uuid(),
+          email: z.string().email(),
+          name: z.string().nullable(),
+          avatarUrl: z.string().url().nullable(),
+        }),
       }),
     }),
     409: z.object({
