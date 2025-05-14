@@ -20,6 +20,14 @@ export const config = [
     rules: {
       "turbo/no-undeclared-env-vars": "warn",
     },
+    overrides: [
+      {
+        files: ["**/*.spec.ts"],
+        env: {
+          jest: true,
+        },
+      },
+    ],
   },
   {
     plugins: {
