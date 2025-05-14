@@ -3,6 +3,7 @@ import { ZodError } from "zod";
 import { BadRequestError } from "./4xx/bad-request-error";
 import { ConflictError } from "./4xx/conflict-error";
 import { UnauthorizedError } from "./4xx/unauthorized-error";
+import { BadGatewayError } from "./5xx/bad-gateway-error";
 
 type FastifyErrorHandler = FastifyInstance["errorHandler"];
 
@@ -33,6 +34,12 @@ export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
   }
 
   request.log.error(error);
+
+  if (error instanceof BadGatewayError) {
+    return reply.status(error.statusCode).send({
+      message: error.message,
+    });
+  }
 
   return reply.status(500).send({
     message: "Internal server error",

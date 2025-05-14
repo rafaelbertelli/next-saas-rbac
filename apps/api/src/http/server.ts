@@ -3,6 +3,7 @@ import { fastifyCors } from "@fastify/cors";
 import fastifyJwt from "@fastify/jwt";
 import { fastifySwagger } from "@fastify/swagger";
 import fastifySwaggerUI from "@fastify/swagger-ui";
+import { env } from "@repo/env";
 import Fastify from "fastify";
 import {
   jsonSchemaTransform,
@@ -36,7 +37,15 @@ app.register(fastifySwagger, {
       description: "Fullstack SaaS app with multi-tenant & RBAC.",
       version: "1.0.0",
     },
-    servers: [],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
   },
   transform: jsonSchemaTransform,
 });
@@ -45,9 +54,8 @@ app.register(fastifySwaggerUI, {
   routePrefix: "/docs",
 });
 
-const jwtSecret = process.env.JWT_SECRET || "";
 app.register(fastifyJwt, {
-  secret: jwtSecret,
+  secret: env.JWT_SECRET,
   sign: { algorithm: "HS256" },
 });
 
@@ -55,7 +63,7 @@ app.register(fastifyJwt, {
 app.register(routes);
 
 // Start the server
-app.listen({ port: 3333 }, (err, address) => {
+app.listen({ port: env.SERVER_PORT }, (err, address) => {
   if (err) {
     app.log.error(err);
     process.exit(1);
