@@ -1,0 +1,10 @@
+{
+  "extends": "@repo/typescript-config/base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "module": "ESNext", // Garante ESM
+    "moduleResolution": "bundler" // Necessário para ler package.json#exports
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
