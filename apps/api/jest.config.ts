@@ -1,19 +1,5 @@
-import type { Config } from "jest";
+import baseConfig from "@repo/jest-config";
 
-const config: Config = {
-  preset: "ts-jest",
-  testEnvironment: "node",
-  roots: ["<rootDir>/src"],
-  moduleFileExtensions: ["ts", "js", "json"],
-  testMatch: ["**/*.spec.ts"],
-  collectCoverageFrom: ["src/**/*.{ts,js}"],
-  coverageDirectory: "coverage",
-  transform: {
-    "^.+\\.(ts|tsx)$": "ts-jest",
-  },
-  moduleNameMapper: {
-    "^@/(.*)$": "<rootDir>/src/$1",
-  },
+export default {
+  ...baseConfig,
 };
-
-export default config;
