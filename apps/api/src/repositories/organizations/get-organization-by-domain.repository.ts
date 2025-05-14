@@ -1,4 +1,4 @@
-import prisma from "@/infra/prisma/prisma-connection";
+import { prisma } from "@/infra/prisma/prisma-connection";
 
 export async function getOrganizationByDomainRepository(domain: string) {
   const organization = await prisma.organization.findUnique({
