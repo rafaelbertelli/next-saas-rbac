@@ -32,11 +32,13 @@
     "@faker-js/faker": "^9.8.0",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@repo/jest-config": "workspace:*",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.15.18",
     "dotenv-cli": "^8.0.0",
     "install": "^0.13.0",
+    "jest": "^29.7.0",
     "prisma": "^6.7.0",
+    "ts-jest": "^29.3.3",
     "tsx": "^4.19.4"
   },
   "eslintConfig": {
