@@ -2,25 +2,27 @@ import { FastifyInstance } from "fastify";
 
 import { createOrganizationRoute } from "./organizations/create-organization";
 import { getMembershipRoute } from "./organizations/get-membership";
-import { authenticateWithEmailAndPassword } from "./session/authenticate-with-email-and-password";
-import { authenticateWithGithub } from "./session/authenticate-with-github";
-import { passwordRecover } from "./session/password-recover";
-import { resetPassword } from "./session/reset-password";
-import { createUserAccount } from "./users/create-user-account";
-import { userProfile } from "./users/user-profile";
+import { getOrganizationRoute } from "./organizations/get-organization";
+import { authenticateWithEmailAndPasswordRoute } from "./session/authenticate-with-email-and-password";
+import { authenticateWithGithubRoute } from "./session/authenticate-with-github";
+import { passwordRecoverRoute } from "./session/password-recover";
+import { resetPasswordRoute } from "./session/reset-password";
+import { createUserAccountRoute } from "./users/create-user-account";
+import { userProfileRoute } from "./users/user-profile";
 
 export async function routes(app: FastifyInstance) {
   // Authentication
-  authenticateWithEmailAndPassword(app);
-  authenticateWithGithub(app);
-  passwordRecover(app);
-  resetPassword(app);
+  authenticateWithEmailAndPasswordRoute(app);
+  authenticateWithGithubRoute(app);
+  passwordRecoverRoute(app);
+  resetPasswordRoute(app);
 
   // Users
-  createUserAccount(app);
-  userProfile(app);
+  createUserAccountRoute(app);
+  userProfileRoute(app);
 
   // Organizations
   createOrganizationRoute(app);
   getMembershipRoute(app);
+  getOrganizationRoute(app);
 }

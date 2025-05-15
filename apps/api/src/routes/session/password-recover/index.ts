@@ -1,1 +1,1 @@
-export * from "./password-recover";
+export * from "./password-recover.route";

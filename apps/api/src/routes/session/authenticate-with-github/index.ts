@@ -1,1 +1,1 @@
-export * from "./authenticate-with-github";
+export * from "./authenticate-with-github.route";

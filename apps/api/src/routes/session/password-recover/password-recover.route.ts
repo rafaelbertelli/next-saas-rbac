@@ -3,7 +3,7 @@ import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { passwordRecoverSchema } from "./schema";
 
-export async function passwordRecover(app: FastifyInstance) {
+export async function passwordRecoverRoute(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
     "/session/password-recover",
     {

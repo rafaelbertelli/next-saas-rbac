@@ -5,7 +5,7 @@ import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { userProfileSchema } from "./schema";
 
-export const userProfile = async (app: FastifyInstance) => {
+export const userProfileRoute = async (app: FastifyInstance) => {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(authMiddleware)

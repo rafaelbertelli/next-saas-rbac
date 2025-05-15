@@ -9,7 +9,7 @@ import {
   githubAccessTokenDataSchema,
   githubUserDataSchema,
 } from "./schema";
-export async function authenticateWithGithub(app: FastifyInstance) {
+export async function authenticateWithGithubRoute(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
     "/session/authenticate-with-github",
     {

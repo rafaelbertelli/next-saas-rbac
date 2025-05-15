@@ -1,1 +1,1 @@
-export * from "./create-user-account";
+export * from "./create-user-account.route";

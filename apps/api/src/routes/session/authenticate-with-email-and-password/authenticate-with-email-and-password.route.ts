@@ -5,7 +5,9 @@ import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { authenticateWithEmailAndPasswordSchema } from "./schema";
 
-export async function authenticateWithEmailAndPassword(app: FastifyInstance) {
+export async function authenticateWithEmailAndPasswordRoute(
+  app: FastifyInstance
+) {
   app.withTypeProvider<ZodTypeProvider>().post(
     "/session/email-and-password",
     {

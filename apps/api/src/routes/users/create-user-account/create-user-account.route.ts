@@ -5,7 +5,7 @@ import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { createAccountSchema } from "./schema";
 
-export const createUserAccount = async (app: FastifyInstance) => {
+export const createUserAccountRoute = async (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().post(
     "/users",
     {

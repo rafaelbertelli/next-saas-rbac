@@ -9,7 +9,7 @@ export const getOrganizationSchema = {
     },
   ],
   params: z.object({
-    organizationId: z.string().uuid(),
+    slug: z.string(),
   }),
   response: {
     200: z.object({
