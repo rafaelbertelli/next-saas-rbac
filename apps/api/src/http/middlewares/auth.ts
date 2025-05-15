@@ -1,4 +1,4 @@
-import { getUserMembership } from "@/services/organizations/get-membership";
+import { getMembership } from "@/services/organizations/get-membership";
 import { getCurrentUserId } from "@/services/users/get-current-user-id";
 import { FastifyInstance } from "fastify";
 import fastifyPlugin from "fastify-plugin";
@@ -8,6 +8,6 @@ export const authMiddleware = fastifyPlugin(async (app: FastifyInstance) => {
     request.getCurrentUserId = async () => await getCurrentUserId(request);
 
     request.getUserMembership = async (organizationSlug: string) =>
-      await getUserMembership(request, organizationSlug);
+      await getMembership(request, organizationSlug);
   });
 });

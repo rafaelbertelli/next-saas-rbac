@@ -1,12 +1,13 @@
 import { getMembershipBySlugRepository } from "@/repositories/members/get-membership-by-slug.repository";
-import { getUserMembership } from "@/services/organizations/get-membership";
+
 import { getCurrentUserId } from "@/services/users/get-current-user-id";
 import { FastifyRequest } from "fastify";
+import { getMembership } from "./get-membership.service";
 
 jest.mock("@/services/users/get-current-user-id");
 jest.mock("@/repositories/members/get-membership-by-slug.repository");
 
-describe("getUserMembership", () => {
+describe("getMembership", () => {
   it("should return the user membership", async () => {
     // Arrange
     const mockUserId = "user-123";
@@ -39,7 +40,7 @@ describe("getUserMembership", () => {
     const request = {} as FastifyRequest;
 
     // Act
-    const result = await getUserMembership(request, "org-test");
+    const result = await getMembership(request, "org-test");
 
     // Assert
     expect(result).toEqual({
@@ -56,7 +57,7 @@ describe("getUserMembership", () => {
     const request = {} as FastifyRequest;
 
     // Act & Assert
-    await expect(getUserMembership(request, "org-test")).rejects.toThrow(
+    await expect(getMembership(request, "org-test")).rejects.toThrow(
       "Invalid token"
     );
   });
@@ -69,7 +70,7 @@ describe("getUserMembership", () => {
     const request = {} as FastifyRequest;
 
     // Act & Assert
-    await expect(getUserMembership(request, "org-test")).rejects.toThrow(
+    await expect(getMembership(request, "org-test")).rejects.toThrow(
       "You are not a member of this organization"
     );
   });

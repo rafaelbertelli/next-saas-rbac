@@ -1,4 +1,4 @@
-import { getOrganizationByDomainRepository } from "@/repositories/organizations/get-organization-by-domain.repository";
+import { getOrganizationByDomainRepository } from "@/repositories/organizations/get-organization-by-domain";
 import { ConflictError } from "@/routes/_error/4xx/conflict-error";
 
 export async function checkDuplicateOrganizationService(domain: string) {

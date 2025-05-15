@@ -1,4 +1,4 @@
-import { createOrganizationRepository } from "@/repositories/organizations/create-organization.repository";
+import { createOrganizationRepository } from "@/repositories/organizations/create-organization";
 import { createSlug } from "@/utils/slug/create-slug";
 
 type CreateOrganization = {

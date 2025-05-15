@@ -1,6 +1,6 @@
 import { authMiddleware } from "@/http/middlewares/auth";
-import { checkDuplicateOrganizationService } from "@/services/organizations/check-duplicate-organization.service";
-import { createOrganizationService } from "@/services/organizations/create-organization.service";
+import { checkDuplicateOrganizationService } from "@/services/organizations/check-duplicate-organization";
+import { createOrganizationService } from "@/services/organizations/create-organization";
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { createOrganizationSchema } from "./schema";
