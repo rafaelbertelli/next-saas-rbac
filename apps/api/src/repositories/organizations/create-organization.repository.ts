@@ -15,21 +15,25 @@ export async function createOrganizationRepository({
   slug,
   shouldAttachUsersByDomain,
 }: CreateOrganizationRepository) {
-  const organization = await prisma.organization.create({
-    data: {
-      name,
-      domain,
-      slug,
-      shouldAttachUsersByDomain,
-      ownerId: userId,
-      members: {
-        create: {
-          userId,
-          role: "ADMIN",
+  try {
+    const organization = await prisma.organization.create({
+      data: {
+        name,
+        domain,
+        slug,
+        shouldAttachUsersByDomain,
+        ownerId: userId,
+        members: {
+          create: {
+            userId,
+            role: "ADMIN",
+          },
         },
       },
-    },
-  });
+    });
 
-  return organization;
+    return organization;
+  } catch (error) {
+    throw new Error("Failed to create organization");
+  }
 }

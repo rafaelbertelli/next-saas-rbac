@@ -1,3 +1,4 @@
+import { prisma } from "@/infra/prisma/prisma-connection";
 import { createOrganizationRepository } from "./create-organization.repository";
 
 jest.mock("@/infra/prisma/prisma-connection", () => ({
@@ -7,8 +8,6 @@ jest.mock("@/infra/prisma/prisma-connection", () => ({
     },
   },
 }));
-
-import { prisma } from "@/infra/prisma/prisma-connection";
 
 describe("createOrganizationRepository", () => {
   const mockOrganization = {
@@ -60,5 +59,13 @@ describe("createOrganizationRepository", () => {
       },
     });
     expect(result).toEqual(mockOrganization);
+  });
+
+  it("should throw if prisma throws", async () => {
+    jest.mocked(prisma.organization.create).mockRejectedValueOnce(new Error());
+
+    await expect(createOrganizationRepository({} as any)).rejects.toThrow(
+      "Failed to create organization"
+    );
   });
 });
