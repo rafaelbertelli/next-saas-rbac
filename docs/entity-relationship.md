@@ -110,6 +110,8 @@ Organization *─┼──1 User (owner)
 - `MEMBER`: Standard member access
 - `BILLING`: Billing-only access
 
+> The "Owner" is not a separate role, but a condition: the user whose id matches the `ownerId` field of the organization. Some actions (like transferring ownership) are restricted to the owner.
+
 ### TokenType
 
 - `PASSWORD_RECOVER`: Used for password recovery
