@@ -1,4 +1,4 @@
-import { getUserMembership } from "@/services/organizations/get-membership";
+import { getMembership } from "@/services/organizations/get-membership";
 import { getCurrentUserId } from "@/services/users/get-current-user-id";
 import { FastifyInstance } from "fastify";
 import { authMiddleware } from "./auth";
@@ -51,12 +51,12 @@ describe("authMiddleware", () => {
     expect(userId).toBe("user-123");
   });
 
-  it("should call getUserMembership service when request.getUserMembership is called", async () => {
+  it("should call getMembership service when request.getUserMembership is called", async () => {
     // Arrange
     const request: any = {};
     const reply: any = {};
     const mockMembership = { organization: {}, membership: {} };
-    (getUserMembership as jest.Mock).mockResolvedValue(mockMembership);
+    (getMembership as jest.Mock).mockResolvedValue(mockMembership);
 
     await preHandler(request, reply);
 
@@ -64,7 +64,7 @@ describe("authMiddleware", () => {
     const result = await request.getUserMembership("org-slug");
 
     // Assert
-    expect(getUserMembership).toHaveBeenCalledWith(request, "org-slug");
+    expect(getMembership).toHaveBeenCalledWith(request, "org-slug");
     expect(result).toBe(mockMembership);
   });
 });
