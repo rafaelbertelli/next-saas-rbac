@@ -1,10 +1,10 @@
-import { getMembershipBySlugService } from "@/services/members/get-membership-by-slug.service";
+import { getMembershipBySlugRepository } from "@/repositories/members/get-membership-by-slug.repository";
+import { getUserMembership } from "@/services/organizations/get-membership";
+import { getCurrentUserId } from "@/services/users/get-current-user-id";
 import { FastifyRequest } from "fastify";
-import { getCurrentUserId } from "./get-current-user-id";
-import { getUserMembership } from "./get-user-membership";
 
-jest.mock("./get-current-user-id");
-jest.mock("@/services/members/get-membership-by-slug.service");
+jest.mock("@/services/users/get-current-user-id");
+jest.mock("@/repositories/members/get-membership-by-slug.repository");
 
 describe("getUserMembership", () => {
   it("should return the user membership", async () => {
@@ -31,7 +31,7 @@ describe("getUserMembership", () => {
     };
 
     (getCurrentUserId as jest.Mock).mockResolvedValue(mockUserId);
-    (getMembershipBySlugService as jest.Mock).mockResolvedValue({
+    (getMembershipBySlugRepository as jest.Mock).mockResolvedValue({
       ...mockMembership,
       organization: mockOrganization,
     });
@@ -61,11 +61,12 @@ describe("getUserMembership", () => {
     );
   });
 
-  it("should throw UnauthorizedError if user is not a member of the organization", async () => {
+  it("should throw an error if user is not a member of the organization", async () => {
     // Arrange
+    const mockUserId = "user-123";
+    (getCurrentUserId as jest.Mock).mockResolvedValue(mockUserId);
+    (getMembershipBySlugRepository as jest.Mock).mockResolvedValue(undefined);
     const request = {} as FastifyRequest;
-    (getCurrentUserId as jest.Mock).mockResolvedValue("user-123");
-    (getMembershipBySlugService as jest.Mock).mockResolvedValue(undefined);
 
     // Act & Assert
     await expect(getUserMembership(request, "org-test")).rejects.toThrow(

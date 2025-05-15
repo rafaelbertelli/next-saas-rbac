@@ -1,5 +1,5 @@
-import { getCurrentUserId } from "@/services/auth/get-current-user-id";
-import { getUserMembership } from "@/services/auth/get-user-membership";
+import { getUserMembership } from "@/services/organizations/get-membership";
+import { getCurrentUserId } from "@/services/users/get-current-user-id";
 import { FastifyInstance } from "fastify";
 import fastifyPlugin from "fastify-plugin";
 

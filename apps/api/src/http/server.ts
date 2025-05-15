@@ -15,7 +15,16 @@ import { routes } from "../routes";
 
 // Create the Fastify app
 const app = Fastify({
-  logger: true,
+  logger: {
+    level: "error",
+    transport: {
+      target: "pino-pretty",
+      options: {
+        colorize: true,
+        // translateTime: "HH:MM:ss Z",
+      },
+    },
+  },
 }).withTypeProvider<ZodTypeProvider>();
 
 // Set the serializer and validator compilers
@@ -69,5 +78,7 @@ app.listen({ port: env.SERVER_PORT }, (err, address) => {
     process.exit(1);
   }
 
-  app.log.info(`Server is running on ${address}`);
+  console.log("==========================================");
+  console.log(`Server is running on http://localhost:${env.SERVER_PORT}`);
+  console.log("==========================================");
 });

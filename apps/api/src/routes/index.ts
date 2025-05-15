@@ -1,6 +1,7 @@
 import { FastifyInstance } from "fastify";
 
 import { createOrganizationRoute } from "./organizations/create-organization";
+import { getMembershipRoute } from "./organizations/get-membership";
 import { authenticateWithEmailAndPassword } from "./session/authenticate-with-email-and-password";
 import { authenticateWithGithub } from "./session/authenticate-with-github";
 import { passwordRecover } from "./session/password-recover";
@@ -21,4 +22,5 @@ export async function routes(app: FastifyInstance) {
 
   // Organizations
   createOrganizationRoute(app);
+  getMembershipRoute(app);
 }

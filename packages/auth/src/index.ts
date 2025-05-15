@@ -44,4 +44,5 @@ export function defineAbilityFor(user: User): AppAbility {
 
 export * from "./models/organization";
 export * from "./models/project";
+export * from "./models/role";
 export * from "./models/user";

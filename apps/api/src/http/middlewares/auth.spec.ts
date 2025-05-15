@@ -1,10 +1,10 @@
-import { getCurrentUserId } from "@/services/auth/get-current-user-id";
-import { getUserMembership } from "@/services/auth/get-user-membership";
+import { getUserMembership } from "@/services/organizations/get-membership";
+import { getCurrentUserId } from "@/services/users/get-current-user-id";
 import { FastifyInstance } from "fastify";
 import { authMiddleware } from "./auth";
 
-jest.mock("@/services/auth/get-current-user-id");
-jest.mock("@/services/auth/get-user-membership");
+jest.mock("@/services/users/get-current-user-id");
+jest.mock("@/services/organizations/get-membership");
 
 describe("authMiddleware", () => {
   let app: FastifyInstance;
