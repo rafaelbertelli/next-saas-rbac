@@ -1,5 +1,5 @@
 import { prisma } from "@/infra/prisma/prisma-connection";
-import { getOrganizationByDomainRepository } from "./get-organization-by-domain.repository";
+import { getOrganizationByDomainRepository } from "./";
 
 jest.mock("@/infra/prisma/prisma-connection", () => ({
   prisma: {

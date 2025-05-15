@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const getOrganizationSchema = {
   tags: ["organizations"],
-  summary: "Get an organization by id",
+  summary: "Get an organization by slug",
   security: [
     {
       bearerAuth: [],
@@ -20,6 +20,11 @@ export const getOrganizationSchema = {
           name: z.string(),
           slug: z.string(),
           domain: z.string().nullish(),
+          avatarUrl: z.string().nullish(),
+          shouldAttachUsersByDomain: z.boolean(),
+          ownerId: z.string().uuid(),
+          createdAt: z.date(),
+          updatedAt: z.date(),
         }),
       }),
     }),

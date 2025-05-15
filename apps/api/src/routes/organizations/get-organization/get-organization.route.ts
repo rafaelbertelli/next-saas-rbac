@@ -14,7 +14,6 @@ export async function getOrganizationRoute(app: FastifyInstance) {
         schema: getOrganizationSchema,
       },
       async (req, res) => {
-        const userId = await req.getCurrentUserId();
         const { slug } = req.params;
 
         const organization = await getOrganizationBySlugService(slug);

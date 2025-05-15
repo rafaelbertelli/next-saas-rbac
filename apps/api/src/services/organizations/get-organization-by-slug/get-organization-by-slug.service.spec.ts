@@ -1,10 +1,8 @@
-import { getOrganizationBySlugRepository } from "@/repositories/organizations/get-organization-by-slug/get-organization-by-slug";
+import { getOrganizationBySlugRepository } from "@/repositories/organizations/get-organization-by-slug";
 import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
 import { getOrganizationBySlugService } from "./get-organization-by-slug.service";
 
-jest.mock(
-  "@/repositories/organizations/get-organization-by-slug/get-organization-by-slug"
-);
+jest.mock("@/repositories/organizations/get-organization-by-slug");
 
 describe("getOrganizationBySlugService", () => {
   const slug = "org-slug";

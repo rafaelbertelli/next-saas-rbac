@@ -10,7 +10,7 @@ export const GetMembershipSchema = {
     },
   ],
   params: z.object({
-    organizationSlug: z.string(),
+    slug: z.string(),
   }),
   response: {
     200: z.object({

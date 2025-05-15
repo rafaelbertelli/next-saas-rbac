@@ -4,27 +4,21 @@ import { GetMembershipSchema } from "./schema";
 
 export function getMembershipRoute(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().get(
-    "/organizations/:organizationSlug/membership",
+    "/organizations/:slug/membership",
     {
       schema: GetMembershipSchema,
     },
     async (request, reply) => {
-      const organizationSlug = request.params.organizationSlug;
+      const { slug } = request.params;
 
       const { organization, membership } =
-        await request.getUserMembership(organizationSlug);
+        await request.getUserMembership(slug);
 
       return reply.status(200).send({
         message: "Membership retrieved successfully",
         data: {
-          membership: {
-            id: membership.id,
-            role: membership.role,
-          },
-          organization: {
-            id: organization.id,
-            name: organization.name,
-          },
+          membership,
+          organization,
         },
       });
     }
