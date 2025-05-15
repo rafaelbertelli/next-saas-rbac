@@ -1,32 +1,13 @@
-import { UnauthorizedError } from "@/routes/_error/4xx/unauthorized-error";
-import { getMembershipBySlugService } from "@/services/members/get-membership-by-slug.service";
+import { getCurrentUserId } from "@/services/auth/get-current-user-id";
+import { getUserMembership } from "@/services/auth/get-user-membership";
 import { FastifyInstance } from "fastify";
 import fastifyPlugin from "fastify-plugin";
 
 export const authMiddleware = fastifyPlugin(async (app: FastifyInstance) => {
   app.addHook("preHandler", async (request, reply) => {
-    request.getCurrentUserId = async () => {
-      try {
-        const { sub } = await request.jwtVerify<{ sub: string }>();
+    request.getCurrentUserId = async () => await getCurrentUserId(request);
 
-        return sub;
-      } catch (error) {
-        throw new UnauthorizedError("Invalid token");
-      }
-    };
-
-    request.getUserMembership = async (organizationSlug: string) => {
-      const userId = await request.getCurrentUserId();
-      const member = await getMembershipBySlugService({
-        userId,
-        organizationSlug,
-      });
-      const { organization, ...membership } = member;
-
-      return {
-        organization,
-        membership,
-      };
-    };
+    request.getUserMembership = async (organizationSlug: string) =>
+      await getUserMembership(request, organizationSlug);
   });
 });
