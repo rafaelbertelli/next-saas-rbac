@@ -4,7 +4,7 @@ import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { shutdownOrganizationSchema } from "./schema";
 
-export async function updateOrganizationRoute(app: FastifyInstance) {
+export async function shutdownOrganizationRoute(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(authMiddleware)
@@ -18,7 +18,9 @@ export async function updateOrganizationRoute(app: FastifyInstance) {
 
         const userId = await req.getCurrentUserId();
 
-        await shutdownOrganizationService({ slug, userId });
+        const data = await shutdownOrganizationService({ slug, userId });
+        console.log(data);
+        debugger;
 
         return res.status(204).send();
       }

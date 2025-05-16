@@ -16,7 +16,7 @@ import { routes } from "../routes";
 // Create the Fastify app
 const app = Fastify({
   logger: {
-    level: "error",
+    level: "info",
     transport: {
       target: "pino-pretty",
       options: {
