@@ -10,7 +10,7 @@ export const userProfileRoute = async (app: FastifyInstance) => {
     .withTypeProvider<ZodTypeProvider>()
     .register(authMiddleware)
     .get(
-      "/users/user-profile",
+      "/users",
       {
         schema: userProfileSchema,
       },

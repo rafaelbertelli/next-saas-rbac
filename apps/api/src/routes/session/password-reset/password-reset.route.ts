@@ -6,9 +6,9 @@ import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { resetPasswordSchema } from "./schema";
 
-export async function resetPasswordRoute(app: FastifyInstance) {
+export async function passwordResetRoute(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
-    "/session/reset-password",
+    "/session/password-reset",
     {
       schema: resetPasswordSchema,
     },
