@@ -1,13 +1,12 @@
 import { getMembershipBySlugRepository } from "@/repositories/members/get-membership-by-slug.repository";
 
 import { getCurrentUserId } from "@/services/users/get-current-user-id";
-import { FastifyRequest } from "fastify";
-import { getMembership } from "./get-membership.service";
+import { getUserMembershipOrganization } from "./get-user-membership-organization.service";
 
 jest.mock("@/services/users/get-current-user-id");
 jest.mock("@/repositories/members/get-membership-by-slug.repository");
 
-describe("getMembership", () => {
+describe("getUserMembershipOrganization", () => {
   it("should return the user membership", async () => {
     // Arrange
     const mockUserId = "user-123";
@@ -37,10 +36,8 @@ describe("getMembership", () => {
       organization: mockOrganization,
     });
 
-    const request = {} as FastifyRequest;
-
     // Act
-    const result = await getMembership(request, "org-test");
+    const result = await getUserMembershipOrganization(mockUserId, "org-test");
 
     // Assert
     expect(result).toEqual({
@@ -49,29 +46,15 @@ describe("getMembership", () => {
     });
   });
 
-  it("should throw an error if getCurrentUserId throws", async () => {
-    // Arrange
-    (getCurrentUserId as jest.Mock).mockRejectedValue(
-      new Error("Invalid token")
-    );
-    const request = {} as FastifyRequest;
-
-    // Act & Assert
-    await expect(getMembership(request, "org-test")).rejects.toThrow(
-      "Invalid token"
-    );
-  });
-
   it("should throw an error if user is not a member of the organization", async () => {
     // Arrange
     const mockUserId = "user-123";
     (getCurrentUserId as jest.Mock).mockResolvedValue(mockUserId);
     (getMembershipBySlugRepository as jest.Mock).mockResolvedValue(undefined);
-    const request = {} as FastifyRequest;
 
     // Act & Assert
-    await expect(getMembership(request, "org-test")).rejects.toThrow(
-      "You are not a member of this organization"
-    );
+    await expect(
+      getUserMembershipOrganization(mockUserId, "org-test")
+    ).rejects.toThrow("You are not a member of this organization");
   });
 });
