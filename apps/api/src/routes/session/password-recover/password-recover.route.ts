@@ -38,7 +38,7 @@ export async function passwordRecoverRoute(app: FastifyInstance) {
       });
 
       // send email to user with recover link
-      console.log(token.id);
+      console.log(">>>>>>", token.id);
 
       return reply.status(204).send();
     }
