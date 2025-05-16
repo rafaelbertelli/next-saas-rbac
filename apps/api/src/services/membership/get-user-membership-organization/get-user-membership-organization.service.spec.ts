@@ -37,7 +37,10 @@ describe("getUserMembershipOrganization", () => {
     });
 
     // Act
-    const result = await getUserMembershipOrganization(mockUserId, "org-test");
+    const result = await getUserMembershipOrganization({
+      userId: mockUserId,
+      organizationSlug: "org-test",
+    });
 
     // Assert
     expect(result).toEqual({
@@ -54,7 +57,10 @@ describe("getUserMembershipOrganization", () => {
 
     // Act & Assert
     await expect(
-      getUserMembershipOrganization(mockUserId, "org-test")
+      getUserMembershipOrganization({
+        userId: mockUserId,
+        organizationSlug: "org-test",
+      })
     ).rejects.toThrow("You are not a member of this organization");
   });
 });

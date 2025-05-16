@@ -1,10 +1,15 @@
 import { getMembershipBySlugRepository } from "@/repositories/members/get-membership-by-slug.repository";
 import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
 
-export async function getUserMembershipOrganization(
-  userId: string,
-  organizationSlug: string
-) {
+type GetUserMembershipOrganization = {
+  userId: string;
+  organizationSlug: string;
+};
+
+export async function getUserMembershipOrganization({
+  userId,
+  organizationSlug,
+}: GetUserMembershipOrganization) {
   const member = await getMembershipBySlugRepository({
     userId,
     organizationSlug,
