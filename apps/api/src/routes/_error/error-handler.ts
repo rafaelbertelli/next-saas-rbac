@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import { ZodError } from "zod";
 import { BadRequestError } from "./4xx/bad-request-error";
 import { ConflictError } from "./4xx/conflict-error";
+import { ForbiddenError } from "./4xx/forbidden-error";
 import { NotFoundError } from "./4xx/not-found-error";
 import { UnauthorizedError } from "./4xx/unauthorized-error";
 import { BadGatewayError } from "./5xx/bad-gateway-error";
@@ -23,6 +24,12 @@ export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
   }
 
   if (error instanceof ConflictError) {
+    return reply.status(error.statusCode).send({
+      message: error.message,
+    });
+  }
+
+  if (error instanceof ForbiddenError) {
     return reply.status(error.statusCode).send({
       message: error.message,
     });
