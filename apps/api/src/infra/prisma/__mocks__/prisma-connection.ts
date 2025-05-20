@@ -13,4 +13,5 @@ export const prisma = {
   membership: mockDbMethods,
   organizationMember: mockDbMethods,
   member: mockDbMethods,
+  project: mockDbMethods,
 };

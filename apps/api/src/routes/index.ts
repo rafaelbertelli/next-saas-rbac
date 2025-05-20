@@ -7,6 +7,7 @@ import { getOrganizationsByUserIdRoute } from "./organizations/get-organizations
 import { shutdownOrganizationRoute } from "./organizations/shutdown-organization";
 import { transferOrganizationRoute } from "./organizations/transfer-organization";
 import { updateOrganizationRoute } from "./organizations/update-organization";
+import { createProjectRoute } from "./projects/create-project";
 import { authenticateWithEmailAndPasswordRoute } from "./session/authenticate-with-email-and-password";
 import { authenticateWithGithubRoute } from "./session/authenticate-with-github";
 import { passwordRecoverRoute } from "./session/password-recover/password-recover.route";
@@ -33,4 +34,7 @@ export async function routes(app: FastifyInstance) {
   getMembershipRoute(app);
   shutdownOrganizationRoute(app);
   transferOrganizationRoute(app);
+
+  // Organizations -> Projects
+  createProjectRoute(app);
 }
