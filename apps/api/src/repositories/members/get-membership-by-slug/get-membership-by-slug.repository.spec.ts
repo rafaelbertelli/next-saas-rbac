@@ -2,13 +2,7 @@ import { Role } from "@/generated/prisma";
 import { prisma } from "@/infra/prisma/prisma-connection";
 import { getMembershipBySlugRepository } from "./get-membership-by-slug.repository";
 
-jest.mock("@/infra/prisma/prisma-connection", () => ({
-  prisma: {
-    member: {
-      findFirst: jest.fn(),
-    },
-  },
-}));
+jest.mock("@/infra/prisma/prisma-connection");
 
 describe("getMembershipBySlugRepository", () => {
   const userId = "user-123";

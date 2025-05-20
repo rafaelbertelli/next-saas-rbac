@@ -1,13 +1,7 @@
 import { prisma } from "@/infra/prisma/prisma-connection";
 import { createOrganizationRepository } from "./create-organization.repository";
 
-jest.mock("@/infra/prisma/prisma-connection", () => ({
-  prisma: {
-    organization: {
-      create: jest.fn(),
-    },
-  },
-}));
+jest.mock("@/infra/prisma/prisma-connection");
 
 describe("createOrganizationRepository", () => {
   const mockOrganization = {

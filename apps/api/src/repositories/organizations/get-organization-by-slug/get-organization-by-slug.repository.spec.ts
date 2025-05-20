@@ -1,13 +1,7 @@
 import { prisma } from "@/infra/prisma/prisma-connection";
 import { getOrganizationBySlugRepository } from "./";
 
-jest.mock("@/infra/prisma/prisma-connection", () => ({
-  prisma: {
-    organization: {
-      findUnique: jest.fn(),
-    },
-  },
-}));
+jest.mock("@/infra/prisma/prisma-connection");
 
 describe("getOrganizationBySlugRepository", () => {
   const slug = "org-slug";

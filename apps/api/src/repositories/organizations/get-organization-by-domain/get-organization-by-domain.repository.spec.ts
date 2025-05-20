@@ -1,13 +1,7 @@
 import { prisma } from "@/infra/prisma/prisma-connection";
 import { getOrganizationByDomainRepository } from "./";
 
-jest.mock("@/infra/prisma/prisma-connection", () => ({
-  prisma: {
-    organization: {
-      findUnique: jest.fn(),
-    },
-  },
-}));
+jest.mock("@/infra/prisma/prisma-connection");
 
 describe("getOrganizationByDomainRepository", () => {
   const domain = "org.com";

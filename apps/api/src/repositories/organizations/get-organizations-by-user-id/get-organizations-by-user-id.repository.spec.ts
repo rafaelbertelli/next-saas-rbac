@@ -1,13 +1,7 @@
 import { prisma } from "@/infra/prisma/prisma-connection";
 import { getOrganizationsByUserIdRepository } from "./get-organizations-by-user-id.repository";
 
-jest.mock("@/infra/prisma/prisma-connection", () => ({
-  prisma: {
-    organization: {
-      findMany: jest.fn(),
-    },
-  },
-}));
+jest.mock("@/infra/prisma/prisma-connection");
 
 describe("getOrganizationsByUserIdRepository", () => {
   const userId = "user-1";

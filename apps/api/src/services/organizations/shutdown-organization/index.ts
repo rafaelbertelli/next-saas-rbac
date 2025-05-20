@@ -1,1 +1,1 @@
-export * from "./update-organization.service";
+export * from "./shutdown-organization.service";

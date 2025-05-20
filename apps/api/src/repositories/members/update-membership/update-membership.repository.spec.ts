@@ -27,7 +27,11 @@ describe("updateMembershipRepository", () => {
     };
     (prisma.member.update as jest.Mock).mockResolvedValue(updatedMembership);
 
-    const result = await updateMembershipRepository({ organizationId, userId });
+    const result = await updateMembershipRepository({
+      organizationId,
+      userId,
+      role: Role.ADMIN,
+    });
     expect(result).toEqual(updatedMembership);
     expect(prisma.member.update).toHaveBeenCalledWith({
       where: {
