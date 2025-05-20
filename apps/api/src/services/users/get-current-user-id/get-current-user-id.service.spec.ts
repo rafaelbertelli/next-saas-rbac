@@ -1,6 +1,6 @@
 import { UnauthorizedError } from "@/routes/_error/4xx/unauthorized-error";
 import { FastifyRequest } from "fastify";
-import { getCurrentUserId } from "./get-current-user-id";
+import { getCurrentUserId } from "./get-current-user-id.service";
 
 describe("getCurrentUserId", () => {
   it("should return the current user id when jwtVerify resolves with sub", async () => {
