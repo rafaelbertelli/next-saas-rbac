@@ -1,10 +1,10 @@
-import { getMembershipBySlugRepository } from "@/repositories/members/get-membership-by-slug.repository";
+import { getMembershipBySlugRepository } from "@/repositories/members/get-membership-by-slug";
 
 import { getCurrentUserId } from "@/services/users/get-current-user-id";
 import { getUserMembershipOrganization } from "./get-user-membership-organization.service";
 
 jest.mock("@/services/users/get-current-user-id");
-jest.mock("@/repositories/members/get-membership-by-slug.repository");
+jest.mock("@/repositories/members/get-membership-by-slug");
 
 describe("getUserMembershipOrganization", () => {
   it("should return the user membership", async () => {

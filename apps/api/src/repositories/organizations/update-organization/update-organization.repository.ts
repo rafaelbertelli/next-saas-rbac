@@ -5,6 +5,8 @@ type UpdateOrganizationRepository = {
   name?: string;
   domain?: string | null;
   shouldAttachUsersByDomain?: boolean;
+  ownerId?: string;
+  tx?: PrismaTransactionClient;
 };
 
 export async function updateOrganizationRepository({
@@ -12,9 +14,11 @@ export async function updateOrganizationRepository({
   name,
   domain,
   shouldAttachUsersByDomain,
+  ownerId,
+  tx,
 }: UpdateOrganizationRepository) {
   try {
-    const updatedOrganization = await prisma.organization.update({
+    const updatedOrganization = await (tx ?? prisma).organization.update({
       where: {
         id: organizationId,
       },
@@ -22,6 +26,7 @@ export async function updateOrganizationRepository({
         ...(name && { name }),
         ...(domain && { domain }),
         ...(shouldAttachUsersByDomain && { shouldAttachUsersByDomain }),
+        ...(ownerId && { ownerId }),
       },
     });
 

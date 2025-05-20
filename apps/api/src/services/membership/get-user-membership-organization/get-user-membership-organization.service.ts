@@ -1,4 +1,4 @@
-import { getMembershipBySlugRepository } from "@/repositories/members/get-membership-by-slug.repository";
+import { getMembershipBySlugRepository } from "@/repositories/members/get-membership-by-slug";
 import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
 
 type GetUserMembershipOrganization = {

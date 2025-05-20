@@ -7,6 +7,7 @@
     "dev": "pnpm env:load tsx watch src/http/server.ts",
     "build": "tsc",
     "start": "node dist/http/server.js",
+    "prisma:seed": "pnpm env:load prisma db seed",
     "prisma:generate": "pnpm env:load prisma generate",
     "prisma:migrate": "pnpm env:load prisma migrate dev",
     "prisma:studio": "pnpm env:load prisma studio",
