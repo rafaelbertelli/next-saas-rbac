@@ -36,7 +36,9 @@ alwaysApply: true
 
 ### Analysis
 
-- Think step by step
+- Think step by step until you reach a single, final conclusion
+- Stop when you are sure of the answer
+- After completing the steps, just return the final answer.
 - Document planning in a new markdown report file in the `.notes/development-process` folder
 - Confirm approach before coding
 
