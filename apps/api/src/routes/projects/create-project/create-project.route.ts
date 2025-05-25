@@ -9,7 +9,7 @@ export async function createProjectRoute(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(authMiddleware)
     .post(
-      "/organizations/:slug/project",
+      "/organizations/:slug/projects",
       {
         schema: createProjectSchema,
       },

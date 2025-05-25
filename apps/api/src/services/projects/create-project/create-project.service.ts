@@ -1,4 +1,6 @@
 import { createProjectRepository } from "@/repositories/projects/create-project";
+import { getProjectBySlugRepository } from "@/repositories/projects/get-project-by-slug";
+import { ConflictError } from "@/routes/_error/4xx/conflict-error";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
 import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
@@ -38,6 +40,15 @@ export async function createProjectService({
   // end
 
   const projectSlug = createSlug(name);
+
+  const projectBySlug = await getProjectBySlugRepository({
+    slug: projectSlug,
+  });
+
+  if (projectBySlug) {
+    throw new ConflictError("Project with this slug already exists");
+  }
+
   const project = await createProjectRepository({
     organizationId: organization.id,
     name,
