@@ -1,0 +1,622 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Frontend testing guidelines
+globs: ["**.spec/*"]
+alwaysApply: true
+---
+
+# Testing Guidelines
+
+## Instruções para LLM
+
+**AÇÃO OBRIGATÓRIA**: Quando solicitado para criar ou revisar testes, siga EXATAMENTE esta sequência:
+
+1. **VERIFICAR**: Confirme se a solicitação se enquadra nos critérios da seção "Quando Aplicar"
+2. **ANALISAR**: Execute análise do código a ser testado usando ferramentas disponíveis
+3. **ESTRUTURAR**: Organize os testes seguindo os padrões estabelecidos
+4. **IMPLEMENTAR**: Use os patterns e melhores práticas definidas
+5. **VERIFICAR LINT**: Execute `npx eslint [arquivo]` para verificar erros de lint APENAS no arquivo específico
+6. **EXECUTAR TESTES**: Execute `npm test [arquivo.spec.ts]` para validar que o teste específico passa
+7. **VALIDAR**: Verifique se seguiu todas as diretrizes antes de finalizar
+
+**ECONOMIA DE RECURSOS**: SEMPRE execute lint e testes apenas nos arquivos específicos, não no projeto todo
+
+**NOMENCLATURA OBRIGATÓRIA**: Usar `.spec.ts` ou `.spec.tsx` para arquivos de teste
+
+**LOCALIZAÇÃO OBRIGATÓRIA**: Mesmo diretório do arquivo sendo testado
+
+## Fluxo de Desenvolvimento Linear
+
+```
+INÍCIO
+  ↓
+📋 Consultar [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+  ↓
+🔍 Executar [Análise do Código](mdc:#1-análise-do-código)
+  ↓
+🛠️ Aplicar [Padrões de Testing](mdc:#padrões-de-testing) + [Mocking](mdc:#estratégias-de-mocking)
+  ↓
+⚖️ Conflito? → [Resolução de Conflitos](mdc:#resolução-de-conflitos)
+  ↓
+✅ [Verificação e Validação](mdc:#comandos-de-verificação)
+  ↓
+🎯 FINALIZADO
+```
+
+## Modo Rápido (Para mudanças simples)
+
+**Use quando**: Pequenas correções, ajustes de estilo, ou mudanças triviais
+
+**Processo simplificado**:
+1. ✅ Verificar se é realmente simples (sem lógica complexa)
+2. 🛠️ Implementar seguindo padrões básicos
+3. 🔍 Executar `npx eslint [arquivo]`
+4. ✅ Validar apenas itens "Críticos" do checklist
+
+**Pular para casos simples**: Análise detalhada, documentação extensa, validação completa
+
+## Quando Aplicar
+
+Esta rule deve ser aplicada quando:
+- Solicitado para criar testes unitários ou de componentes
+- Necessário revisar ou melhorar testes existentes
+- Requerido implementar mocks ou test builders
+- Preciso seguir padrões de teste do projeto
+
+## Índice de Navegação Rápida
+
+- 🚨 [Matriz de Prioridades](mdc:#0-matriz-de-prioridades) - **Consulte PRIMEIRO**
+- ⚖️ [Resolução de Conflitos](mdc:#resolução-de-conflitos) - Para decisões difíceis
+- 🔍 [Análise do Código](mdc:#1-análise-do-código) - Início do desenvolvimento
+- 🛠️ [Padrões de Testing](mdc:#padrões-de-testing) - Durante implementação
+- ✅ [Checklist Final](mdc:#checklist-de-validação-para-llm) - Antes de finalizar
+
+## 0. Matriz de Prioridades
+
+### Crítico (Bloqueia desenvolvimento)
+- Lint sem erros no arquivo de teste
+- Teste específico executando e passando
+- Imports e mocks funcionais
+- Nomenclatura correta (.spec.ts/.spec.tsx)
+
+### Importante (Impacta qualidade)
+- AAA pattern (Arrange-Act-Assert)
+- Cenários de sucesso e erro cobertos
+- Mocks apropriados implementados
+- Estrutura de describe/it organizada
+
+### Opcional (Melhoria incremental)
+- Edge cases testados
+- Cobertura de código alta
+- Documentação de testes
+- Performance de execução
+
+## Resolução de Conflitos
+
+### Ordem de Precedência:
+1. **Funcionalidade > Padrões**: Se um padrão impede a funcionalidade, priorize a funcionalidade
+2. **Segurança > Performance**: Nunca comprometa segurança por performance
+3. **Legibilidade > Otimização**: Código legível é mais importante que micro-otimizações
+4. **Convenções do projeto > Preferências pessoais**: Siga o que já existe no projeto
+
+### Protocolo de Decisão:
+1. **Identifique o conflito**: Qual diretriz está sendo violada?
+2. **Consulte a precedência**: Use a ordem acima para decidir
+3. **Documente a exceção**: Explique por que divergiu
+4. **Valide o mínimo**: Garanta que itens "Críticos" ainda são atendidos
+
+### Exemplos Práticos:
+```typescript
+// ❌ Conflito: Padrão vs Funcionalidade
+// Padrão diz: use function declarations
+// Mas: callback precisa ser arrow function para binding
+
+// ✅ Resolução: Priorizar funcionalidade
+const handleCallback = useCallback((data) => {
+  // Arrow function necessária para contexto correto
+}, []);
+```
+
+### Quando Divergir:
+- **Documente**: Adicione comentário explicando a exceção
+- **Valide críticos**: Confirme que lint, tipos e imports ainda funcionam
+- **Priorize entrega**: Funcionalidade working > padrão perfeito
+
+## 1. Análise do Código
+
+**ANTES DE INICIAR**: Consulte a [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+
+**EXECUTAR OBRIGATORIAMENTE:**
+
+- **Funcionalidade**: Identificar o que precisa ser testado
+- **Dependências**: Mapear imports e dependências externas
+- **Comportamentos**: Listar cenários de sucesso e erro
+- **Interfaces**: Analisar props, parâmetros e retornos
+
+**AÇÃO**: Use `read_file` e `codebase_search` para analisar o código fonte.
+
+### Diretrizes de Análise
+- Identifique funcionalidades principais a serem testadas
+- Mapeie dependências que precisam de mock
+- Liste cenários de sucesso e erro básicos
+- Prossiga com implementação quando tiver clareza dos requisitos
+
+## 2. Estruturação dos Testes
+
+**AÇÕES OBRIGATÓRIAS:**
+
+- **Arquivo de teste**: Criar na mesma pasta do arquivo fonte
+- **Nomenclatura**: Usar `.spec.ts` ou `.spec.tsx`
+- **Organização**: Estruturar com `describe` e `it`
+- **Setup**: Configurar mocks e imports necessários
+
+## 3. Implementação
+
+**DIRETRIZES OBRIGATÓRIAS:**
+
+- **AAA Pattern**: Arrange-Act-Assert em todos os testes
+- **Descrições em inglês**: Nomes de testes claros e descritivos
+- **Mocking apropriado**: Mock apenas o necessário
+- **Cleanup**: Limpar mocks entre testes
+
+## 4. Verificação e Validação
+
+**EM CASO DE CONFLITO**: Consulte [Resolução de Conflitos](mdc:#resolução-de-conflitos)
+
+**EXECUTAR OBRIGATORIAMENTE antes de finalizar:**
+
+- **Verificação de Lint**: Use `run_terminal_cmd` com `npx eslint [arquivo]` para verificar erros de lint no arquivo específico
+- **Correção de Lint**: Se houver erros, corrija-os antes de prosseguir
+- **Execução de Testes**: Use `run_terminal_cmd` com `npm test [arquivo.spec.ts]` para executar apenas o teste específico
+- **Validação de Resultados**: Confirme que o teste específico passa
+
+**AÇÕES OBRIGATÓRIAS:**
+```bash
+# 1. Verificar lint apenas no arquivo específico (economiza recursos)
+npx eslint src/components/Button/Button.tsx
+
+# 2. Se lint passou, executar apenas o teste específico
+npm test Button.spec.tsx
+
+# 3. Verificar se o teste específico passa
+# 4. Se o teste falhar, corrigir antes de finalizar
+```
+
+**IMPORTANTE**: Não finalize a implementação de testes se houver:
+- Erros de lint não corrigidos no arquivo específico
+- Teste específico falhando
+- Warnings críticos não resolvidos no arquivo
+
+## 5. Testing Framework
+
+### Tecnologias Principais
+- **Unit Tests**: Jest
+- **Component Tests**: React Testing Library
+- **Hook Tests**: @testing-library/react
+- **E2E Tests**: (quando aplicável)
+
+### Filosofia de Testing
+- Escrever descrições de testes em inglês
+- Manter testes independentes
+- Testar cenários de sucesso e erro
+- Focar em testar comportamento, não implementação
+
+## Configuração e Setup de Testes
+
+### Setup Inicial de Testes
+
+```typescript
+// Imports obrigatórios
+import { render, screen } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
+import { act } from 'react';
+
+// Mock de dependências
+jest.mock('../@shared/stateManagement/ComponentData');
+jest.mock('../@shared/validations/fieldType');
+
+// Setup e cleanup
+beforeEach(() => {
+  jest.clearAllMocks();
+  jest.mocked(validateTextField).mockReturnValue([]);
+});
+```
+
+### Estrutura de Arquivos e Nomenclatura
+
+- Usar extensão `.spec.ts` ou `.spec.tsx`
+- Colocar arquivos de teste na mesma pasta do arquivo fonte
+- Seguir convenção de nomenclatura:
+
+```
+┣ utils/
+┃ ┣ group-children.ts
+┃ ┣ group-children.spec.ts
+┣ components/
+┃ ┣ Button/
+┃ ┃ ┣ Button.tsx
+┃ ┃ ┣ Button.spec.tsx
+```
+
+## Organização de Testes
+
+### Estrutura e Agrupamento
+- Agrupar testes relacionados com blocos `describe`
+- Sempre usar `it` (não `test`)
+- Seguir padrão AAA (Arrange-Act-Assert)
+- Usar nomes descritivos que expliquem o comportamento esperado
+
+```typescript
+describe('useTextField', () => {
+  describe('initialization', () => {
+    it('should initialize with given value', () => {
+      // Arrange
+      const field = new FieldBuilder().build();
+      const initialValue = 'Initial Value';
+
+      // Act
+      const { result } = renderHook(() =>
+        useTextField({ field, value: initialValue }),
+      );
+
+      // Assert
+      expect(result.current.textFieldValue).toBe(initialValue);
+    });
+  });
+
+  describe('validation', () => {
+    it('should validate field when value changes', () => {
+      // Test implementation
+    });
+  });
+});
+```
+
+## Padrões de Testing
+
+### Testing de Componentes
+
+```typescript
+describe('Button Component', () => {
+  it('should render with correct text', () => {
+    // Arrange
+    const buttonText = 'Click me';
+
+    // Act
+    render(<Button>{buttonText}</Button>);
+
+    // Assert
+    expect(screen.getByRole('button', { name: buttonText })).toBeInTheDocument();
+  });
+
+  it('should call onClick handler when clicked', () => {
+    // Arrange
+    const handleClick = jest.fn();
+
+    // Act
+    render(<Button onClick={handleClick}>Click me</Button>);
+    fireEvent.click(screen.getByRole('button'));
+
+    // Assert
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+});
+```
+
+### Testing de Hooks
+
+```typescript
+describe('useCustomHook', () => {
+  it('should return initial state', () => {
+    // Arrange & Act
+    const { result } = renderHook(() => useCustomHook());
+
+    // Assert
+    expect(result.current.value).toBe('');
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it('should update state when action is called', () => {
+    // Arrange
+    const { result } = renderHook(() => useCustomHook());
+
+    // Act
+    act(() => {
+      result.current.setValue('new value');
+    });
+
+    // Assert
+    expect(result.current.value).toBe('new value');
+  });
+});
+```
+
+### Testing Assíncrono
+
+```typescript
+describe('async operations', () => {
+  it('should handle async data loading', async () => {
+    // Arrange
+    const mockData = { id: 1, name: 'Test' };
+    jest.mocked(fetchData).mockResolvedValue(mockData);
+
+    // Act
+    render(<AsyncComponent />);
+
+    // Assert
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    
+    await waitFor(() => {
+      expect(screen.getByText('Test')).toBeInTheDocument();
+    });
+  });
+});
+```
+
+## Estratégias de Mocking
+
+### Mocking Básico
+
+```typescript
+// ✅ Correto:
+jest.mocked(useComponentData).mockReturnValue({
+  handleUpdateField: jest.fn(),
+} as unknown as UseComponentDataProps);
+```
+
+### Mocking de Módulos
+
+```typescript
+// Mock de módulos inteiros
+jest.mock('../@shared/stateManagement/ComponentData');
+jest.mock('../@shared/validations/fieldType');
+
+// Mock de funções específicas
+jest.mock('../utils/api', () => ({
+  fetchData: jest.fn(),
+  postData: jest.fn(),
+}));
+```
+
+### Diretrizes Globais de Mocking
+- Fazer mock de objetos globais quando necessário
+- Não fazer mock do que já está mockado em `./tests/unit/setupTests/`
+- Limpar mocks entre testes usando `jest.clearAllMocks()`
+
+## Padrão Builder para Testes
+
+### Test Data Builders
+
+```typescript
+class FieldBuilder {
+  private field: Field = {
+    id: 'test-field',
+    type: 'text',
+    allowNumbers: true,
+    allowLetters: true,
+    allowSpecialChars: false,
+  };
+
+  withAllowNumbers(allow: boolean): FieldBuilder {
+    this.field.allowNumbers = allow;
+    return this;
+  }
+
+  withAllowLetters(allow: boolean): FieldBuilder {
+    this.field.allowLetters = allow;
+    return this;
+  }
+
+  withAllowSpecialChars(allow: boolean): FieldBuilder {
+    this.field.allowSpecialChars = allow;
+    return this;
+  }
+
+  build(): Field {
+    return { ...this.field };
+  }
+}
+
+// Usage in tests
+const field = new FieldBuilder()
+  .withAllowNumbers(true)
+  .withAllowLetters(false)
+  .withAllowSpecialChars(false)
+  .build();
+```
+
+## Melhores Práticas de Testing
+
+### Qualidade dos Testes
+- Escrever nomes de testes claros e descritivos
+- Testar uma coisa por vez
+- Usar assertions significativas
+- Evitar testar detalhes de implementação
+- Testar casos extremos e cenários de erro
+
+### Performance
+- Manter testes rápidos e focados
+- Evitar operações DOM desnecessárias
+- Usar métodos de cleanup apropriados
+- Fazer mock de dependências pesadas
+
+### Manutenibilidade
+- Manter testes simples e legíveis
+- Usar funções auxiliares para setup comum
+- Evitar código duplicado nos testes
+- Atualizar testes quando requisitos mudarem
+
+### Diretrizes de Cobertura
+- Buscar alta cobertura de testes mas focar em qualidade sobre quantidade
+- Priorizar testes de lógica de negócio crítica
+- Testar interações do usuário e workflows
+- Incluir cenários de tratamento de erros
+
+## Cenários Comuns de Testing
+
+### Testing de Formulários
+
+```typescript
+describe('ContactForm', () => {
+  it('should submit form with valid data', async () => {
+    // Arrange
+    const mockSubmit = jest.fn();
+    render(<ContactForm onSubmit={mockSubmit} />);
+
+    // Act
+    fireEvent.change(screen.getByLabelText('Name'), {
+      target: { value: 'John Doe' }
+    });
+    fireEvent.change(screen.getByLabelText('Email'), {
+      target: { value: 'john@example.com' }
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
+
+    // Assert
+    await waitFor(() => {
+      expect(mockSubmit).toHaveBeenCalledWith({
+        name: 'John Doe',
+        email: 'john@example.com'
+      });
+    });
+  });
+});
+```
+
+### Testing de Integração com API
+
+```typescript
+describe('API integration', () => {
+  it('should handle API errors gracefully', async () => {
+    // Arrange
+    const errorMessage = 'Network error';
+    jest.mocked(fetchData).mockRejectedValue(new Error(errorMessage));
+
+    // Act
+    render(<DataComponent />);
+
+    // Assert
+    await waitFor(() => {
+      expect(screen.getByText(`Error: ${errorMessage}`)).toBeInTheDocument();
+    });
+  });
+});
+```
+
+### Testing de Gerenciamento de Estado
+
+```typescript
+describe('state management', () => {
+  it('should update global state correctly', () => {
+    // Arrange
+    const { result } = renderHook(() => useGlobalState());
+
+    // Act
+    act(() => {
+      result.current.updateUser({ id: 1, name: 'John' });
+    });
+
+    // Assert
+    expect(result.current.user).toEqual({ id: 1, name: 'John' });
+  });
+});
+```
+
+## Debug de Testes
+
+### Problemas Comuns
+- Operações assíncronas não aguardadas adequadamente
+- Falta de cleanup entre testes
+- Setup de mocking incorreto
+- Testar implementação ao invés de comportamento
+
+### Ferramentas de Debug
+- Usar `screen.debug()` para ver o estado atual do DOM
+- Adicionar `console.log` para debug de valores
+- Usar `waitFor` para operações assíncronas
+- Verificar histórico de chamadas de mock com `toHaveBeenCalledWith`
+
+### Isolamento de Testes
+- Garantir que testes não dependam uns dos outros
+- Limpar efeitos colaterais em `afterEach`
+- Resetar mocks entre testes
+- Evitar estado mutável compartilhado
+
+## Comandos de Verificação
+
+### Sequência Obrigatória de Comandos
+
+**SEMPRE execute nesta ordem para economizar recursos:**
+
+```bash
+# 1. PRIMEIRO: Verificar lint apenas no arquivo específico (rápido, detecta erros de sintaxe)
+npx eslint src/components/Button/Button.tsx
+
+# 2. SEGUNDO: Se lint passou, executar apenas o teste específico
+npm test Button.spec.tsx
+
+# Comandos alternativos para testes específicos:
+npm test -- --testNamePattern="Button"     # Testes que contenham "Button" no nome
+npm test Button.spec.tsx --watch           # Modo watch para o arquivo específico
+npm test Button.spec.tsx --coverage        # Com relatório de cobertura do arquivo
+```
+
+### Tratamento de Erros
+
+**Se lint falhar:**
+- Corrigir TODOS os erros de lint no arquivo específico antes de prosseguir
+- Não executar testes até lint do arquivo estar limpo
+- Usar `npx eslint [arquivo] --fix` para correções automáticas
+
+**Se testes falharem:**
+- Analisar mensagens de erro detalhadamente
+- Corrigir implementação ou testes conforme necessário
+- Re-executar apenas o teste específico até passar
+- Verificar se não há testes flaky (instáveis)
+
+### Comandos para LLM
+
+**USAR SEMPRE `run_terminal_cmd` com estes comandos:**
+- `npx eslint [caminho/do/arquivo]` - Verificação de lint no arquivo específico
+- `npm test [arquivo.spec.ts]` - Execução do teste específico
+- `npx eslint [arquivo] --fix` - Correção automática de lint no arquivo
+- `npm test [arquivo.spec.ts] --watch` - Modo watch para desenvolvimento
+
+### Exemplos Práticos
+
+```bash
+# Para um componente Button:
+npx eslint src/components/Button/Button.tsx
+npm test Button.spec.tsx
+
+# Para um hook customizado:
+npx eslint src/hooks/useCustomHook.ts
+npm test useCustomHook.spec.ts
+
+# Para um utilitário:
+npx eslint src/utils/formatDate.ts
+npm test formatDate.spec.ts
+```
+
+## Checklist de Validação para LLM
+
+Antes de finalizar os testes, OBRIGATORIAMENTE verificar:
+**PRIORIZE**: Itens marcados como "Crítico" na [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+
+### ✅ Crítico (Bloqueia entrega)
+- [ ] Lint executado sem erros no arquivo específico
+- [ ] Teste específico executado com `npm test [arquivo.spec.ts]`
+- [ ] Teste específico passando sem falhas
+- [ ] Nomenclatura correta: `.spec.ts` ou `.spec.tsx`
+
+### ✅ Importante (Impacta qualidade)
+- [ ] AAA pattern seguido (Arrange-Act-Assert)
+- [ ] Mocks apropriados implementados
+- [ ] Cenários de sucesso e erro testados
+- [ ] Edge cases cobertos
+
+**IMPORTANTE**: Não finalize sem completar itens "Críticos".

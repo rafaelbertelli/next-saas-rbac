@@ -1,0 +1,676 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: BFF testing guidelines
+globs: ["./api/**/*.spec*", "./services/**/*.spec*", "./common/**/*.spec*", "*/middlewares/**/*.spec*", ]
+alwaysApply: true
+---
+
+# BFF Testing Guidelines
+
+## Instruções para LLM
+
+**AÇÃO OBRIGATÓRIA**: Quando solicitado para criar ou revisar testes de BFF, siga EXATAMENTE esta sequência:
+
+1. **VERIFICAR**: Confirme se a solicitação se enquadra nos critérios da seção "Quando Aplicar"
+2. **ANALISAR**: Execute análise do código BFF a ser testado usando ferramentas disponíveis
+3. **ESTRUTURAR**: Organize os testes seguindo os padrões estabelecidos
+4. **IMPLEMENTAR**: Use os patterns e melhores práticas definidas
+5. **VERIFICAR LINT**: Execute `npx eslint [arquivo]` para verificar erros de lint APENAS no arquivo específico
+6. **EXECUTAR TESTES**: Execute `npm test [arquivo.spec.ts]` para validar que o teste específico passa
+7. **VALIDAR**: Verifique se seguiu todas as diretrizes antes de finalizar
+
+**ECONOMIA DE RECURSOS**: SEMPRE execute lint e testes apenas nos arquivos específicos, não no projeto todo
+
+**NOMENCLATURA OBRIGATÓRIA**: Usar `.spec.ts` ou `.spec.js` para arquivos de teste
+
+**LOCALIZAÇÃO OBRIGATÓRIA**: Mesmo diretório do arquivo sendo testado
+
+## Fluxo de Desenvolvimento Linear
+
+```
+INÍCIO
+  ↓
+📋 Consultar [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+  ↓
+🔍 Executar [Análise do Código BFF](mdc:#1-análise-do-código-bff)
+  ↓
+🛠️ Aplicar [Padrões de Testing BFF](mdc:#padrões-de-testing-bff) + [Mocking de APIs](mdc:#estratégias-de-mocking)
+  ↓
+⚖️ Conflito? → [Resolução de Conflitos](mdc:#resolução-de-conflitos)
+  ↓
+✅ [Verificação e Validação](mdc:#comandos-de-verificação)
+  ↓
+🎯 FINALIZADO
+```
+
+## Modo Rápido (Para mudanças simples)
+
+**Use quando**: Pequenas correções, ajustes de utilitários, ou mudanças triviais
+
+**Processo simplificado**:
+1. ✅ Verificar se é realmente simples (sem lógica complexa de API)
+2. 🛠️ Implementar seguindo padrões básicos
+3. 🔍 Executar `npx eslint [arquivo]`
+4. ✅ Validar apenas itens "Críticos" do checklist
+
+**Pular para casos simples**: Análise detalhada, documentação extensa, validação completa
+
+## Quando Aplicar
+
+Esta rule deve ser aplicada quando:
+- Solicitado para criar testes de handlers de API
+- Necessário testar services e integrações externas
+- Requerido implementar testes de middleware
+- Preciso testar tratamento de erros e validações
+- Solicitado para testar utilitários e helpers do BFF
+
+## Índice de Navegação Rápida
+
+- 🚨 [Matriz de Prioridades](mdc:#0-matriz-de-prioridades) - **Consulte PRIMEIRO**
+- ⚖️ [Resolução de Conflitos](mdc:#resolução-de-conflitos) - Para decisões difíceis
+- 🔍 [Análise do Código BFF](mdc:#1-análise-do-código-bff) - Início do desenvolvimento
+- 🛠️ [Padrões de Testing BFF](mdc:#padrões-de-testing-bff) - Durante implementação
+- ✅ [Checklist Final](mdc:#checklist-de-validação-para-llm) - Antes de finalizar
+
+## 0. Matriz de Prioridades
+
+### Crítico (Bloqueia desenvolvimento)
+- Lint sem erros no arquivo de teste
+- Teste específico executando e passando
+- Mocks de APIs externas funcionais
+- Nomenclatura correta (.spec.ts/.spec.js)
+
+### Importante (Impacta qualidade)
+- AAA pattern (Arrange-Act-Assert)
+- Cenários de sucesso e erro cobertos
+- Mocks de middleware e autenticação
+- Estrutura de describe/it organizada
+
+### Opcional (Melhoria incremental)
+- Edge cases de APIs testados
+- Cobertura de código alta
+- Testes de integração
+- Performance de execução
+
+## Resolução de Conflitos
+
+### Ordem de Precedência:
+1. **Funcionalidade > Padrões**: Se um padrão impede a funcionalidade, priorize a funcionalidade
+2. **Segurança > Performance**: Nunca comprometa segurança por performance
+3. **Legibilidade > Otimização**: Código legível é mais importante que micro-otimizações
+4. **Convenções do projeto > Preferências pessoais**: Siga o que já existe no projeto
+
+### Protocolo de Decisão:
+1. **Identifique o conflito**: Qual diretriz está sendo violada?
+2. **Consulte a precedência**: Use a ordem acima para decidir
+3. **Documente a exceção**: Explique por que divergiu
+4. **Valide o mínimo**: Garanta que itens "Críticos" ainda são atendidos
+
+### Exemplos Práticos:
+```typescript
+// ❌ Conflito: Padrão vs Funcionalidade
+// Padrão diz: mock todas as dependências
+// Mas: teste de integração precisa de API real
+
+// ✅ Resolução: Priorizar funcionalidade
+// Comentário: "Teste de integração - API real necessária para validar fluxo completo"
+```
+
+### Quando Divergir:
+- **Documente**: Adicione comentário explicando a exceção
+- **Valide críticos**: Confirme que lint, tipos e mocks ainda funcionam
+- **Priorize entrega**: Funcionalidade working > padrão perfeito
+
+## 1. Análise do Código BFF
+
+**ANTES DE INICIAR**: Consulte a [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+
+**EXECUTAR OBRIGATORIAMENTE:**
+
+- **Funcionalidade**: Identificar handlers, services ou middleware a serem testados
+- **Dependências**: Mapear APIs externas, banco de dados e dependências
+- **Comportamentos**: Listar cenários de sucesso, erro e edge cases
+- **Autenticação**: Analisar necessidades de mock de auth/autorização
+- **Validações**: Identificar schemas Zod e validações de entrada
+
+**AÇÃO**: Use `read_file` e `codebase_search` para analisar o código fonte.
+
+### Diretrizes de Análise
+- Identifique funcionalidades principais a serem testadas
+- Mapeie dependências externas que precisam de mock
+- Liste cenários de API (200, 400, 401, 404, 500)
+- Prossiga com implementação quando tiver clareza dos requisitos
+
+## 2. Estruturação dos Testes
+
+**AÇÕES OBRIGATÓRIAS:**
+
+- **Arquivo de teste**: Criar na mesma pasta do arquivo fonte
+- **Nomenclatura**: Usar `.spec.ts` ou `.spec.js`
+- **Organização**: Estruturar com `describe` e `it`
+- **Setup**: Configurar mocks de APIs, auth e dependências
+
+## 3. Implementação
+
+**DIRETRIZES OBRIGATÓRIAS:**
+
+- **AAA Pattern**: Arrange-Act-Assert em todos os testes
+- **Descrições em inglês**: Nomes de testes claros e descritivos
+- **Mocking apropriado**: Mock APIs externas e dependências
+- **Cleanup**: Limpar mocks entre testes
+
+## 4. Verificação e Validação
+
+**EM CASO DE CONFLITO**: Consulte [Resolução de Conflitos](mdc:#resolução-de-conflitos)
+
+**EXECUTAR OBRIGATORIAMENTE antes de finalizar:**
+
+- **Verificação de Lint**: Use `run_terminal_cmd` com `npx eslint [arquivo]` para verificar erros de lint no arquivo específico
+- **Correção de Lint**: Se houver erros, corrija-os antes de prosseguir
+- **Execução de Testes**: Use `run_terminal_cmd` com `npm test [arquivo.spec.ts]` para executar apenas o teste específico
+- **Validação de Resultados**: Confirme que o teste específico passa
+
+**AÇÕES OBRIGATÓRIAS:**
+```bash
+# 1. Verificar lint apenas no arquivo específico (economiza recursos)
+npx eslint api/handlers/example/example.ts
+
+# 2. Se lint passou, executar apenas o teste específico
+npm test example.spec.ts
+
+# 3. Verificar se o teste específico passa
+# 4. Se o teste falhar, corrigir antes de finalizar
+```
+
+**IMPORTANTE**: Não finalize a implementação de testes se houver:
+- Erros de lint não corrigidos no arquivo específico
+- Teste específico falhando
+- Warnings críticos não resolvidos no arquivo
+
+## Testing Framework
+
+### Tecnologias Principais
+- **Unit Tests**: Jest
+- **Test Environment**: Node.js
+- **Mocking**: Jest mocks
+- **HTTP Testing**: Supertest (quando aplicável)
+
+### Filosofia de Testing
+- Escrever descrições de testes em inglês
+- Manter testes independentes
+- Testar cenários de sucesso e erro
+- Focar em testar comportamento, não implementação
+
+## Configuração e Setup de Testes
+
+### Setup Inicial de Testes
+
+```typescript
+// Imports obrigatórios para BFF
+import { Request, Response } from 'express';
+import { jest } from '@jest/globals';
+
+// Mock de dependências externas
+jest.mock('nordic/restclient');
+jest.mock('nordic/logger');
+jest.mock('odin/security');
+
+// Setup e cleanup
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+```
+
+### Estrutura de Arquivos e Nomenclatura
+
+- Usar extensão `.spec.ts` ou `.spec.js`
+- Colocar arquivos de teste na mesma pasta do arquivo fonte
+- Seguir convenção de nomenclatura:
+
+```
+┣ api/
+┃ ┣ handlers/
+┃ ┃ ┣ example/
+┃ ┃ ┃ ┣ example.ts
+┃ ┃ ┃ ┣ example.spec.ts
+┣ services/
+┃ ┣ external-api/
+┃ ┃ ┣ external-api.ts
+┃ ┃ ┣ external-api.spec.ts
+```
+
+## Padrões de Testing BFF
+
+### Testing de Handlers
+
+```typescript
+describe('exampleHandler', () => {
+  let mockRequest: Partial<Request>;
+  let mockResponse: Partial<Response>;
+
+  beforeEach(() => {
+    mockRequest = {
+      body: {},
+      auth: { user: { userId: 'test-user' } },
+      context: { requestId: 'test-request' },
+    };
+    mockResponse = {
+      json: jest.fn(),
+      status: jest.fn().mockReturnThis(),
+    };
+  });
+
+  it('should return success response when valid data is provided', async () => {
+    // Arrange
+    mockRequest.body = { name: 'Test', email: 'test@example.com' };
+
+    // Act
+    await exampleHandler(mockRequest as Request, mockResponse as Response);
+
+    // Assert
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      id: expect.any(String),
+      name: 'Test',
+      email: 'test@example.com',
+    });
+  });
+
+  it('should return 400 when validation fails', async () => {
+    // Arrange
+    mockRequest.body = { name: '', email: 'invalid-email' };
+
+    // Act
+    await exampleHandler(mockRequest as Request, mockResponse as Response);
+
+    // Assert
+    expect(mockResponse.status).toHaveBeenCalledWith(400);
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      message: expect.stringContaining('validation'),
+    });
+  });
+});
+```
+
+### Testing de Services
+
+```typescript
+describe('externalApiService', () => {
+  const mockRestClient = {
+    post: jest.fn(),
+    get: jest.fn(),
+  };
+
+  beforeEach(() => {
+    jest.mocked(RestClient).mockReturnValue(mockRestClient);
+  });
+
+  it('should return data when API call succeeds', async () => {
+    // Arrange
+    const mockData = { id: 1, name: 'Test' };
+    mockRestClient.post.mockResolvedValue({ data: mockData });
+
+    // Act
+    const result = await externalApiService({ data: mockData });
+
+    // Assert
+    expect(result).toEqual(mockData);
+    expect(mockRestClient.post).toHaveBeenCalledWith('/external-api', {
+      headers: { 'Content-Type': 'application/json' },
+      data: mockData,
+    });
+  });
+
+  it('should throw error when API call fails', async () => {
+    // Arrange
+    const errorResponse = {
+      response: { status: 500, data: { message: 'Server Error' } },
+    };
+    mockRestClient.post.mockRejectedValue(errorResponse);
+
+    // Act & Assert
+    await expect(externalApiService({ data: {} })).rejects.toThrow('Server Error');
+  });
+});
+```
+
+### Testing de Error Handling
+
+```typescript
+describe('handleCatch', () => {
+  it('should return BadRequest error when API returns status 400', () => {
+    // Arrange
+    const error = {
+      response: {
+        status: 400,
+        data: { message: 'Bad Request' },
+      },
+    };
+
+    // Act
+    const { error: result } = handleCatch(error);
+
+    // Assert
+    expect(result).toBeInstanceOf(BadRequest);
+    expect(result.message).toBe('Bad Request');
+  });
+
+  it('should return UnhandledError when status is not mapped', () => {
+    // Arrange
+    const error = {
+      response: {
+        status: 999,
+      },
+    };
+
+    // Act
+    const { error: result } = handleCatch(error);
+
+    // Assert
+    expect(result).toBeInstanceOf(UnhandledError);
+  });
+});
+```
+
+## Estratégias de Mocking
+
+### Mocking de APIs Externas
+
+```typescript
+// Mock do Nordic RestClient
+jest.mock('nordic/restclient', () => ({
+  RestClient: jest.fn(() => ({
+    post: jest.fn(),
+    get: jest.fn(),
+    put: jest.fn(),
+    delete: jest.fn(),
+  })),
+}));
+
+// Mock do Nordic Logger
+jest.mock('nordic/logger', () => ({
+  LoggerFactory: jest.fn(() => ({
+    info: jest.fn(),
+    error: jest.fn(),
+    warn: jest.fn(),
+  })),
+}));
+```
+
+### Mocking de Autenticação
+
+```typescript
+// Mock do Odin Security
+jest.mock('odin/security', () => ({
+  authentication: jest.fn(() => (req, res, next) => {
+    req.auth = { user: { userId: 'test-user' } };
+    next();
+  }),
+  authorization: jest.fn(() => (req, res, next) => next()),
+}));
+```
+
+### Mocking de Middleware
+
+```typescript
+// Mock de middleware customizado
+jest.mock('../middlewares/contextMiddleware', () => ({
+  contextMiddleware: jest.fn((req, res, next) => {
+    req.context = { requestId: 'test-request' };
+    next();
+  }),
+}));
+```
+
+### Diretrizes Globais de Mocking
+- Fazer mock de todas as dependências externas
+- Não fazer mock do que já está mockado em `./tests/unit/setupTests.backend.ts`
+- Limpar mocks entre testes usando `jest.clearAllMocks()`
+- Mock específico por teste quando necessário
+
+## Padrão Builder para Testes
+
+### Test Data Builders para BFF
+
+```typescript
+class RequestBuilder {
+  private request: Partial<Request> = {
+    body: {},
+    params: {},
+    query: {},
+    headers: {},
+  };
+
+  withBody(body: any): RequestBuilder {
+    this.request.body = body;
+    return this;
+  }
+
+  withAuth(user: any): RequestBuilder {
+    this.request.auth = { user };
+    return this;
+  }
+
+  withContext(context: any): RequestBuilder {
+    this.request.context = context;
+    return this;
+  }
+
+  build(): Partial<Request> {
+    return { ...this.request };
+  }
+}
+
+// Usage in tests
+const mockRequest = new RequestBuilder()
+  .withBody({ name: 'Test' })
+  .withAuth({ userId: 'test-user' })
+  .withContext({ requestId: 'test-request' })
+  .build();
+```
+
+## Melhores Práticas de Testing BFF
+
+### Qualidade dos Testes
+- Escrever nomes de testes claros e descritivos
+- Testar uma funcionalidade por vez
+- Usar assertions significativas
+- Evitar testar detalhes de implementação
+- Testar casos extremos e cenários de erro
+
+### Performance
+- Manter testes rápidos e focados
+- Evitar chamadas de API reais
+- Usar métodos de cleanup apropriados
+- Fazer mock de dependências pesadas
+
+### Manutenibilidade
+- Manter testes simples e legíveis
+- Usar funções auxiliares para setup comum
+- Evitar código duplicado nos testes
+- Atualizar testes quando requisitos mudarem
+
+### Diretrizes de Cobertura
+- Buscar alta cobertura de testes mas focar em qualidade sobre quantidade
+- Priorizar testes de lógica de negócio crítica
+- Testar handlers de API e workflows
+- Incluir cenários de tratamento de erros
+
+## Cenários Comuns de Testing BFF
+
+### Testing de Validação Zod
+
+```typescript
+describe('validation', () => {
+  it('should validate request body successfully', () => {
+    // Arrange
+    const validData = { name: 'Test', email: 'test@example.com' };
+
+    // Act
+    const result = CreateUserRequestSchema.parse(validData);
+
+    // Assert
+    expect(result).toEqual(validData);
+  });
+
+  it('should throw validation error for invalid data', () => {
+    // Arrange
+    const invalidData = { name: '', email: 'invalid' };
+
+    // Act & Assert
+    expect(() => CreateUserRequestSchema.parse(invalidData)).toThrow();
+  });
+});
+```
+
+### Testing de Middleware
+
+```typescript
+describe('contextMiddleware', () => {
+  let mockRequest: Partial<Request>;
+  let mockResponse: Partial<Response>;
+  let nextFunction: jest.Mock;
+
+  beforeEach(() => {
+    mockRequest = {};
+    mockResponse = {};
+    nextFunction = jest.fn();
+  });
+
+  it('should add context to request', () => {
+    // Act
+    contextMiddleware(mockRequest as Request, mockResponse as Response, nextFunction);
+
+    // Assert
+    expect(mockRequest.context).toBeDefined();
+    expect(nextFunction).toHaveBeenCalled();
+  });
+});
+```
+
+### Testing de Upload de Arquivos
+
+```typescript
+describe('file upload handler', () => {
+  it('should handle file upload successfully', async () => {
+    // Arrange
+    const mockFile = {
+      originalname: 'test.pdf',
+      mimetype: 'application/pdf',
+      size: 1024,
+    };
+    mockRequest.files = [mockFile];
+
+    // Act
+    await uploadHandler(mockRequest as Request, mockResponse as Response);
+
+    // Assert
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      files: expect.arrayContaining([
+        expect.objectContaining({
+          filename: 'test.pdf',
+          status: 'uploaded',
+        }),
+      ]),
+    });
+  });
+});
+```
+
+## Debug de Testes
+
+### Problemas Comuns
+- Mocks não configurados corretamente
+- Falta de cleanup entre testes
+- Dependências não mockadas
+- Testar implementação ao invés de comportamento
+
+### Ferramentas de Debug
+- Usar `console.log` para debug de valores
+- Verificar histórico de chamadas de mock com `toHaveBeenCalledWith`
+- Usar `jest.spyOn` para monitorar chamadas
+- Verificar se mocks estão sendo limpos corretamente
+
+### Isolamento de Testes
+- Garantir que testes não dependem uns dos outros
+- Limpar efeitos colaterais em `afterEach`
+- Resetar mocks entre testes
+- Evitar estado mutável compartilhado
+
+## Comandos de Verificação
+
+### Sequência Obrigatória de Comandos
+
+**SEMPRE execute nesta ordem para economizar recursos:**
+
+```bash
+# 1. PRIMEIRO: Verificar lint apenas no arquivo específico (rápido, detecta erros de sintaxe)
+npx eslint api/handlers/example/example.ts
+
+# 2. SEGUNDO: Se lint passou, executar apenas o teste específico
+npm test example.spec.ts
+
+# Comandos alternativos para testes específicos:
+npm test -- --testNamePattern="example"     # Testes que contenham "example" no nome
+npm test example.spec.ts --watch           # Modo watch para o arquivo específico
+npm test example.spec.ts --coverage        # Com relatório de cobertura do arquivo
+```
+
+### Tratamento de Erros
+
+**Se lint falhar:**
+- Corrigir TODOS os erros de lint no arquivo específico antes de prosseguir
+- Não executar testes até lint do arquivo estar limpo
+- Usar `npx eslint [arquivo] --fix` para correções automáticas
+
+**Se testes falharem:**
+- Analisar mensagens de erro detalhadamente
+- Corrigir implementação ou testes conforme necessário
+- Re-executar apenas o teste específico até passar
+- Verificar se não há testes flaky (instáveis)
+
+### Comandos para LLM
+
+**USAR SEMPRE `run_terminal_cmd` com estes comandos:**
+- `npx eslint [caminho/do/arquivo]` - Verificação de lint no arquivo específico
+- `npm test [arquivo.spec.ts]` - Execução do teste específico
+- `npx eslint [arquivo] --fix` - Correção automática de lint no arquivo
+- `npm test [arquivo.spec.ts] --watch` - Modo watch para desenvolvimento
+
+### Exemplos Práticos
+
+```bash
+# Para um handler de API:
+npx eslint api/handlers/users/create-user.ts
+npm test create-user.spec.ts
+
+# Para um service:
+npx eslint services/external-api/external-api.ts
+npm test external-api.spec.ts
+
+# Para um middleware:
+npx eslint middlewares/contextMiddleware.ts
+npm test contextMiddleware.spec.ts
+```
+
+## Checklist de Validação para LLM
+
+Antes de finalizar os testes, OBRIGATORIAMENTE verificar:
+**PRIORIZE**: Itens marcados como "Crítico" na [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+
+### ✅ Crítico (Bloqueia entrega)
+- [ ] Lint executado sem erros no arquivo específico
+- [ ] Teste específico executado com `npm test [arquivo.spec.ts]`
+- [ ] Teste específico passando sem falhas
+- [ ] Nomenclatura correta: `.spec.ts` ou `.spec.js`
+
+### ✅ Importante (Impacta qualidade)
+- [ ] AAA pattern seguido (Arrange-Act-Assert)
+- [ ] Mocks de APIs externas implementados
+- [ ] Cenários de sucesso e erro testados
+- [ ] Estrutura de describe/it organizada
+
+**IMPORTANTE**: Não finalize sem completar itens "Críticos".

@@ -1,0 +1,34 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Rules for using Fury discovery and related tools effectively
+globs: ["**/fury/**", "**/.fury/**"]
+alwaysApply: true
+---
+
+# Rules for Fury Development
+
+## Initial Steps
+- Always start with Fury Hydration
+- Use Fury Home for general service information
+- Use discovery_triage to understand available services
+
+## Planning Phase
+- Build a plan before creating a Fury app
+- Structure the plan with tasks and relevant links
+- Get user approval before execution
+
+## Tool Usage Guidelines
+- Use discovery_triage before Fury Specific
+- Minimize Fury CLI usage - prefer `fury --help`
+- Always clone applications with `fury get` before modifications
+- Document each step with relevant links
+
+## Best Practices
+- Validate commands before execution
+- Keep responses focused and structured
+- Use code blocks for commands
+- Verify application cloning before proposing changes

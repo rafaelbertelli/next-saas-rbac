@@ -1,0 +1,325 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Implementation plan
+globs: ["*"]
+alwaysApply: true
+---
+
+# Regras para Planos de Implementação
+
+## Instruções para LLM
+
+**AÇÃO OBRIGATÓRIA**: Quando solicitado para criar um plano de implementação, siga EXATAMENTE esta sequência:
+
+1. **VERIFICAR**: Confirme se a solicitação se enquadra nos critérios da seção "Quando Aplicar"
+2. **ANALISAR**: Execute análise completa antes de qualquer planejamento
+3. **ESTRUTURAR**: Organize o plano seguindo os padrões estabelecidos
+4. **CRIAR ARQUIVO**: Use `edit_file` para criar o arquivo seguindo a nomenclatura obrigatória
+5. **APLICAR TEMPLATE**: Use EXATAMENTE o template fornecido, preenchendo todas as seções
+6. **VALIDAR**: Verifique se incluiu todos os elementos obrigatórios antes de finalizar
+
+**NOMENCLATURA OBRIGATÓRIA**: `YYYY-MM-DD-nome-da-feature-vX-plan.md` (sempre começar com v1)
+
+**LOCALIZAÇÃO OBRIGATÓRIA**: `.notes/implementation-plan/`
+
+## Fluxo de Desenvolvimento Linear
+
+```
+INÍCIO
+  ↓
+📋 Consultar [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+  ↓
+🔍 Executar [Análise Inicial](mdc:#1-análise-inicial)
+  ↓
+🛠️ Aplicar [Estruturação do Plano](mdc:#2-estruturação-do-plano) + [Template](mdc:#3-template-do-plano)
+  ↓
+⚖️ Conflito? → [Resolução de Conflitos](mdc:#resolução-de-conflitos)
+  ↓
+✅ [Verificação e Validação](mdc:#checklist-de-validação-para-llm)
+  ↓
+🎯 FINALIZADO
+```
+
+## Modo Rápido (Para mudanças simples)
+
+**Use quando**: Pequenas features, ajustes de componentes, ou modificações triviais
+
+**Processo simplificado**:
+1. ✅ Verificar se é realmente simples (sem dependências complexas)
+2. 🛠️ Criar plano básico seguindo template
+3. 🔍 Focar apenas em passos essenciais
+4. ✅ Validar apenas itens "Críticos" do checklist
+
+**Pular para casos simples**: Análise detalhada de impacto, documentação extensa, versionamento complexo
+
+## Quando Aplicar
+
+Esta rule deve ser aplicada quando:
+- Solicitado para criar um plano de implementação de nova funcionalidade
+- Necessário estruturar uma abordagem para modificações complexas
+- Requerido documentar estratégia antes da implementação
+- Preciso avaliar impacto e dependências de mudanças
+
+## Índice de Navegação Rápida
+
+- 🚨 [Matriz de Prioridades](mdc:#0-matriz-de-prioridades) - **Consulte PRIMEIRO**
+- ⚖️ [Resolução de Conflitos](mdc:#resolução-de-conflitos) - Para decisões difíceis
+- 🔍 [Análise Inicial](mdc:#1-análise-inicial) - Início do planejamento
+- 🛠️ [Estruturação do Plano](mdc:#2-estruturação-do-plano) - Durante criação
+- ✅ [Checklist Final](mdc:#checklist-de-validação-para-llm) - Antes de finalizar
+
+## 0. Matriz de Prioridades
+
+### Crítico (Bloqueia planejamento)
+- Análise inicial executada
+- Template aplicado corretamente
+- Nomenclatura e localização corretas
+- Passos de implementação definidos
+
+### Importante (Impacta qualidade)
+- Tecnologias e componentes especificados
+- Análise de impacto realizada
+- Estratégia de testes definida
+- Versionamento implementado
+
+### Opcional (Melhoria incremental)
+- Documentação detalhada
+- Diagramas visuais
+- Casos extremos considerados
+- Formatação para GitHub otimizada
+
+## Resolução de Conflitos
+
+### Ordem de Precedência:
+1. **Funcionalidade > Padrões**: Se um padrão impede a funcionalidade, priorize a funcionalidade
+2. **Segurança > Performance**: Nunca comprometa segurança por performance
+3. **Legibilidade > Otimização**: Código legível é mais importante que micro-otimizações
+4. **Convenções do projeto > Preferências pessoais**: Siga o que já existe no projeto
+
+### Protocolo de Decisão:
+1. **Identifique o conflito**: Qual diretriz está sendo violada?
+2. **Consulte a precedência**: Use a ordem acima para decidir
+3. **Documente a exceção**: Explique por que divergiu
+4. **Valide o mínimo**: Garanta que itens "Críticos" ainda são atendidos
+
+### Exemplos Práticos:
+```typescript
+// ❌ Conflito: Padrão vs Funcionalidade
+// Padrão diz: "use componentes Andes"
+// Mas: componente específico não existe no Andes
+
+// ✅ Resolução: Priorizar funcionalidade
+// Plano: "Implementar componente customizado seguindo padrões Andes. Considerar contribuição futura para biblioteca."
+```
+
+### Quando Divergir:
+- **Documente**: Adicione justificativa no plano
+- **Valide críticos**: Confirme que análise e template ainda são seguidos
+- **Priorize entrega**: Funcionalidade working > padrão perfeito
+
+## Processo de Implementação
+
+### 1. Análise Inicial
+
+**ANTES DE INICIAR**: Consulte a [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+
+**EXECUTAR OBRIGATORIAMENTE:**
+
+- **Requisitos**: Analisar requisitos e imagens de referência cuidadosamente
+- **Funcionalidade**: Identificar a funcionalidade principal e componentes necessários
+- **Mapeamento**: Mapear a estrutura do código atual antes de propor mudanças
+- **Ferramentas**: Verificar ferramentas e bibliotecas disponíveis (Andes, Nordic, Fury, etc.)
+- **Documentação**: Consultar documentação MCP para padrões de componentes
+- **Impacto**: Avaliar impacto em outros componentes e possíveis dependências
+
+**AÇÃO**: Use `codebase_search`, `file_search` e `read_file` para executar esta análise.
+
+### 2. Estruturação do Plano
+
+**AÇÕES OBRIGATÓRIAS:**
+
+- **Criar arquivo**: Use `edit_file` para criar na pasta `.notes/implementation-plan`
+- **Nomenclatura**: SEMPRE usar `YYYY-MM-DD-nome-da-feature-vX-plan.md` (começar com v1)
+- **Data**: Use `run_terminal_cmd` com `date +%Y-%m-%d` se necessário obter data atual
+- **Versionamento**: Para revisões, incrementar v1 → v2 → v3...
+- **Template**: Aplicar template completo sem omitir seções
+
+**Exemplos de nomenclatura correta:**
+- `2025-01-18-campos-condicionais-v1-plan.md` (versão inicial)
+- `2025-01-18-campos-condicionais-v2-plan.md` (primeira revisão)
+- `2025-01-18-campos-condicionais-v3-plan.md` (segunda revisão)
+
+### 3. Template do Plano
+
+**EM CASO DE CONFLITO**: Consulte [Resolução de Conflitos](mdc:#resolução-de-conflitos)
+
+```markdown
+# Plano de Implementação: [Nome da Feature]
+
+**Versão**: v[X] | **Data**: YYYY-MM-DD | **Autor**: [Nome]
+
+## Histórico de Versões
+
+| Versão | Data | Mudanças |
+|--------|------|----------|
+| v1 | YYYY-MM-DD | Versão inicial |
+| v2 | YYYY-MM-DD | [Descrição das mudanças] |
+
+## Contexto e Objetivo
+
+[Descrição clara do problema e objetivo da implementação]
+
+## Tecnologias e Componentes
+
+- [Bibliotecas e componentes necessários (Andes, Nordic, Fury)]
+- [Referência a documentações relevantes]
+
+## Análise de Impacto
+
+[Impacto em outros componentes e possíveis dependências]
+
+## Passos de Implementação
+
+### 1. [Nome do Primeiro Passo]
+
+**Arquivo**: `caminho/para/o/arquivo`
+
+[Descrição detalhada do que será feito]
+
+```typescript
+// Exemplo de código ou pseudocódigo
+```
+
+### 2. [Nome do Segundo Passo]
+
+**Arquivo**: `caminho/para/o/arquivo`
+
+[Descrição detalhada]
+
+## Estratégia de Testes
+
+[Estratégia de testes a ser implementada]
+
+## Documentação (quando necessário)
+
+[Incluir apenas se a feature atender aos critérios de documentação]
+
+### Critérios para Incluir Documentação
+- Feature expõe APIs ou interfaces públicas
+- Nova funcionalidade requer configuração específica
+- Mudanças afetam parâmetros ou comportamentos externos
+- Implementação de componentes ou módulos reutilizáveis
+
+## Resumo das Alterações
+
+1. [Resumo do primeiro item]
+2. [Resumo do segundo item]
+...
+```
+
+### 4. Controle de Versões
+
+- Manter versões anteriores para histórico de decisões
+- Incluir no cabeçalho do plano um log de mudanças entre versões
+- Versionar quando houver mudanças significativas em:
+  - Abordagem de implementação
+  - Tecnologias ou componentes utilizados
+  - Estrutura de passos
+  - Estratégia de testes ou documentação
+
+## Diretrizes de Implementação
+
+### Uso de Componentes
+- Priorizar componentes Andes, Nordic e outras bibliotecas internas
+- Consultar MCP Servers para documentação de componentes
+- Identificar componentes existentes que podem ser reutilizados
+
+### Considerações de Design
+- Seguir padrões visuais existentes
+- Manter consistência com o design system da empresa
+- Considerar acessibilidade nas implementações
+
+### Integração com Sistemas Existentes
+- Explicar como a nova funcionalidade se integra ao código existente
+- Detalhar mudanças em tipos e interfaces
+- Considerar o impacto em outras partes do sistema
+
+### Formatação de Código
+- Incluir exemplos de código com formatação apropriada
+- Usar syntax highlighting para o tipo de arquivo correto
+- Destacar partes relevantes com comentários
+
+## Documentação de Produto
+
+### Quando Documentar
+**Obrigatória:**
+- Feature expõe APIs públicas ou interfaces
+- Mudanças afetam parâmetros de entrada ou comportamentos externos
+- Nova funcionalidade requer configuração específica
+- Implementação de novos módulos remotos ou componentes reutilizáveis
+
+**Opcional:**
+- Funcionalidades complexas que podem ser reutilizadas
+- Padrões de implementação que podem servir de referência
+- Configurações avançadas que podem beneficiar outros desenvolvedores
+
+### Estrutura de Documentação
+- Seguir o padrão docsify existente em `docs/guide/`
+- Criar arquivos markdown conforme a necessidade da feature
+- Organizar em pastas quando houver múltiplos arquivos relacionados
+- Atualizar `docs/guide/_sidebar.md` para incluir nova documentação na navegação
+
+### Princípios de Conteúdo
+- **Viés duplo**: Combinar perspectiva de produto e técnica
+- **APIs e interfaces**: Propriedades, métodos e configurações públicas
+- **Parâmetros**: Como diferentes inputs afetam o comportamento
+- **Configuração**: Exemplos práticos de uso e configuração
+- **Funcionalidades**: Recursos disponíveis e como utilizá-los
+
+## Boas Práticas
+
+### Linguagem e Formato
+- Escrever planos em português, mantendo termos técnicos em inglês
+- Incluir exemplos visuais ou diagramas quando necessário
+- Numerar cada passo de forma clara
+
+### Qualidade e Completude
+- Gerar planos detalhados com passos incrementais
+- Incluir exemplos de código para cada passo
+- Destacar possíveis pontos de atenção ou desafios
+- Referenciar documentação oficial quando relevante
+
+### Conformidade
+- Seguir as convenções de código existentes no projeto
+- Incluir estratégias de teste para a implementação
+- Criar diagramas de fluxo quando necessário
+
+### Versionamento
+- Incrementar versão do arquivo a cada alteração significativa
+- Manter histórico de versões no cabeçalho do plano
+- Preservar versões anteriores para rastreabilidade de decisões
+- Documentar claramente as mudanças entre versões
+
+## Checklist de Validação para LLM
+
+Antes de finalizar o plano, OBRIGATORIAMENTE verificar:
+**PRIORIZE**: Itens marcados como "Crítico" na [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+
+### ✅ Crítico (Bloqueia entrega)
+- [ ] Análise inicial executada com ferramentas disponíveis
+- [ ] Template aplicado corretamente
+- [ ] Nomenclatura correta: `YYYY-MM-DD-nome-da-feature-vX-plan.md` em `.notes/implementation-plan/`
+- [ ] Passos de implementação numerados e detalhados
+
+### ✅ Importante (Impacta qualidade)
+- [ ] Tecnologias e componentes especificados
+- [ ] Análise de impacto realizada
+- [ ] Estratégia de testes definida
+- [ ] Cada passo inclui arquivo de destino
+- [ ] Exemplos de código incluídos quando relevante
+
+**IMPORTANTE**: Não finalize sem completar itens "Críticos". Plano requer análise completa e estrutura adequada.

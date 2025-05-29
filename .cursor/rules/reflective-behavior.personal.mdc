@@ -3,12 +3,6 @@ description:
 globs: 
 alwaysApply: true
 ---
----
-description: Reflective Behaviour Guidelines
-globs: ["*"]
-alwaysApply: true
----
-
 # Reflective Behaviour Guidelines
 
 ## Core Principles

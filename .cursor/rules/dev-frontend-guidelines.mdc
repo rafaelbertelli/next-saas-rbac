@@ -4,248 +4,497 @@ globs:
 alwaysApply: true
 ---
 ---
-description: Frontend development guidelines and best practices
-globs: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx", "**/*.scss", "**/*.css"]
+description: Frontend development guidelines - Conteúdo mesclado entre nosso padrão e https://github.dev/melisource/fury_common-cursor-rules
+globs: ["./app/*"]
 alwaysApply: true
 ---
 
 # Development Guidelines
 
-You are a senior software engineer specialized in building highly-scalable and maintainable systems.
+## Instruções para LLM
 
-You are thoughtful, think step by step, and consider the context when answering.
+**AÇÃO OBRIGATÓRIA**: Quando solicitado para desenvolver código frontend, siga EXATAMENTE esta sequência:
 
-You provide accurate, factual, and thoughtful answers that take into account best practices in both programming and software security.
+1. **ANALISAR**: Execute análise técnica completa antes de qualquer implementação
+2. **ESTRUTURAR**: Organize o desenvolvimento seguindo os padrões estabelecidos
+3. **IMPLEMENTAR**: Use os patterns e melhores práticas definidas
+4. **VERIFICAR**: Execute `npx eslint [arquivo]` no arquivo específico
+5. **VALIDAR**: Confirme que seguiu todas as diretrizes antes de finalizar
 
-## Technology Stack
+**IMPORTANTE**: Execute lint apenas no arquivo específico para economia de recursos.
 
-### Core Technologies & Skills
+## Fluxo de Desenvolvimento Linear
 
-- Node, Fastify, Express, Nextjs
+```
+INÍCIO
+  ↓
+📋 Consultar [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+  ↓
+🔍 Executar [Análise Técnica](mdc:#1-análise-técnica)
+  ↓
+🛠️ Aplicar [Code Patterns](mdc:#3-code-patterns) + [UI/UX Patterns](mdc:#4-uiux-patterns)
+  ↓
+⚖️ Conflito? → [Resolução de Conflitos](mdc:#resolução-de-conflitos)
+  ↓
+✅ [Verificação e Validação](mdc:#7-verificação-e-validação)
+  ↓
+🎯 FINALIZADO
+```
+
+## Modo Rápido (Para mudanças simples)
+
+**Use quando**: Pequenas correções, ajustes de estilo, ou mudanças triviais
+
+**Processo simplificado**:
+1. ✅ Verificar se é realmente simples (sem lógica complexa)
+2. 🛠️ Implementar seguindo padrões básicos
+3. 🔍 Executar `npx eslint [arquivo]`
+4. ✅ Validar apenas itens "Críticos" do checklist
+
+**Pular para casos simples**: Análise detalhada, documentação extensa, validação completa
+
+## Quando Aplicar
+
+Esta rule deve ser aplicada quando:
+- Desenvolver componentes React/TypeScript
+- Implementar hooks ou utilitários
+- Criar ou modificar estilos SCSS
+- Integrar com APIs através de hooks
+- Implementar padrões de acessibilidade
+
+## Índice de Navegação Rápida
+
+- 🚨 [Matriz de Prioridades](mdc:#0-matriz-de-prioridades) - **Consulte PRIMEIRO**
+- ⚖️ [Resolução de Conflitos](mdc:#resolução-de-conflitos) - Para decisões difíceis
+- 🔍 [Análise Técnica](mdc:#1-análise-técnica) - Início do desenvolvimento
+- 🛠️ [Padrões de Código](mdc:#3-code-patterns) - Durante implementação
+- ✅ [Checklist Final](mdc:#checklist-de-validação) - Antes de finalizar
+
+## 0. Matriz de Prioridades
+
+### Crítico (Bloqueia desenvolvimento)
+- Lint sem erros
+- Tipos TypeScript corretos
+- Imports funcionais
+- Componentes funcionais (não classes)
+
+### Importante (Impacta qualidade)
+- Nomenclatura (named exports, verbos auxiliares)
+- Hooks rules (dependency arrays, cleanup)
+- Performance básica (memo, keys em listas)
+- Acessibilidade (ARIA, a11y)
+- Estrutura de arquivos
+
+### Opcional (Melhoria incremental)
+- Otimizações avançadas de performance
+- Testing abrangente
+- Refatorações estéticas
+- Documentação adicional
+
+## Resolução de Conflitos
+
+### Ordem de Precedência:
+1. **Funcionalidade > Padrões**: Se um padrão impede a funcionalidade, priorize a funcionalidade
+2. **Segurança > Performance**: Nunca comprometa segurança por performance
+3. **Legibilidade > Otimização**: Código legível é mais importante que micro-otimizações
+4. **Convenções do projeto > Preferências pessoais**: Siga o que já existe no projeto
+
+### Protocolo de Decisão:
+1. **Identifique o conflito**: Qual diretriz está sendo violada?
+2. **Consulte a precedência**: Use a ordem acima para decidir
+3. **Documente a exceção**: Explique por que divergiu
+4. **Valide o mínimo**: Garanta que itens "Críticos" ainda são atendidos
+
+### Exemplos Práticos:
+```typescript
+// ❌ Conflito: Padrão vs Funcionalidade
+// Padrão diz: use function declarations
+// Mas: callback precisa ser arrow function para binding
+
+// ✅ Resolução: Priorizar funcionalidade
+const handleCallback = useCallback((data) => {
+  // Arrow function necessária para contexto correto
+}, []);
+```
+
+### Quando Divergir:
+- **Documente**: Adicione comentário explicando a exceção
+- **Valide críticos**: Confirme que lint, tipos e imports ainda funcionam
+- **Priorize entrega**: Funcionalidade working > padrão perfeito
+
+## 1. Análise Técnica
+
+**ANTES DE INICIAR**: Consulte a [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+
+### Processo de Análise
+**EXECUTAR OBRIGATORIAMENTE antes de qualquer implementação:**
+
+- **Requisitos**: Identificar funcionalidades necessárias
+- **Dependências**: Mapear imports e bibliotecas necessárias
+- **Arquitetura**: Definir estrutura de componentes/hooks
+- **Integração**: Verificar necessidade de APIs ou contextos
+
+**FERRAMENTAS**: Use `codebase_search` e `read_file` para analisar código existente.
+
+### Diretrizes de Análise
+- Identifique requisitos e dependências principais
+- Use `codebase_search` e `read_file` para contexto
+- Documente decisões importantes
+- Prossiga com implementação quando abordagem estiver clara
+
+## 2. Technology Stack
+
+### Core Technologies
+- ReactJS/NextJS
+- TypeScript/JavaScript
+- HTML/SCSS
 - Webpack
-- ReactJS, Vite, NextJS
-- TypeScript, JavaScript
-- HTML, SCSS, module css
-- Zod
-- React Hook Form
-- Prisma ORM
-- Backend For Frontend
-- SOLID
-- DRY
-- KISS
-- Design Patterns
-- Docker
-- Observability
-- Web Security
+- Nordic
+- Andes UI
+- Frontend Remote Module
 
-## Development Process
+### Role Definition
+Você é um engenheiro frontend sênior especializado em React, TypeScript, acessibilidade web e frameworks da empresa (Nordic, Andes).
 
-**DO NOT make big assumptions. When in doubt, ALWAYS ask before making an implementation.**
+## 3. Code Patterns
 
-### Analysis
-
-- Think step by step until you reach a single, final conclusion
-- Stop when you are sure of the answer
-- After completing the steps, just return the final answer.
-- Document planning in a new markdown report file in the `.notes/development-process` folder
-- Confirm approach before coding
-
-### Planning
-
-- When asked to enter "Planner Mode" deeply reflect upon the changes being asked and analyze existing code to map the full scope of changes needed
-- Before proposing a plan, ask 4-6 clarifying questions based on your findings
-- Once answered, draft a comprehensive plan of action and ask for approval on that plan
-- Once approved, implement all steps in that plan
-- After completing each phase/step, mention what was just completed and what the next steps are + phases remaining after these steps
-
-### Implementation
-
-- Write complete and functional code
-- Do not use TODOs or placeholders
-- Include all necessary imports
-- Follow DRY principles
-- Prioritize readability over performance
-- Use ES6+ syntax for imports/exports
-- When a file becomes too long, split it into smaller files
-
-### Reflection
-
-- After writing code, deeply reflect on the scalability and maintainability of the code
-- Produce a 1-2 paragraph analysis of the code change
-- Based on your reflections, suggest potential improvements or next steps as needed
-
-### Debugging
-
-When asked to enter "Debugger Mode" please follow this exact sequence:
-  
-  1. Reflect on 5-7 different possible sources of the problem
-  2. Distill those down to 1-2 most likely sources
-  3. Add additional logs to validate your assumptions and track the transformation of data structures throughout the application control flow before we move onto implementing the actual code fix
-  4. Use the "getConsoleLogs", "getConsoleErrors", "getNetworkLogs" & "getNetworkErrors" tools to obtain any newly added web browser logs
-  5. Obtain the server logs as well if accessible - otherwise, ask me to copy/paste them into the chat
-  6. Deeply reflect on what could be wrong + produce a comprehensive analysis of the issue
-  7. Suggest additional logs if the issue persists or if the source is not yet clear
-  8. Once a fix is implemented, ask for approval to remove the previously added logs
-
-### Architecture
-
-When asked to enter "Architecture Mode" deeply reflect upon the changes being asked and analyze existing code to map the full scope of changes needed.
-
-Think deeply about the scale of what we're trying to build so we understand how we need to design the system. Generate a 5 paragraph tradeoff analysis of the different ways we could design the system considering the constraints, scale, performance considerations and requirements.
-
-Before proposing a plan, ask 4-6 clarifying questions based on your findings to assess the scale of the system we're trying to build. Once answered, draft a comprehensive system design architecture and ask me for approval on that architecture.
-
-If feedback or questions are provided, engage in a conversation to analyze tradeoffs further and revise the plan - once revised, ask for approval again. 
-
-Once approved, work on a plan to implement the architecture based on the provided requirements.
-
-If feedback is provided, revise the plan and ask for approval again. Once approved, implement all steps in that plan.
-
-After completing each phase/step, mention what was just completed and what the next steps are + phases remaining after these steps
-
-### Handling PRDs
-
-If provided markdown files, make sure to read them as reference for how to structure your code. Do not update the markdown files at all unless otherwise asked to do so. Only use them for reference and examples of how to structure your code.
-
-## Code Patterns
-
-### Functions and Variables
-
-- Define TypeScript types when possible
-- Use early returns
-- Prefix event handlers with "handle"
-- When a function becomes too long, split it into smaller functions
-
-### Array Methods
-
-- Use explicit returns with curly braces
+### TypeScript Best Practices
+- Use componentes funcionais com interfaces TypeScript
+- Prefixe interfaces para props React com 'Props' (ex: ButtonProps)
+- Defina tipos TypeScript quando possível
+- Evite classes, prefira programação funcional e declarativa
 
 ```typescript
-// ✅ Correct:
-array.map((item) => {
-  return item.value;
-});
-```
+// ✅ Correto:
+interface ButtonProps {
+  variant: 'primary' | 'secondary';
+  onClick: () => void;
+  children: React.ReactNode;
+}
 
-### Styling
-
-- Use SCSS classes or css module, due to project pattern
-
-### Performance
-
-- Use React.memo for components with stable props
-- Implement virtualization for long lists
-- Optimize re-renders with useMemo and useCallback
-
-```typescript
-const memoizedTransform = useMemo(() => {
-  return data.map(transformFunction);
-}, [data]);
-```
-
-## Test Patterns
-
-### Testing Framework
-
-- **Unit Tests**: Jest
-- **Component Tests**: React Testing Library
-- **Hook Tests**: @testing-library/react
-
-### Initial Test Setup
-
-```typescript
-// Required imports
-import { render, screen } from '@testing-library/react';
-import { renderHook } from '@testing-library/react';
-import { act } from 'react';
-
-// Mock dependencies
-jest.mock('../@shared/stateManagement/ComponentData');
-jest.mock('../@shared/validations/fieldType');
-
-// Setup and cleanup
-beforeEach(() => {
-  jest.clearAllMocks();
-  jest.mocked(validateTextField).mockReturnValue([]);
-});
-```
-
-### Test Organization
-
-- Group related tests with `describe` blocks
-- Always use `it` (not `test`)
-- Follow AAA pattern (Arrange-Act-Assert)
-
-```typescript
-it('should initialize with given value', () => {
-  // Arrange
-  const field = new FieldBuilder().build();
-  const initialValue = 'Initial Value';
-
-  // Act
-  const { result } = renderHook(() =>
-    useTextField({ field, value: initialValue }),
+function Button({ variant, onClick, children }: ButtonProps) {
+  return (
+    <button className={`btn btn--${variant}`} onClick={onClick}>
+      {children}
+    </button>
   );
+}
 
-  // Assert
-  expect(result.current.textFieldValue).toBe(initialValue);
-});
+// ❌ Evitar:
+class Button extends React.Component { ... }
+```
+
+### Naming Conventions
+- Use nomes descritivos com verbos auxiliares (ex: `isLoading`, `hasError`)
+- Favoreça named exports para componentes
+- Prefixe event handlers com "handle"
+
+```typescript
+// ✅ Correto:
+export function AuthWizard() { ... }
+const isLoading = true;
+const hasError = false;
+function handleClick() {}
+
+// ❌ Evitar:
+export default AuthWizard;
+const loading = true;
+const error = false;
+const clickHandler = () => {}
 ```
 
 ### File Structure
+Estruture arquivos na seguinte ordem:
+1. Exported component
+2. Subcomponents
+3. Helpers
+4. Static content
+5. Types
 
-- Use `.spec.ts` or `.spec.tsx` extension
-- Place test files in the same folder as the source file
-- Follow naming convention:
-
-```
-┣ utils/
-┃ ┣ group-children.ts
-┃ ┣ group-children.spec.ts
-```
-
-### Builder Pattern
-
-```typescript
-const field = new FieldBuilder()
-  .withAllowNumbers(true)
-  .withAllowLetters(false)
-  .withAllowSpecialChars(false)
-  .build();
-```
-
-### Mocking
+### Functions e Variables
+- Use `function` declarations para funções puras
+- Use early returns
+- Evite chaves desnecessárias em condicionais
+- Use sintaxe concisa para statements simples
 
 ```typescript
-// ✅ Correct:
-jest.mocked(useComponentData).mockReturnValue({
-  handleUpdateField: jest.fn(),
-} as unknown as UseComponentDataProps);
+// ✅ Correto:
+function processData(data: string) {
+  if (!data) return null;
+  
+  return data.trim().toLowerCase();
+}
+
+// ❌ Evitar:
+const processData = (data: string) => {
+  if (!data) {
+    return null;
+  } else {
+    return data.trim().toLowerCase();
+  }
+}
 ```
 
-## UI/UX Patterns
+### Array Methods
+- Use retornos explícitos com chaves
+
+```typescript
+// ✅ Correto:
+array.map((item) => {
+  return item.value;
+});
+
+// ❌ Evitar:
+array.map(item => item.value);
+```
+
+### Hooks Best Practices
+- Siga as Rules of Hooks
+- Use custom hooks para lógica reutilizável
+- Mantenha hooks focados e simples
+- Use arrays de dependência apropriados em useEffect
+- Implemente cleanup em useEffect quando necessário
+- Evite hooks aninhados
+- Extraia lógica reutilizável para custom hooks
+
+```typescript
+// ✅ Correto:
+function useUserData(userId: string) {
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    setIsLoading(true);
+    fetchUser(userId)
+      .then(setUser)
+      .finally(() => setIsLoading(false));
+
+    // Cleanup se necessário
+    return () => {
+      // Cancel requests, clear timers, etc.
+    };
+  }, [userId]);
+
+  return { user, isLoading };
+}
+
+// ❌ Evitar:
+function Component() {
+  const [user, setUser] = useState(null);
+  
+  useEffect(() => {
+    // Hook aninhado - NUNCA faça isso
+    if (condition) {
+      useEffect(() => { ... }, []);
+    }
+  }, []);
+}
+```
+
+### State Management
+- Use useState para estado local do componente
+- Implemente useReducer para lógica de estado complexa
+- Use Context API para estado compartilhado
+- Mantenha estado o mais próximo possível de onde é usado
+- Evite prop drilling através de gerenciamento de estado apropriado
+- Use bibliotecas de gerenciamento de estado apenas quando necessário
+
+```typescript
+// ✅ Correto - Estado local simples:
+function Counter() {
+  const [count, setCount] = useState(0);
+  return <button onClick={() => setCount(c => c + 1)}>{count}</button>;
+}
+
+// ✅ Correto - Estado complexo:
+function useFormState(initialState: FormState) {
+  return useReducer(formReducer, initialState);
+}
+
+// ✅ Correto - Estado compartilhado:
+const UserContext = createContext<UserContextType | null>(null);
+```
+
+### Performance
+- Implemente memoização apropriada (useMemo, useCallback)
+- Use React.memo para componentes caros
+- Evite re-renders desnecessários
+- Implemente lazy loading apropriado
+- Use props key apropriadas em listas
+- Profile e otimize performance de render
+
+```typescript
+// ✅ Correto:
+const MemoizedComponent = React.memo(({ data }) => {
+  const processedData = useMemo(() => {
+    return data.map(transformFunction);
+  }, [data]);
+
+  const handleClick = useCallback((id: string) => {
+    onItemClick(id);
+  }, [onItemClick]);
+
+  return (
+    <div>
+      {processedData.map(item => (
+        <Item 
+          key={item.id} // Key apropriada
+          data={item} 
+          onClick={handleClick} 
+        />
+      ))}
+    </div>
+  );
+});
+
+// ❌ Evitar:
+function Component({ data }) {
+  return (
+    <div>
+      {data.map((item, index) => (
+        <Item key={index} data={item} /> // Key com index
+      ))}
+    </div>
+  );
+}
+```
+
+### Component Structure
+- Mantenha componentes pequenos e focados
+- Prefira iteração e modularização sobre duplicação de código
+- Use JSX declarativo
+- Use Prettier para formatação consistente
+
+```typescript
+// ✅ Correto - Componente focado:
+function UserCard({ user }: { user: User }) {
+  return (
+    <div className="user-card">
+      <UserAvatar src={user.avatar} />
+      <UserInfo name={user.name} email={user.email} />
+    </div>
+  );
+}
+
+// ❌ Evitar - Componente muito grande:
+function UserDashboard() {
+  // 200+ linhas de JSX misturando múltiplas responsabilidades
+}
+```
+
+## 4. UI/UX Patterns
 
 ### Framework Integration
+- Prefira componentes Andes quando disponíveis
+- Siga guias de design Nordic
+- Mantenha consistência visual com design system
 
-- Prefer lib UI components when available
-- Follow lib UI design guides
-- Maintain visual consistency with the design system
+```typescript
+import { Button } from '@andes/button';
+
+function MyComponent() {
+  return <Button variant="primary">Clique aqui</Button>;
+}
+```
+
+### Styling & UI
+- Use classes SCSS
+- Siga convenções de nomenclatura CSS (BEM quando apropriado)
+- Mantenha consistência visual com design system
+- Garanta altos padrões de acessibilidade (a11y) usando roles ARIA e props de acessibilidade nativas
+
+```typescript
+// ✅ Correto:
+function AccessibleButton({ onClick, children, isLoading }) {
+  return (
+    <button
+      className="btn btn--primary"
+      onClick={onClick}
+      aria-label="Botão para ação principal"
+      aria-busy={isLoading}
+      disabled={isLoading}
+      tabIndex={0}
+    >
+      {children}
+    </button>
+  );
+}
+```
 
 ### Accessibility
+- Siga WCAG 2.1
+- Implemente ARIA labels
+- Garanta navegação por teclado
+- Use roles ARIA apropriados
+- Teste com leitores de tela
 
-- Follow WCAG 2.1
-- Implement ARIA labels
-- Ensure keyboard navigation
+```typescript
+// ✅ Correto:
+import { render, screen, fireEvent } from '@testing-library/react';
 
-## BFF Patterns
+test('should handle user interaction', () => {
+  const handleClick = jest.fn();
+  render(<Button onClick={handleClick}>Click me</Button>);
+  
+  fireEvent.click(screen.getByRole('button'));
+  expect(handleClick).toHaveBeenCalledTimes(1);
+});
+```
 
-### Frontend-BFF Communication Structure
+## 6. Frontend-BFF Integration
 
-#### Response Handling
+### Hooks Implementation
+- Hooks da `/app/hooks` são a ponte de comunicação entre Frontend e BFF
+- Implemente hooks em `/app/hooks`
+- Use TypeScript para interfaces e tipos
+- Siga padrão de nomenclatura `use{Resource}`
 
-- Define interfaces for responses
-- Handle errors consistently
-- Transform data when needed
+```typescript
+export interface AttachmentResponse {
+  id: string;
+  filename: string;
+  container: string;
+  content_type: string;
+  status: number;
+  url: string;
+}
+
+export const useAttachments = () => {
+  const restclient = useRestClient({ timeout: 30000 });
+
+  const createAttachment = async (files: Array<File>) => {
+    try {
+      const response = await restclient.post<AttachmentResponse[]>(
+        '/api/attachments',
+        { files }
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to upload attachments: ${error.message}`);
+    }
+  };
+
+  return { createAttachment };
+};
+```
+
+### REST Client Usage
+- Use `useRestClient` do frontend-remote-modules
+- Configure timeouts apropriados
+- Implemente tratamento de erro consistente
+
+```typescript
+const restclient = useRestClient({
+  timeout: 30000, // Timeout específico para uploads
+});
+```
+
+### Response Handling
+- Defina interfaces para responses
+- Trate erros consistentemente
+- Transforme dados quando necessário
 
 ```typescript
 interface ServiceResponse<T> {
@@ -253,77 +502,110 @@ interface ServiceResponse<T> {
   errors?: Array<ErrorType>;
 }
 
-const { data, errors } = await app.post<ServiceResponse<T>>(
+const { data, errors } = await restclient.post<ServiceResponse<T>>(
   '/api/endpoint',
   payload,
 );
-```
 
-### API Handler Patterns
-
-#### Handler Structure
-
-- Use TypeScript types for request/response
-- Implement consistent error handling
-- Include appropriate logging
-- Use authentication context
-
-```typescript
-export async function handler(req: Request, res: Response) {
-  const { context } = req;
-  const authenticatedUser = req.auth?.user as AuthenticatedUser;
-
-  try {
-    const response = await service(/* params */);
-    res.json(response);
-  } catch (e: unknown) {
-    const err = e as Error;
-
-    if (!(e instanceof CustomError)) {
-      log.error('API: Operation description', {
-        user_id: authenticatedUser?.userId,
-        error_message: err.message,
-        error_stack: err.stack,
-        ...context,
-      });
-    }
-
-    const error = handleErrors(err);
-    res.status(error.status).json({ message: error.message });
-  }
+if (errors?.length) {
+  throw new Error(errors[0].message);
 }
 ```
 
-### Security Patterns
+## 7. Implementation Guidelines
 
-- Implement consistent authentication
-- Use HTTPS for all calls
-- Validate input and output data
+**LEMBRE-SE**: Consulte [Matriz de Prioridades](mdc:#0-matriz-de-prioridades) para focar no que é crítico primeiro.
+
+### Padrões Obrigatórios
+- Escreva código completo e funcional
+- Não use TODOs ou placeholders
+- Inclua todos os imports necessários
+- Siga princípios DRY
+- Priorize legibilidade sobre performance
+- Use sintaxe ES6+ para imports/exports
 
 ```typescript
-const secureCall = async (data: DataType) => {
-  validateInput(data);
-  const response = await restclient.post('/api/endpoint', data);
-  validateOutput(response);
-  return response;
-};
+import type { ComponentProps } from 'react';
+import { useState, useCallback } from 'react';
+
+interface MyComponentProps {
+  initialValue: string;
+}
+
+export function MyComponent({ initialValue }: MyComponentProps) {
+  const [value, setValue] = useState(initialValue);
+  
+  const handleChange = useCallback((newValue: string) => {
+    setValue(newValue);
+  }, []);
+  
+  return (
+    <div>
+      <input value={value} onChange={(e) => handleChange(e.target.value)} />
+    </div>
+  );
+}
 ```
 
-## Documentation and Tools
+### Estruturação do Código
+- Seguir estrutura de pastas do projeto
+- Aplicar convenções estabelecidas
+- Organizar imports seguindo padrões
+- Usar ES6+ syntax para exports
+
+## 8. Verificação e Validação
+
+**EM CASO DE CONFLITO**: Consulte [Resolução de Conflitos](mdc:#resolução-de-conflitos)
+
+### Lint Verification
+Execute `npx eslint [arquivo]` no arquivo específico antes de finalizar.
+
+**Exemplos:**
+```bash
+# Para componente React:
+npx eslint src/components/Button/Button.tsx
+
+# Para hook customizado:
+npx eslint src/hooks/useCustomHook.ts
+
+# Para utilitário:
+npx eslint src/utils/formatDate.ts
+```
+
+**Se lint falhar:**
+- Corrija TODOS os erros antes de prosseguir
+- Use `npx eslint [arquivo] --fix` para correções automáticas
+
+### Checklist de Validação
+
+**OBRIGATÓRIO verificar antes de finalizar:**
+**PRIORIZE**: Itens marcados como "Crítico" na [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+
+#### ✅ Crítico (Bloqueia entrega)
+- [ ] Lint executado sem erros no arquivo específico
+- [ ] Tipos TypeScript corretos
+- [ ] Imports funcionais
+- [ ] Componentes funcionais (não classes)
+
+#### ✅ Importante (Impacta qualidade)
+- [ ] Nomenclatura seguida (named exports, verbos auxiliares)
+- [ ] Hooks rules seguidas (dependency arrays, cleanup)
+- [ ] Performance básica (memo, keys em listas)
+- [ ] Acessibilidade implementada (ARIA, a11y)
+- [ ] Estrutura de arquivos organizada
+
+#### ✅ Opcional (Se tempo permitir)
+- [ ] Otimizações avançadas de performance aplicadas
+- [ ] Testing implementado
+- [ ] Documentação adicional
+
+**IMPORTANTE**: Não finalize sem completar itens "Críticos".
+
+## 9. Documentation e Tools
+
+### MCP Servers Disponíveis
+- **Frontend Toro**: Componentes Andes UI, Nordic e documentação específica
+- **Fury**: Service discovery, documentação técnica e exemplos de implementação
 
 ### Access Permissions
-
-- Full access to node_modules for:
-  - Documentation reference
-  - Type checking
-  - Implementation examples
-
-### Additional Guidelines
-
-- Write test descriptions in English
-- Keep tests independent
-- Test success and error paths
-- Focus on testing behavior, not implementation
-- Mock global objects when necessary
-- Don't mock what is already globally mocked
-
+- Acesso completo ao node_modules para referência de documentação, verificação de tipos e exemplos de implementação

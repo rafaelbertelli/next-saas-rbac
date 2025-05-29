@@ -1,0 +1,301 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Rule standardization - It is the meta rule to create/edit rules
+globs: ["*"]
+alwaysApply: true
+---
+
+# Rule Standardization Protocol
+
+## Instruções para LLM
+
+**AÇÃO OBRIGATÓRIA**: Quando solicitado para criar ou alterar uma rule, siga EXATAMENTE esta sequência:
+
+1. **VERIFICAR**: Confirme se a solicitação se enquadra nos critérios da seção "Quando Aplicar"
+2. **ANALISAR**: Execute análise da rule existente ou requisitos da nova rule
+3. **ESTRUTURAR**: Organize seguindo o template estrutural obrigatório
+4. **IMPLEMENTAR**: Aplique todas as seções e otimizações definidas
+5. **VERIFICAR**: Execute validação de conformidade estrutural
+6. **VALIDAR**: Confirme que seguiu todas as diretrizes antes de finalizar
+
+**IMPORTANTE**: Este protocolo garante consistência e performance otimizada para colaboração LLM.
+
+## Fluxo de Desenvolvimento Linear
+
+```
+INÍCIO
+  ↓
+📋 Consultar [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+  ↓
+🔍 Executar [Análise da Rule](mdc:#1-análise-da-rule)
+  ↓
+🛠️ Aplicar [Template Estrutural](mdc:#2-template-estrutural) + [Otimizações](mdc:#3-otimizações-obrigatórias)
+  ↓
+⚖️ Conflito? → [Resolução de Conflitos](mdc:#resolução-de-conflitos)
+  ↓
+✅ [Verificação e Validação](mdc:#checklist-de-validação-para-llm)
+  ↓
+🎯 FINALIZADO
+```
+
+## Modo Rápido (Para ajustes simples)
+
+**Use quando**: Pequenas correções, ajustes de formatação, ou mudanças triviais
+
+**Processo simplificado**:
+1. ✅ Verificar se é realmente simples (sem mudança estrutural)
+2. 🛠️ Aplicar correção mantendo estrutura existente
+3. 🔍 Validar apenas itens "Críticos" do checklist
+4. ✅ Confirmar que padrão estrutural foi mantido
+
+**Pular para casos simples**: Reestruturação completa, análise detalhada, validação extensa
+
+## Quando Aplicar
+
+Esta rule deve ser aplicada quando:
+- Solicitado para criar uma nova rule (.mdc)
+- Necessário alterar ou reestruturar rule existente
+- Requerido padronizar rule que não segue o protocolo
+- Preciso garantir consistência estrutural entre rules
+
+## Índice de Navegação Rápida
+
+- 🚨 [Matriz de Prioridades](mdc:#0-matriz-de-prioridades) - **Consulte PRIMEIRO**
+- ⚖️ [Resolução de Conflitos](mdc:#resolução-de-conflitos) - Para decisões difíceis
+- 🔍 [Análise da Rule](mdc:#1-análise-da-rule) - Início da padronização
+- 🛠️ [Template Estrutural](mdc:#2-template-estrutural) - Durante implementação
+- ✅ [Checklist Final](mdc:#checklist-de-validação-para-llm) - Antes de finalizar
+
+## 0. Matriz de Prioridades
+
+### Crítico (Bloqueia padronização)
+- Template estrutural aplicado corretamente
+- Seções obrigatórias presentes
+- Checklist simplificado (8-10 itens máximo)
+- Navegação e cross-references implementados
+
+### Importante (Impacta qualidade)
+- Fluxo linear com diagrama visual
+- Matriz de prioridades definida
+- Resolução de conflitos implementada
+- Emojis e formatação consistentes
+
+### Opcional (Melhoria incremental)
+- Modo rápido para casos simples
+- Exemplos práticos contextualizados
+- Documentação adicional
+- Otimizações específicas do domínio
+
+## Resolução de Conflitos
+
+### Ordem de Precedência:
+1. **Funcionalidade > Padrões**: Se um padrão impede a funcionalidade, priorize a funcionalidade
+2. **Consistência > Preferências**: Mantenha consistência com outras rules
+3. **Performance > Completude**: Prefira estrutura enxuta e eficiente
+4. **Clareza > Complexidade**: Simplifique quando possível sem perder informação
+
+### Protocolo de Decisão:
+1. **Identifique o conflito**: Qual diretriz está sendo violada?
+2. **Consulte a precedência**: Use a ordem acima para decidir
+3. **Documente a exceção**: Explique por que divergiu no contexto da rule
+4. **Valide o mínimo**: Garanta que itens "Críticos" ainda são atendidos
+
+### Exemplos Práticos:
+```markdown
+// ❌ Conflito: Completude vs Performance
+// Domínio específico requer 15+ itens no checklist
+// Mas: padrão define máximo de 10 itens
+
+// ✅ Resolução: Priorizar performance
+// Solução: Agrupar itens relacionados, manter foco em críticos
+```
+
+### Quando Divergir:
+- **Documente**: Adicione justificativa na própria rule
+- **Valide críticos**: Confirme que estrutura base ainda é seguida
+- **Mantenha consistência**: Não quebre padrão sem justificativa forte
+
+## Processo de Padronização
+
+### 1. Análise da Rule
+
+**ANTES DE INICIAR**: Consulte a [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+
+**EXECUTAR OBRIGATORIAMENTE:**
+
+- **Propósito**: Identificar objetivo e escopo da rule
+- **Estrutura atual**: Analisar organização existente (se aplicável)
+- **Domínio**: Mapear especificidades do contexto (code review, frontend, testing, etc.)
+- **Complexidade**: Avaliar se precisa de modo rápido
+- **Dependências**: Verificar relação com outras rules
+
+**AÇÃO**: Use `read_file` para analisar rule existente ou requisitos para nova rule.
+
+### 2. Template Estrutural
+
+**AÇÕES OBRIGATÓRIAS:**
+
+Toda rule DEVE seguir esta estrutura exata:
+
+```markdown
+---
+description: [Descrição clara e concisa]
+globs: ["padrão de arquivos"]
+alwaysApply: true
+---
+
+# [Nome da Rule]
+
+## Instruções para LLM
+[5-7 passos numerados com ações obrigatórias]
+
+## Fluxo de Desenvolvimento Linear
+[Diagrama visual com emojis e navegação]
+
+## Modo Rápido (Para [contexto] simples)
+[Apenas se aplicável - code review não tem]
+
+## Quando Aplicar
+[4-6 critérios específicos]
+
+## Índice de Navegação Rápida
+[5 links estratégicos com emojis]
+
+## 0. Matriz de Prioridades
+### Crítico (Bloqueia [ação])
+### Importante (Impacta qualidade)
+### Opcional (Melhoria incremental)
+
+## Resolução de Conflitos
+[Protocolo padrão adaptado ao contexto]
+
+## [Seções Numeradas Específicas do Domínio]
+### 1. [Primeira Seção]
+### 2. [Segunda Seção]
+### 3. [Terceira Seção]
+### 4. [Quarta Seção]
+
+## [Seções de Conteúdo Específico]
+[Diretrizes, padrões, exemplos específicos do domínio]
+
+## Checklist de Validação para LLM
+### ✅ Crítico (Bloqueia entrega)
+[4-5 itens máximo]
+
+### ✅ Importante (Impacta qualidade)
+[4-5 itens máximo]
+```
+
+### 3. Otimizações Obrigatórias
+
+**EM CASO DE CONFLITO**: Consulte [Resolução de Conflitos](mdc:#resolução-de-conflitos)
+
+#### **Performance:**
+- ✅ **Checklist máximo**: 8-10 itens total (4-5 críticos + 4-5 importantes)
+- ✅ **Cross-references**: 3-5 links estratégicos máximo
+- ✅ **Navegação linear**: Eliminar loops potenciais
+- ✅ **Foco em críticos**: Priorizar itens que bloqueiam execução
+
+#### **Consistência:**
+- ✅ **Emojis padronizados**: 🚨📋🔍🛠️⚖️✅🎯
+- ✅ **Formatação uniforme**: Headers, links, code blocks
+- ✅ **Terminologia**: Português + termos técnicos em inglês
+- ✅ **Estrutura de seções**: Numeração e organização idênticas
+
+#### **Usabilidade:**
+- ✅ **Índice de navegação**: Links diretos para seções críticas
+- ✅ **Matriz de prioridades**: Crítico > Importante > Opcional
+- ✅ **Resolução de conflitos**: Protocolo de 4 passos
+- ✅ **Modo rápido**: Para casos simples (quando aplicável)
+
+### 4. Validação de Conformidade
+
+**EXECUTAR OBRIGATORIAMENTE:**
+
+- **Estrutura**: Verificar se todas as seções obrigatórias estão presentes
+- **Performance**: Confirmar que checklist não excede 10 itens
+- **Navegação**: Testar se links internos funcionam
+- **Consistência**: Comparar com rules de referência
+- **Funcionalidade**: Validar se atende ao propósito específico
+
+## Diretrizes de Implementação
+
+### Adaptação por Domínio
+
+**Code Review:**
+- Foco em análise sistemática e qualidade
+- Sem modo rápido (não existe code review rápido)
+- Ênfase em nomenclatura e versionamento
+
+**Frontend Development:**
+- Foco em padrões de código e performance
+- Modo rápido para ajustes simples
+- Ênfase em lint e tipos TypeScript
+
+**Testing:**
+- Foco em AAA pattern e mocks
+- Modo rápido para testes triviais
+- Ênfase em execução e validação
+
+**Implementation Planning:**
+- Foco em análise e estruturação
+- Modo rápido para features pequenas
+- Ênfase em documentação quando necessário
+
+### Linguagem e Formato
+
+- **Instruções**: Sempre em português claro e direto
+- **Termos técnicos**: Manter em inglês (hooks, components, lint, etc.)
+- **Exemplos de código**: Sempre em inglês
+- **Emojis**: Usar consistentemente para navegação visual
+
+### Versionamento de Rules
+
+- **Backup**: Sempre fazer backup antes de alterações significativas
+- **Histórico**: Documentar mudanças importantes
+- **Teste**: Validar funcionamento após alterações
+- **Rollback**: Manter versão anterior disponível se necessário
+
+## Boas Práticas
+
+### Para Criação de Novas Rules
+- Analisar rules existentes como referência
+- Identificar especificidades do novo domínio
+- Adaptar template mantendo estrutura base
+- Focar em itens críticos para o domínio específico
+
+### Para Alteração de Rules Existentes
+- Preservar funcionalidade existente
+- Aplicar otimizações gradualmente
+- Testar impacto nas atividades do domínio
+- Manter compatibilidade com workflow atual
+
+### Para Manutenção do Padrão
+- Revisar periodicamente conformidade
+- Atualizar template se necessário
+- Sincronizar mudanças entre rules relacionadas
+- Documentar exceções justificadas
+
+## Checklist de Validação para LLM
+
+Antes de finalizar a rule, OBRIGATORIAMENTE verificar:
+**PRIORIZE**: Itens marcados como "Crítico" na [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+
+### ✅ Crítico (Bloqueia entrega)
+- [ ] Template estrutural aplicado com todas as seções obrigatórias
+- [ ] Checklist simplificado (máximo 8-10 itens total)
+- [ ] Navegação e cross-references implementados (3-5 links)
+- [ ] Fluxo linear sem loops potenciais
+
+### ✅ Importante (Impacta qualidade)
+- [ ] Matriz de prioridades definida (Crítico/Importante/Opcional)
+- [ ] Resolução de conflitos implementada com protocolo
+- [ ] Emojis e formatação consistentes com outras rules
+- [ ] Conteúdo específico do domínio adequadamente adaptado
+- [ ] Modo rápido implementado (quando aplicável)
+
+**IMPORTANTE**: Não finalize sem completar itens "Críticos". Rule deve seguir padrão estrutural para garantir performance otimizada do LLM.

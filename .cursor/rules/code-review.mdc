@@ -1,0 +1,371 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Code review guidelines
+globs: ["*"]
+alwaysApply: true
+---
+
+# Rules for Professional Code Review
+
+## Instruções para LLM
+
+**AÇÃO OBRIGATÓRIA**: Quando solicitado para realizar um code review, siga EXATAMENTE esta sequência:
+
+1. **VERIFICAR**: Confirme se a solicitação se enquadra nos critérios da seção "Quando Aplicar"
+2. **OBTER DIFF**: Execute `git diff` entre as branches apropriadas para obter changeset
+3. **ANALISAR**: Execute análise sistemática dos arquivos modificados
+4. **CRIAR ARQUIVO**: Use `edit_file` para criar o relatório seguindo a nomenclatura obrigatória
+5. **APLICAR TEMPLATE**: Use EXATAMENTE o template fornecido, preenchendo todas as seções
+6. **VALIDAR**: Verifique se incluiu todos os elementos obrigatórios antes de finalizar
+
+**🚨 IMPORTANTE**: NÃO apenas mostre o conteúdo do review. DEVE criar o arquivo físico usando `edit_file`.
+
+**NOMENCLATURA OBRIGATÓRIA**: `YYYY-MM-DD-branch-name-vX-review.md` (sempre começar com v1)
+
+**LOCALIZAÇÃO OBRIGATÓRIA**: `.notes/code-review/`
+
+**QUANDO SOLICITADO PR DESCRIPTION**: Criar também arquivo em `.notes/pr-description/` com mesmo nome substituindo `-review.md` por `-pr-description.md`
+
+## Fluxo de Desenvolvimento Linear
+
+```
+INÍCIO
+  ↓
+📋 Consultar [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+  ↓
+🔍 Executar [Obtenção do Changeset](mdc:#1-obtenção-do-changeset)
+  ↓
+🛠️ Aplicar [Análise Sistemática](mdc:#2-análise-sistemática) + [Estruturação do Relatório](mdc:#3-estruturação-do-relatório)
+  ↓
+⚖️ Conflito? → [Resolução de Conflitos](mdc:#resolução-de-conflitos)
+  ↓
+✅ [Verificação e Validação](mdc:#checklist-de-validação-para-llm)
+  ↓
+🎯 FINALIZADO
+```
+
+## Quando Aplicar
+
+Esta rule deve ser aplicada quando:
+- Solicitado para realizar code review de uma branch ou PR
+- Necessário analisar mudanças entre branches
+- Requerido gerar relatório de análise de código
+- Preciso avaliar qualidade e impacto de modificações
+
+## Índice de Navegação Rápida
+
+- 🚨 [Matriz de Prioridades](mdc:#0-matriz-de-prioridades) - **Consulte PRIMEIRO**
+- ⚖️ [Resolução de Conflitos](mdc:#resolução-de-conflitos) - Para decisões difíceis
+- 🔍 [Obtenção do Changeset](mdc:#1-obtenção-do-changeset) - Início do code review
+- 🛠️ [Análise Sistemática](mdc:#2-análise-sistemática) - Durante análise
+- ✅ [Checklist Final](mdc:#checklist-de-validação-para-llm) - Antes de finalizar
+
+## 0. Matriz de Prioridades
+
+### Crítico (Bloqueia code review)
+- Git diff executado e changeset obtido
+- Análise sistemática de todos os arquivos
+- Template de relatório aplicado corretamente usando `edit_file`
+- Nomenclatura e localização corretas: `.notes/code-review/YYYY-MM-DD-branch-name-vX-review.md`
+
+### Importante (Impacta qualidade)
+- Problemas críticos identificados
+- Sugestões de melhoria fornecidas
+- Feedback categorizado com emojis
+- Recomendação final clara
+
+### Opcional (Melhoria incremental)
+- Aspectos positivos destacados
+- Documentação detalhada
+- Histórico de versões completo
+- Formatação para GitHub otimizada
+
+## Resolução de Conflitos
+
+### Ordem de Precedência:
+1. **Funcionalidade > Padrões**: Se um padrão impede a funcionalidade, priorize a funcionalidade
+2. **Segurança > Performance**: Nunca comprometa segurança por performance
+3. **Legibilidade > Otimização**: Código legível é mais importante que micro-otimizações
+4. **Convenções do projeto > Preferências pessoais**: Siga o que já existe no projeto
+
+### Protocolo de Decisão:
+1. **Identifique o conflito**: Qual diretriz está sendo violada?
+2. **Consulte a precedência**: Use a ordem acima para decidir
+3. **Documente a exceção**: Explique por que divergiu
+4. **Valide o mínimo**: Garanta que itens "Críticos" ainda são atendidos
+
+### Exemplos Práticos:
+```
+// ❌ Conflito: Criticar padrão vs Funcionalidade working
+// Padrão diz: "use function declarations"
+// Mas: código funciona corretamente com arrow functions
+
+// ✅ Resolução: Priorizar funcionalidade
+// Comentário no review: "Funciona corretamente. Sugestão opcional: considerar function declarations para consistência."
+```
+
+### Quando Divergir:
+- **Documente**: Adicione comentário explicando a exceção no review
+- **Valide críticos**: Confirme que funcionalidade e segurança não são comprometidas
+- **Priorize entrega**: Código working > padrão perfeito
+
+## Processo de Code Review
+
+### 1. Obtenção do Changeset
+
+**ANTES DE INICIAR**: Consulte a [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+
+**EXECUTAR OBRIGATORIAMENTE:**
+
+- **Verificar Branches**: Use `run_terminal_cmd` com `git branch -r` para listar branches remotas
+- **Branch Atual**: Use `run_terminal_cmd` com `git branch --show-current` para identificar branch atual
+- **Git Diff**: Use `run_terminal_cmd` com `git diff origin/develop` ou `git diff origin/master` se develop não existir
+- **Análise de Arquivos**: Identifique todos os arquivos modificados
+- **Estatísticas**: Colete número de linhas adicionadas/removidas
+- **Contexto**: Entenda o propósito das mudanças
+
+**AÇÃO**: Use `run_terminal_cmd` para executar comandos git necessários.
+
+### 2. Análise Sistemática
+
+**AÇÕES OBRIGATÓRIAS:**
+
+- **Por Arquivo**: Analisar cada arquivo modificado individualmente
+- **Padrões**: Verificar conformidade com padrões de código do projeto
+- **Qualidade**: Avaliar legibilidade, manutenibilidade e performance
+- **Segurança**: Identificar possíveis vulnerabilidades
+- **Testes**: Verificar cobertura e qualidade dos testes
+- **TypeScript**: Validar tipagem completa e consistente
+- **Código Morto**: Detectar código comentado, imports não utilizados e variáveis não referenciadas
+
+**AÇÃO**: Use `read_file` para examinar arquivos modificados quando necessário.
+
+### 3. Estruturação do Relatório
+
+**AÇÕES OBRIGATÓRIAS:**
+
+- **Criar arquivo**: Use `edit_file` para criar na pasta `.notes/code-review`
+- **Nomenclatura**: SEMPRE usar `YYYY-MM-DD-branch-name-vX-review.md` (começar com v1)
+- **Versionamento**: Incrementar versão (v1, v2, v3...) a cada revisão do review
+- **Data**: Use `run_terminal_cmd` com `date +%Y-%m-%d` se necessário obter data atual
+- **Template**: Aplicar template completo sem omitir seções
+
+**Exemplos de nomenclatura correta:**
+- `2025-01-18-feature-dynamic-layout-v1-review.md` (versão inicial)
+- `2025-01-18-feature-dynamic-layout-v2-review.md` (primeira revisão)
+- `2025-01-18-feature-dynamic-layout-v3-review.md` (segunda revisão)
+
+### 4. Controle de Versões
+
+**EM CASO DE CONFLITO**: Consulte [Resolução de Conflitos](mdc:#resolução-de-conflitos)
+
+- Manter versões anteriores para histórico de análises
+- Incluir no cabeçalho do review um log de mudanças entre versões
+- Versionar quando houver mudanças significativas em:
+  - Nova análise após correções do desenvolvedor
+  - Mudanças na branch que requerem nova avaliação
+  - Atualizações na recomendação final
+  - Descoberta de novos problemas ou melhorias
+
+## Template do Relatório
+
+```markdown
+# Code Review: [Branch Name]
+
+**Versão**: v[X] | **Data**: YYYY-MM-DD | **Revisor**: [Nome do Revisor]
+**Branch Base**: [Nome da Branch Base] | **Feature Branch**: [Nome da Feature Branch]
+
+## Histórico de Versões
+
+| Versão | Data | Mudanças |
+|--------|------|----------|
+| v1 | YYYY-MM-DD | Análise inicial |
+| v2 | YYYY-MM-DD | [Descrição das mudanças] |
+
+## Sumário
+
+- **Arquivos alterados**: [Número total]
+- **Linhas adicionadas**: [Número]
+- **Linhas removidas**: [Número]
+- **Arquivos novos**: [Número]
+- **Arquivos deletados**: [Número]
+
+## Análise Geral
+
+[Visão geral das mudanças e seu impacto no sistema]
+
+## Problemas Críticos
+
+[Lista de problemas que precisam ser resolvidos antes do merge]
+
+## Sugestões de Melhoria
+
+[Lista de sugestões para melhorar o código, mas que não bloqueiam o merge]
+
+## Análise por Arquivo
+
+### [Nome do Arquivo 1]
+
+**Linha(s)**: XX-YY
+- 🚨 **Problema**: [Descrição]
+- ✨ **Sugestão**: [Solução proposta]
+- 📝 **Impacto**: [Explicação do impacto]
+
+### [Nome do Arquivo 2]
+
+**Linha(s)**: XX-YY
+- ⚠️ **Importante**: [Descrição]
+- 💡 **Sugestão**: [Melhoria opcional]
+- ✅ **Positivo**: [Aspecto bem implementado]
+
+## Conclusão
+
+**Recomendação**: [Aprovar / Aprovar com modificações / Reprovar]
+
+**Justificativa**: [Explicação da recomendação]
+
+**Próximos passos**: [Ações necessárias antes do merge]
+```
+
+## Diretrizes de Análise
+
+### Aspectos Técnicos
+- **Arquitetura**: Verificar se mudanças seguem padrões arquiteturais
+- **Performance**: Identificar possíveis gargalos ou otimizações
+- **Segurança**: Avaliar vulnerabilidades e exposições
+- **Manutenibilidade**: Analisar legibilidade e facilidade de manutenção
+
+### Qualidade de Código
+- **Padrões**: Conformidade com style guides e convenções
+- **Complexidade**: Identificar código complexo demais
+- **Duplicação**: Detectar código duplicado
+- **Nomenclatura**: Verificar clareza de nomes de variáveis e funções
+
+### Implementação Geral
+- **Legibilidade**: Garantir que o código seja legível e compreensível, com nomes significativos para variáveis e funções
+- **Tratamento de Erros**: Verificar se erros potenciais são tratados adequadamente, especialmente para operações assíncronas
+- **Performance**: Identificar gargalos de performance ou algoritmos ineficientes e sugerir otimizações
+- **Organização**: Verificar se arquivos e pastas estão organizados logicamente e de forma consistente com a estrutura do projeto
+
+### Aderência às Melhores Práticas
+- **Responsabilidade Única**: Verificar se componentes são pequenos e focados (Princípio da Responsabilidade Única)
+- **Gerenciamento de Estado**: Garantir uso apropriado de gerenciamento de estado e prevenir prop drilling desnecessário
+- **Estrutura de Projeto**: Verificar se arquivos e pastas seguem a organização lógica e consistente do projeto
+
+### Considerações de Escalabilidade
+- **Reutilização**: Recomendar refatoração de código duplicado em componentes ou funções utilitárias reutilizáveis
+- **Padrões**: Sugerir padrões (como hooks ou Higher Order Components) que podem auxiliar na escalabilidade futura
+- **Modularidade**: Verificar se o código está estruturado de forma modular e extensível
+
+### Melhores Práticas TypeScript
+- **Tipagem Completa**: Garantir que todas as funções e métodos estejam adequadamente tipados. Nenhuma função deve permanecer sem tipos explícitos, incluindo parâmetros e valores de retorno
+- **Definições de Tipo**: Revisar todas as definições de tipo para consistência e correção. Garantir que não existam tipos duplicados
+- **Validação de Dados**: Confirmar que dados externos sejam adequadamente validados e tipados, minimizando erros potenciais em runtime
+- **Evitar 'any'**: Desencorajar o uso do tipo 'any' e sugerir tipos mais específicos quando aplicável
+- **Interfaces Consistentes**: Verificar consistência entre interfaces e implementações
+
+### Verificações de Qualidade de Código
+- **Código Comentado**: Detectar e sinalizar blocos de código que foram comentados. Encorajar remoção a menos que haja razão válida para mantê-los como referência
+- **Código Não Utilizado**: Identificar e remover variáveis, funções ou imports não utilizados. A presença de código não utilizado pode criar confusão e inchar a base de código
+- **Imports Órfãos**: Detectar código que não é importado em nenhum lugar do projeto
+- **Dead Code**: Identificar funções, componentes ou módulos que não são referenciados
+
+### Requisitos de Testes
+- **Cobertura Completa**: Verificar se toda nova funcionalidade possui testes unitários e de integração correspondentes
+- **Casos Extremos**: Garantir que os testes incluam casos extremos e cenários de borda
+- **Cobertura Mínima**: Confirmar que o relatório de cobertura reflete um mínimo de 100% de cobertura para as mudanças feitas, sem lacunas significativas
+- **Qualidade dos Testes**: Avaliar efetividade e clareza dos testes implementados
+
+### Testes e Documentação
+- **Cobertura**: Verificar se mudanças têm testes adequados
+- **Qualidade dos Testes**: Avaliar efetividade dos testes
+- **Documentação**: Verificar se documentação foi atualizada
+- **Comentários**: Avaliar necessidade e qualidade de comentários
+
+### Categorização de Feedback
+
+**Usar SEMPRE os emojis apropriados:**
+- 🚨 **Crítico**: Problemas que precisam ser resolvidos antes do merge
+- ⚠️ **Importante**: Melhorias significativas recomendadas
+- 💡 **Sugestão**: Melhorias opcionais que agregam valor
+- ✅ **Positivo**: Aspectos bem implementados que merecem destaque
+
+### Filosofia de Review
+
+**Princípios Fundamentais:**
+- **Foco em Problemas**: Comentar apenas sobre erros e oportunidades de melhoria. Não descrever código que está correto
+- **Soluções Práticas**: Para qualquer erro detectado ou identificação de melhorias, gerar o código necessário para correção
+- **Feedback Construtivo**: Fornecer sugestões específicas e acionáveis
+- **Contexto Técnico**: Explicar o impacto e a razão por trás de cada sugestão
+
+**Abordagem de Análise:**
+- Atuar como um engenheiro de software frontend experiente
+- Revisar mudanças como se estivesse analisando um Pull Request
+- Priorizar funcionalidade e segurança sobre padrões estéticos
+- Balancear rigor técnico com pragmatismo de entrega
+
+## Geração de PR Description
+
+### Quando Gerar
+- Solicitado explicitamente para criar PR description
+- Code review completo e aprovado
+- Necessário documentar mudanças para o time
+
+### Processo
+- **Localização**: Criar arquivo em `.notes/pr-description/`
+- **Nomenclatura**: Usar mesmo nome do review substituindo `-vX-review.md` por `-vX-pr-description.md`
+- **Conteúdo**: Converter findings do review em descrição estruturada de PR
+- **Formato**: Seguir padrões de PR description da empresa
+
+## Boas Práticas
+
+### Linguagem e Formato
+- Escrever reviews em português brasileiro
+- Manter termos técnicos em inglês (hooks, components, state, props, etc.)
+- Preservar mensagens de erro em inglês
+- Usar vocabulário técnico preciso mantendo clareza
+
+### Qualidade e Completude
+- Analisar TODOS os arquivos modificados
+- Fornecer feedback construtivo e específico
+- Incluir sugestões de solução para problemas identificados
+- Destacar aspectos positivos além dos problemas
+
+### Estrutura e Organização
+- Usar headings claros para separar seções
+- Manter terminologia consistente
+- Formatar feedback como comentários inline quando apropriado
+- Facilitar cópia para GitHub com formatação adequada
+
+### Versionamento
+- Incrementar versão do arquivo a cada revisão significativa do review
+- Manter histórico de versões no cabeçalho do relatório
+- Preservar versões anteriores para rastreabilidade de análises
+- Documentar claramente as mudanças entre versões de review
+
+## Checklist de Validação para LLM
+
+Antes de finalizar o code review, OBRIGATORIAMENTE verificar:
+**PRIORIZE**: Itens marcados como "Crítico" na [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+
+### ✅ Crítico (Bloqueia entrega)
+- [ ] Git diff executado e changeset obtido
+- [ ] TODOS os arquivos modificados analisados individualmente
+- [ ] ARQUIVO FÍSICO CRIADO usado `edit_file` para criar arquivo em `.notes/code-review/`
+- [ ] Template de relatório aplicado corretamente
+- [ ] Nomenclatura e localização corretas: `YYYY-MM-DD-branch-name-vX-review.md` em `.notes/code-review/`
+- [ ] Se solicitado PR description**: Arquivo criado em `.notes/pr-description/` com nomenclatura correta
+
+### ✅ Importante (Impacta qualidade)
+- [ ] Problemas críticos identificados e documentados
+- [ ] Sugestões de melhoria fornecidas para cada arquivo
+- [ ] Feedback categorizado com emojis (🚨⚠️💡✅)
+- [ ] Recomendação final clara (Aprovar/Modificar/Reprovar)
+- [ ] Análise por arquivo com linhas específicas referenciadas
+- [ ] Aspectos positivos destacados
+
+**IMPORTANTE**: Não finalize sem completar itens "Críticos". Code review requer análise completa de TODOS os arquivos E criação de arquivos físicos.

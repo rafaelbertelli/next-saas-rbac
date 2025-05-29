@@ -1,0 +1,697 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: BFF development guidelines
+globs: ["./api/*", "./services/*", "./common/*", "*/middlewares/*", ]
+alwaysApply: true
+---
+
+# BFF Development Guidelines
+
+## Instruções para LLM
+
+**AÇÃO OBRIGATÓRIA**: Quando solicitado para desenvolver código BFF, siga EXATAMENTE esta sequência:
+
+1. **ANALISAR**: Execute análise técnica completa antes de qualquer implementação
+2. **ESTRUTURAR**: Organize o desenvolvimento seguindo os padrões estabelecidos
+3. **IMPLEMENTAR**: Use os patterns e melhores práticas definidas
+4. **VERIFICAR**: Execute `npx eslint [arquivo]` no arquivo específico
+5. **VALIDAR**: Confirme que seguiu todas as diretrizes antes de finalizar
+
+**IMPORTANTE**: Execute lint apenas no arquivo específico para economia de recursos.
+
+## Fluxo de Desenvolvimento Linear
+
+```
+INÍCIO
+  ↓
+📋 Consultar [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+  ↓
+🔍 Executar [Análise Técnica](mdc:#1-análise-técnica)
+  ↓
+🛠️ Aplicar [API Patterns](mdc:#3-api-patterns) + [Service Layer](mdc:#4-service-layer)
+  ↓
+⚖️ Conflito? → [Resolução de Conflitos](mdc:#resolução-de-conflitos)
+  ↓
+✅ [Verificação e Validação](mdc:#9-verificação-e-validação)
+  ↓
+🎯 FINALIZADO
+```
+
+## Modo Rápido (Para mudanças simples)
+
+**Use quando**: Pequenas correções, ajustes de configuração, ou mudanças triviais
+
+**Processo simplificado**:
+1. ✅ Verificar se é realmente simples (sem lógica complexa)
+2. 🛠️ Implementar seguindo padrões básicos
+3. 🔍 Executar `npx eslint [arquivo]`
+4. ✅ Validar apenas itens "Críticos" do checklist
+
+**Pular para casos simples**: Análise detalhada, documentação extensa, validação completa
+
+## Quando Aplicar
+
+Esta rule deve ser aplicada quando:
+- Desenvolver handlers de API
+- Implementar middleware de autenticação/autorização
+- Criar serviços de integração com APIs externas
+- Implementar tratamento de erros customizado
+- Configurar logging e monitoramento
+- Desenvolver validações de entrada/saída
+- Implementar upload de arquivos
+
+## Índice de Navegação Rápida
+
+- 🚨 [Matriz de Prioridades](mdc:#0-matriz-de-prioridades) - **Consulte PRIMEIRO**
+- ⚖️ [Resolução de Conflitos](mdc:#resolução-de-conflitos) - Para decisões difíceis
+- 🔍 [Análise Técnica](mdc:#1-análise-técnica) - Início do desenvolvimento
+- 🛠️ [API Patterns](mdc:#3-api-patterns) - Durante implementação
+- ✅ [Checklist Final](mdc:#9-verificação-e-validação) - Antes de finalizar
+
+## 0. Matriz de Prioridades
+
+### Crítico (Bloqueia desenvolvimento)
+- Lint sem erros
+- Tipos TypeScript corretos
+- Tratamento de erro implementado
+- Autenticação/autorização funcionais
+
+### Importante (Impacta qualidade)
+- Logging apropriado
+- Validação de entrada/saída
+- Estrutura de handlers
+- Padrões de nomenclatura
+
+### Opcional (Melhoria incremental)
+- Otimizações de performance
+- Documentação adicional
+- Monitoramento avançado
+
+## Resolução de Conflitos
+
+### Ordem de Precedência:
+1. **Segurança > Performance**: Nunca comprometa segurança por performance
+2. **Funcionalidade > Padrões**: Se um padrão impede a funcionalidade, priorize a funcionalidade
+3. **Legibilidade > Otimização**: Código legível é mais importante que micro-otimizações
+4. **Convenções do projeto > Preferências pessoais**: Siga o que já existe no projeto
+
+### Protocolo de Decisão:
+1. **Identifique o conflito**: Qual diretriz está sendo violada?
+2. **Consulte a precedência**: Use a ordem acima para decidir
+3. **Documente a exceção**: Explique por que divergiu
+4. **Valide o mínimo**: Garanta que itens "Críticos" ainda são atendidos
+
+### Exemplos Práticos:
+```typescript
+// ❌ Conflito: Performance vs Segurança
+// Performance diz: cache dados sensíveis
+// Mas: dados contêm informações pessoais
+
+// ✅ Resolução: Priorizar segurança
+// Não fazer cache de dados sensíveis, implementar cache seletivo
+```
+
+### Quando Divergir:
+- **Documente**: Adicione comentário explicando a exceção
+- **Valide críticos**: Confirme que segurança e funcionalidade não são comprometidas
+- **Priorize entrega**: Funcionalidade working > padrão perfeito
+
+## 1. Análise Técnica
+
+**ANTES DE INICIAR**: Consulte a [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+
+### Processo de Análise
+**EXECUTAR OBRIGATORIAMENTE antes de qualquer implementação:**
+
+- **Requisitos**: Identificar funcionalidades de API necessárias
+- **Segurança**: Mapear necessidades de autenticação/autorização
+- **Integração**: Verificar APIs externas e dependências
+- **Performance**: Analisar necessidades de cache e otimização
+
+**FERRAMENTAS**: Use `codebase_search` e `read_file` para analisar código existente.
+
+### Diretrizes de Análise
+- Identifique requisitos de segurança e performance
+- Use `codebase_search` e `read_file` para contexto
+- Documente decisões importantes de arquitetura
+- Prossiga com implementação quando abordagem estiver clara
+
+## 2. Technology Stack
+
+### Core Technologies
+- **Runtime**: Node.js
+- **Framework**: Express
+- **Language**: TypeScript/JavaScript
+- **Security**: Odin Security
+- **Logging**: Nordic Logger (LoggerFactory)
+- **HTTP Client**: Nordic RestClient
+- **Validation**: Zod
+- **File Upload**: Multer
+- **Testing**: Jest
+
+### Role Definition
+Você é um engenheiro backend sênior especializado em Node.js, Express, TypeScript, segurança de APIs e frameworks da empresa (Nordic, Odin, Fury).
+
+## 3. API Patterns
+
+### Handler Structure
+- Use tipos TypeScript para request/response
+- Implemente tratamento de erro consistente
+- Inclua logging apropriado com Nordic LoggerFactory
+- Use contexto de autenticação Odin
+
+```typescript
+import type { AuthenticatedUser } from '@/types/odin-security';
+import type { Request, Response } from 'express';
+
+import { CustomError } from '../../../common/errors/CustomError';
+import { handleErrors } from '../handleErrors';
+import { log } from './config';
+
+export async function exampleHandler(req: Request, res: Response) {
+  const { context } = req;
+  const authenticatedUser = req.auth?.user as AuthenticatedUser;
+
+  const logTags = {
+    user_id: authenticatedUser?.userId,
+  };
+
+  try {
+    log.info('API: Operation description', {
+      ...logTags,
+      ...context,
+    });
+
+    const response = await service({
+      authenticatedUser,
+      context,
+    });
+
+    log.info('API: Successfully completed operation', {
+      ...logTags,
+      ...context,
+    });
+
+    res.json(response);
+  } catch (e: unknown) {
+    const err = e as Error;
+
+    if (!(e instanceof CustomError)) {
+      log.error('API: Operation description', {
+        ...logTags,
+        error_message: err.message,
+        error_stack: err.stack,
+        ...context,
+      });
+    }
+
+    const error = handleErrors(err);
+    res.status(error.status).json({ message: error.message });
+  }
+}
+```
+
+### Request/Response Types
+- Defina interfaces claras para entrada e saída
+- Use validação Zod em runtime
+- Implemente transformação de dados quando necessário
+
+```typescript
+import { z } from 'zod';
+
+const CreateUserRequestSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().email('Valid email is required'),
+  role: z.enum(['admin', 'user']),
+});
+
+type CreateUserRequest = z.infer<typeof CreateUserRequestSchema>;
+
+interface CreateUserResponse {
+  id: string;
+  name: string;
+  email: string;
+  createdAt: string;
+}
+
+export async function createUserHandler(
+  req: Request,
+  res: Response<CreateUserResponse>
+) {
+  // Validate input with Zod
+  const validatedData = CreateUserRequestSchema.parse(req.body);
+  
+  // Implementation
+}
+```
+
+### Middleware Patterns
+- Implemente middleware reutilizável
+- Use Nordic/Odin patterns para auth
+- Mantenha middleware focado em uma responsabilidade
+
+```typescript
+import { contextMiddleware } from '../middlewares/contextMiddleware';
+import { authentication, authorization } from 'odin/security';
+import { GLOBAL_ROLES_ALLOWED } from '../common/roles/applicationRoles';
+
+// Context middleware (Nordic pattern)
+router.use(contextMiddleware);
+
+// Authentication middleware (Odin pattern)
+router.use(authentication());
+
+// Authorization middleware (Odin pattern)
+router.use(authorization({
+  roles: GLOBAL_ROLES_ALLOWED,
+  blockade: unauthorized,
+}));
+```
+
+### File Upload Patterns
+- Use Multer para upload de arquivos
+- Configure validação de tipos e tamanhos
+- Implemente tratamento de erros específico
+
+```typescript
+import multer from 'multer';
+import { config } from 'nordic/config';
+import { ValidationError } from '../../../common/errors';
+
+const attachmentsConfig = config.get('services.attachments');
+const { allowedTypes, fileSize } = attachmentsConfig;
+
+const uploadSetup = multer({
+  limits: { fileSize },
+  fileFilter(req, file, callback) {
+    if (!allowedTypes.includes(file.mimetype)) {
+      return callback(new ValidationError('Invalid file extension'));
+    }
+
+    // Fix UTF-8 filename encoding
+    const tempName = file.originalname;
+    file.originalname = Buffer.from(tempName, 'latin1').toString('utf8');
+
+    return callback(null, true);
+  },
+});
+
+const uploadMultiple = uploadSetup.array('files', 100);
+```
+
+## 4. Service Layer
+
+### Service Structure
+- Separe lógica de negócio dos handlers
+- Use Nordic RestClient para APIs externas
+- Implemente tratamento de erro com handleCatch
+
+```typescript
+import type { ErrorWithResponse } from '../handleCatch';
+import { handleCatch } from '../handleCatch';
+import { log, request } from './config';
+
+export const exampleService = async ({
+  data,
+  authenticatedUser,
+  context,
+}: ServiceProps) => {
+  const logTags = {
+    user_id: authenticatedUser?.userId,
+  };
+
+  log.info('Service: Operation description', {
+    ...logTags,
+    ...context,
+  });
+
+  try {
+    const response = await request.post('/external-api', {
+      headers: { 'Content-Type': 'application/json' },
+      data,
+      context,
+    });
+
+    log.info('Service: Successfully completed operation', {
+      ...logTags,
+      response: JSON.stringify(response.data),
+    });
+
+    return response.data;
+  } catch (e: unknown) {
+    const { error, tags } = handleCatch(e as ErrorWithResponse);
+
+    log.error('Service: Something went wrong', {
+      ...logTags,
+      ...tags,
+      ...context,
+    });
+
+    throw error;
+  }
+};
+```
+
+### RestClient Configuration
+- Use Nordic RestClient para chamadas externas
+- Configure timeouts apropriados
+- Implemente retry policies quando necessário
+
+```typescript
+import { config } from 'nordic/config';
+import { LoggerFactory } from 'nordic/logger';
+import { RestClient } from 'nordic/restclient';
+
+const serviceConfig = config.get('services.external');
+
+export const request = RestClient({
+  timeout: serviceConfig.timeout,
+  baseURL: serviceConfig.baseURL + serviceConfig.path,
+});
+
+export const log = LoggerFactory('services.external');
+```
+
+## 5. Error Handling
+
+### Custom Error Classes
+- Estenda `CustomError` para todos os tipos de erro
+- Implemente classes específicas para diferentes status HTTP
+- Mantenha convenção de nomenclatura consistente
+
+```typescript
+import { CustomError } from './CustomError';
+
+export class ValidationError extends CustomError {
+  name = 'ValidationError';
+}
+
+export class UnauthorizedError extends CustomError {
+  name = 'UnauthorizedError';
+}
+
+export class ServiceUnavailableError extends CustomError {
+  name = 'ServiceUnavailableError';
+}
+```
+
+### Error Handler Function
+- Centralize mapeamento de erros para status HTTP
+- Use função handleErrors para consistência
+- Retorne respostas padronizadas
+
+```typescript
+import { 
+  BadRequest,
+  ValidationError,
+  UnauthorizedError,
+  // ... outros erros
+} from '../../common/errors';
+
+const errorsStatus = {
+  [ValidationError.name]: 400,
+  [UnauthorizedError.name]: 401,
+  [ResourceNotFoundError.name]: 404,
+  // ... outros mapeamentos
+};
+
+export function handleErrors(error: Error): {
+  status: number;
+  message: string;
+} {
+  const status = errorsStatus[error.name] || 500;
+  return { status, message: error.message };
+}
+```
+
+### Service Error Handling
+- Use handleCatch para erros de APIs externas
+- Mapeie status HTTP para classes de erro apropriadas
+- Inclua informações de debug em logs
+
+```typescript
+export function handleCatch(error: ErrorWithResponse) {
+  let instanceError: Error | undefined;
+  let status = 500;
+
+  if (error.response) {
+    const errorStatus = Number(error.response.status || 500);
+    const errorType = statusMap[errorStatus] || unhandledError;
+    
+    status = error.response.status || 500;
+    instanceError = new errorType.ErrorClass(
+      error.response.data?.message || errorType.message,
+    );
+  }
+
+  const tags = {
+    status,
+    method: error.config?.method,
+    url: error.config?.url,
+    error: instanceError?.name,
+    response: error.response?.data?.message,
+    stack: error.stack,
+  };
+
+  return {
+    error: instanceError || new UnhandledError(error.message),
+    tags,
+  };
+}
+```
+
+## 6. Input Validation
+
+### Zod Schema Patterns
+- Use Zod para validação de entrada
+- Defina schemas reutilizáveis
+- Implemente mensagens de erro em português
+
+```typescript
+import { z } from 'zod';
+
+export const CreateAttachmentSchema = z.object({
+  files: z.array(z.instanceof(File))
+    .min(1, 'Pelo menos um arquivo é obrigatório')
+    .max(10, 'Máximo de 10 arquivos permitidos'),
+  metadata: z.object({
+    description: z.string().optional(),
+    category: z.enum(['document', 'image', 'video']),
+  }).optional(),
+});
+
+// Validation function
+export function validateCreateAttachment(data: unknown) {
+  try {
+    return CreateAttachmentSchema.parse(data);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      throw new ValidationError(error.errors[0].message);
+    }
+    throw new ValidationError('Invalid input data');
+  }
+}
+```
+
+### Runtime Validation
+- Valide dados de entrada em todos os handlers
+- Use early returns para falhas de validação
+- Sanitize dados quando necessário
+
+```typescript
+export async function createHandler(req: Request, res: Response) {
+  try {
+    // Validate input
+    const validatedData = validateCreateAttachment(req.body);
+    
+    // Process with validated data
+    const result = await service(validatedData);
+    
+    res.json(result);
+  } catch (error) {
+    // Error handling
+  }
+}
+```
+
+## 7. Security Patterns
+
+### Authentication & Authorization
+- Use Odin Security para autenticação
+- Implemente autorização baseada em roles
+- Valide tokens e permissões
+
+```typescript
+import { authentication, authorization } from 'odin/security';
+import { GLOBAL_ROLES_ALLOWED } from '../common/roles/applicationRoles';
+
+// Authentication middleware
+router.use(authentication());
+
+// Authorization with roles
+router.use(authorization({
+  roles: GLOBAL_ROLES_ALLOWED,
+  blockade: (req: Request, res: Response) => {
+    log.error('API: unauthorized access', {
+      url: req.url,
+      method: req.method,
+      user: JSON.stringify(req.auth?.user),
+    });
+    res.status(403).json({ message: 'unauthorized' });
+  },
+}));
+```
+
+### Data Protection
+- Use HTTPS para todas as chamadas
+- Implemente rate limiting
+- Proteja dados sensíveis em logs
+
+```typescript
+const secureEndpoint = async (req: Request, res: Response) => {
+  // Validate input
+  const validatedData = validateInput(req.body);
+  
+  // Process securely
+  const result = await processData(validatedData);
+  
+  // Sanitize output (remove sensitive data)
+  const sanitizedResult = {
+    ...result,
+    password: undefined,
+    token: undefined,
+  };
+  
+  res.json(sanitizedResult);
+};
+```
+
+## 8. Implementation Guidelines
+
+**LEMBRE-SE**: Consulte [Matriz de Prioridades](mdc:#0-matriz-de-prioridades) para focar no que é crítico primeiro.
+
+### Padrões Obrigatórios
+- Escreva código completo e funcional
+- Não use TODOs ou placeholders
+- Inclua todos os imports necessários
+- Implemente tratamento de erro robusto
+- Use logging estruturado com Nordic LoggerFactory
+- Valide entrada e saída com Zod
+
+```typescript
+import type { AuthenticatedUser } from '@/types/odin-security';
+import type { Request, Response } from 'express';
+
+import { z } from 'zod';
+import { CustomError } from '../../../common/errors/CustomError';
+import { ValidationError } from '../../../common/errors';
+import { handleErrors } from '../handleErrors';
+import { log } from './config';
+
+const RequestSchema = z.object({
+  name: z.string().min(1, 'Nome é obrigatório'),
+  email: z.string().email('Email inválido'),
+});
+
+export async function exampleHandler(req: Request, res: Response) {
+  const { context } = req;
+  const authenticatedUser = req.auth?.user as AuthenticatedUser;
+
+  try {
+    // Validate input
+    const validatedData = RequestSchema.parse(req.body);
+    
+    // Process business logic
+    const result = await processBusinessLogic(validatedData);
+    
+    // Log success
+    log.info('Operation completed successfully', {
+      user_id: authenticatedUser?.userId,
+      operation: 'example_operation',
+      ...context,
+    });
+    
+    res.json(result);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      const validationError = new ValidationError(error.errors[0].message);
+      const errorResponse = handleErrors(validationError);
+      return res.status(errorResponse.status).json({ message: errorResponse.message });
+    }
+
+    const err = error as Error;
+    if (!(error instanceof CustomError)) {
+      log.error('Unexpected error', {
+        user_id: authenticatedUser?.userId,
+        error_message: err.message,
+        error_stack: err.stack,
+        ...context,
+      });
+    }
+
+    const errorResponse = handleErrors(err);
+    res.status(errorResponse.status).json({ message: errorResponse.message });
+  }
+}
+```
+
+### Estruturação do Código
+- Seguir estrutura de pastas do projeto
+- Separar handlers, services e middleware
+- Organizar imports seguindo padrões
+- Usar ES6+ syntax para exports
+
+## 9. Verificação e Validação
+
+**EM CASO DE CONFLITO**: Consulte [Resolução de Conflitos](mdc:#resolução-de-conflitos)
+
+### Lint Verification
+Execute `npx eslint [arquivo]` no arquivo específico antes de finalizar.
+
+**Exemplos:**
+```bash
+# Para handler de API:
+npx eslint api/handlers/attachments/upload-attachments/upload-attachments.ts
+
+# Para middleware:
+npx eslint middlewares/contextMiddleware.ts
+
+# Para service:
+npx eslint services/attachments/upload-attachment/upload-attachment.ts
+```
+
+**Se lint falhar:**
+- Corrija TODOS os erros antes de prosseguir
+- Use `npx eslint [arquivo] --fix` para correções automáticas
+
+### Checklist de Validação para LLM
+
+**OBRIGATÓRIO verificar antes de finalizar:**
+**PRIORIZE**: Itens marcados como "Crítico" na [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
+
+#### ✅ Crítico (Bloqueia entrega)
+- [ ] Lint executado sem erros no arquivo específico
+- [ ] Tipos TypeScript corretos
+- [ ] Tratamento de erro implementado
+- [ ] Autenticação/autorização funcionais
+
+#### ✅ Importante (Impacta qualidade)
+- [ ] Logging apropriado com Nordic LoggerFactory
+- [ ] Validação de entrada/saída com Zod
+- [ ] Estrutura de handlers seguida
+- [ ] Padrões de nomenclatura seguidos
+
+**IMPORTANTE**: Não finalize sem completar itens "Críticos".
+
+## Documentation e Tools
+
+### MCP Servers Disponíveis
+- **Fury**: Service discovery, documentação técnica e exemplos de implementação
+- **Odin Security**: Padrões de segurança e autenticação
+
+### Access Permissions
+- Acesso completo ao node_modules para referência de documentação, verificação de tipos e exemplos de implementação
