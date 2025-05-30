@@ -85,6 +85,7 @@ describe("createProjectService", () => {
     expect(createSlug).toHaveBeenCalledWith(name);
     expect(getProjectBySlugRepository).toHaveBeenCalledWith({
       slug: projectSlug,
+      organizationId: organization.id,
     });
     expect(createProjectRepository).toHaveBeenCalledWith({
       organizationId: organization.id,
@@ -126,6 +127,27 @@ describe("createProjectService", () => {
       organizationId: organization.id,
       createdAt: new Date("2024-01-01T00:00:00.000Z"),
       updatedAt: new Date("2024-01-01T00:00:00.000Z"),
+      organization: {
+        id: organization.id,
+        name: organization.name,
+        slug: organization.slug,
+        domain: organization.domain,
+        avatarUrl: organization.avatarUrl,
+        shouldAttachUsersByDomain: organization.shouldAttachUsersByDomain,
+        ownerId: organization.ownerId,
+        createdAt: organization.createdAt,
+        updatedAt: organization.updatedAt,
+      },
+      owner: {
+        id: "other-user-1",
+        name: "Other User",
+        email: "other@example.com",
+        avatarUrl: null,
+        passwordHash: null,
+        githubId: null,
+        createdAt: new Date("2024-01-01T00:00:00.000Z"),
+        updatedAt: new Date("2024-01-01T00:00:00.000Z"),
+      },
     };
     jest
       .mocked(getUserMembershipOrganization)
@@ -144,6 +166,7 @@ describe("createProjectService", () => {
     ).rejects.toThrow(ConflictError);
     expect(getProjectBySlugRepository).toHaveBeenCalledWith({
       slug: projectSlug,
+      organizationId: organization.id,
     });
     expect(createProjectRepository).not.toHaveBeenCalled();
   });
@@ -185,6 +208,21 @@ describe("createProjectService", () => {
     await expect(
       createProjectService({ userId, slug, name, description })
     ).rejects.toThrow("Failed to get project by slug");
+    expect(createProjectRepository).not.toHaveBeenCalled();
+  });
+
+  it("should throw if getUserMembershipOrganization throws", async () => {
+    // Arrange
+    jest
+      .mocked(getUserMembershipOrganization)
+      .mockRejectedValueOnce(new Error("Organization not found"));
+
+    // Act & Assert
+    await expect(
+      createProjectService({ userId, slug, name, description })
+    ).rejects.toThrow("Organization not found");
+    expect(getUserPermissions).not.toHaveBeenCalled();
+    expect(getProjectBySlugRepository).not.toHaveBeenCalled();
     expect(createProjectRepository).not.toHaveBeenCalled();
   });
 });

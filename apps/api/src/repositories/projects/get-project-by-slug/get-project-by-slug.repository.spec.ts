@@ -26,11 +26,18 @@ describe("getProjectBySlugRepository", () => {
     jest.mocked(prisma.project.findUnique).mockResolvedValueOnce(mockProject);
 
     // Act
-    const result = await getProjectBySlugRepository({ slug });
+    const result = await getProjectBySlugRepository({
+      slug,
+      organizationId: "org-1",
+    });
 
     // Assert
     expect(prisma.project.findUnique).toHaveBeenCalledWith({
-      where: { slug },
+      where: { slug, organization: { id: "org-1" } },
+      include: {
+        organization: true,
+        owner: true,
+      },
     });
     expect(result).toBe(mockProject);
   });
@@ -40,11 +47,18 @@ describe("getProjectBySlugRepository", () => {
     jest.mocked(prisma.project.findUnique).mockResolvedValueOnce(null);
 
     // Act
-    const result = await getProjectBySlugRepository({ slug });
+    const result = await getProjectBySlugRepository({
+      slug,
+      organizationId: "org-1",
+    });
 
     // Assert
     expect(prisma.project.findUnique).toHaveBeenCalledWith({
-      where: { slug },
+      where: { slug, organization: { id: "org-1" } },
+      include: {
+        organization: true,
+        owner: true,
+      },
     });
     expect(result).toBeNull();
   });
@@ -56,8 +70,8 @@ describe("getProjectBySlugRepository", () => {
       .mockRejectedValueOnce(new Error("Database connection error"));
 
     // Act & Assert
-    await expect(getProjectBySlugRepository({ slug })).rejects.toThrow(
-      "Failed to get project by slug"
-    );
+    await expect(
+      getProjectBySlugRepository({ slug, organizationId: "org-1" })
+    ).rejects.toThrow("Failed to get project by slug");
   });
 });

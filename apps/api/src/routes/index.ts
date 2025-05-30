@@ -9,6 +9,7 @@ import { transferOrganizationRoute } from "./organizations/transfer-organization
 import { updateOrganizationRoute } from "./organizations/update-organization";
 import { createProjectRoute } from "./projects/create-project";
 import { deleteProjectRoute } from "./projects/delete-project";
+import { getProjectRoute } from "./projects/get-project/get-project.route";
 import { authenticateWithEmailAndPasswordRoute } from "./session/authenticate-with-email-and-password";
 import { authenticateWithGithubRoute } from "./session/authenticate-with-github";
 import { passwordRecoverRoute } from "./session/password-recover/password-recover.route";
@@ -39,4 +40,5 @@ export async function routes(app: FastifyInstance) {
   // Organizations -> Projects
   createProjectRoute(app);
   deleteProjectRoute(app);
+  getProjectRoute(app);
 }

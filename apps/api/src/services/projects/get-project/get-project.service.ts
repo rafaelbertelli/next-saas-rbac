@@ -1,28 +1,24 @@
-import { createProjectRepository } from "@/repositories/projects/create-project";
 import { getProjectBySlugRepository } from "@/repositories/projects/get-project-by-slug";
-import { ConflictError } from "@/routes/_error/4xx/conflict-error";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
+import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
 import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
-import { createSlug } from "@/utils/slug/create-slug";
 import { projectSchema } from "@repo/auth";
 
-type CreateProjectServiceParams = {
+type GetProjectServiceParams = {
   userId: string;
-  slug: string;
-  name: string;
-  description: string;
+  organizationSlug: string;
+  projectSlug: string;
 };
 
-export async function createProjectService({
+export async function getProjectService({
   userId,
-  slug,
-  name,
-  description,
-}: CreateProjectServiceParams) {
+  organizationSlug,
+  projectSlug,
+}: GetProjectServiceParams) {
   const { organization, membership } = await getUserMembershipOrganization({
     userId,
-    organizationSlug: slug,
+    organizationSlug,
   });
 
   // check user permission to create a project
@@ -32,31 +28,21 @@ export async function createProjectService({
     ownerId: organization.ownerId,
   });
 
-  if (cannot("create", authProject)) {
+  if (cannot("get", authProject)) {
     throw new ForbiddenError(
-      "User does not have permission to create a project"
+      "User does not have permission to get this project"
     );
   }
   // end
 
-  const projectSlug = createSlug(name);
-
-  const projectBySlug = await getProjectBySlugRepository({
+  const project = await getProjectBySlugRepository({
     slug: projectSlug,
     organizationId: organization.id,
   });
 
-  if (projectBySlug) {
-    throw new ConflictError("Project with this slug already exists");
+  if (!project) {
+    throw new NotFoundError("Project not found");
   }
-
-  const project = await createProjectRepository({
-    organizationId: organization.id,
-    name,
-    description,
-    slug: projectSlug,
-    ownerId: userId,
-  });
 
   return project;
 }
