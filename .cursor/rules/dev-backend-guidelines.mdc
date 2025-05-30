@@ -18,10 +18,7 @@ alwaysApply: true
 1. **ANALISAR**: Execute análise técnica completa antes de qualquer implementação
 2. **ESTRUTURAR**: Organize o desenvolvimento seguindo os padrões estabelecidos
 3. **IMPLEMENTAR**: Use os patterns e melhores práticas definidas
-4. **VERIFICAR**: Execute `npx eslint [arquivo]` no arquivo específico
-5. **VALIDAR**: Confirme que seguiu todas as diretrizes antes de finalizar
-
-**IMPORTANTE**: Execute lint apenas no arquivo específico para economia de recursos.
+4. **VALIDAR**: Confirme que seguiu todas as diretrizes antes de finalizar
 
 ## Fluxo de Desenvolvimento Linear
 
@@ -48,8 +45,7 @@ INÍCIO
 **Processo simplificado**:
 1. ✅ Verificar se é realmente simples (sem lógica complexa)
 2. 🛠️ Implementar seguindo padrões básicos
-3. 🔍 Executar `npx eslint [arquivo]`
-4. ✅ Validar apenas itens "Críticos" do checklist
+3. ✅ Validar apenas itens "Críticos" do checklist
 
 **Pular para casos simples**: Análise detalhada, documentação extensa, validação completa
 
@@ -75,7 +71,6 @@ Esta rule deve ser aplicada quando:
 ## 0. Matriz de Prioridades
 
 ### Crítico (Bloqueia desenvolvimento)
-- Lint sem erros
 - Tipos TypeScript corretos
 - Tratamento de erro implementado
 - Autenticação/autorização funcionais
@@ -610,36 +605,9 @@ throw new NotFoundError("User not found");
 
 ## 9. Verificação e Validação
 
-### Lint Verification
-**IMPORTANTE**: Instale eslint se não estiver disponível: `pnpm add -D eslint @repo/eslint-config`
-
-Execute `npx eslint [arquivo]` no arquivo específico antes de finalizar.
-
-**Exemplos EXATOS baseados na estrutura:**
-```bash
-# Para rota:
-npx eslint apps/api/src/routes/users/user-profile/user-profile.route.ts
-
-# Para service:
-npx eslint apps/api/src/services/organizations/create-organization/create-organization.service.ts
-
-# Para repository:
-npx eslint apps/api/src/repositories/organizations/create-organization/create-organization.repository.ts
-```
-
-**Se eslint não estiver instalado:**
-```bash
-# No root do projeto
-pnpm add -D eslint
-
-# Ou no app específico
-cd apps/api && pnpm add -D eslint
-```
-
 ### Checklist de Validação para LLM
 
 #### ✅ Crítico (Bloqueia entrega)
-- [ ] Lint executado sem erros no arquivo específico
 - [ ] Tipos TypeScript corretos (sem `any`)
 - [ ] Tratamento de erro implementado (throw classes customizadas)
 - [ ] Autenticação/autorização funcionais (quando aplicável)

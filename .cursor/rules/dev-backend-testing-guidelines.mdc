@@ -19,11 +19,10 @@ alwaysApply: true
 2. **ANALISAR**: Execute análise do código backend a ser testado usando ferramentas disponíveis
 3. **ESTRUTURAR**: Organize os testes seguindo os padrões estabelecidos
 4. **IMPLEMENTAR**: Use os patterns e melhores práticas definidas
-5. **VERIFICAR LINT**: Execute `npx eslint [arquivo]` para verificar erros de lint APENAS no arquivo específico
-6. **EXECUTAR TESTES**: Execute `npm test [arquivo.spec.ts]` para validar que o teste específico passa
-7. **VALIDAR**: Verifique se seguiu todas as diretrizes antes de finalizar
+5. **EXECUTAR TESTES**: Execute `npm test [arquivo.spec.ts]` para validar que o teste específico passa
+6. **VALIDAR**: Verifique se seguiu todas as diretrizes antes de finalizar
 
-**ECONOMIA DE RECURSOS**: SEMPRE execute lint e testes apenas nos arquivos específicos, não no projeto todo
+**ECONOMIA DE RECURSOS**: SEMPRE execute testes apenas nos arquivos específicos, não no projeto todo
 
 **NOMENCLATURA OBRIGATÓRIA**: Usar `.spec.ts` para arquivos de teste
 
@@ -54,8 +53,7 @@ INÍCIO
 **Processo simplificado**:
 1. ✅ Verificar se é realmente simples (sem lógica complexa de API)
 2. 🛠️ Implementar seguindo padrões básicos
-3. 🔍 Executar `npx eslint [arquivo]`
-4. ✅ Validar apenas itens "Críticos" do checklist
+3. ✅ Validar apenas itens "Críticos" do checklist
 
 **Pular para casos simples**: Análise detalhada, documentação extensa, validação completa
 
@@ -80,7 +78,6 @@ Esta rule deve ser aplicada quando:
 ## 0. Matriz de Prioridades
 
 ### Crítico (Bloqueia desenvolvimento)
-- Lint sem erros no arquivo de teste
 - Teste específico executando e passando
 - Mocks de Prisma funcionais
 - Nomenclatura correta (.spec.ts)
@@ -557,25 +554,19 @@ export const prisma = {
 
 **EXECUTAR OBRIGATORIAMENTE antes de finalizar:**
 
-- **Verificação de Lint**: Use `run_terminal_cmd` com `npx eslint [arquivo]` para verificar erros de lint no arquivo específico
-- **Correção de Lint**: Se houver erros, corrija-os antes de prosseguir
 - **Execução de Testes**: Use `run_terminal_cmd` com `npm test [arquivo.spec.ts]` para executar apenas o teste específico
 - **Validação de Resultados**: Confirme que o teste específico passa
 
 **AÇÕES OBRIGATÓRIAS:**
 ```bash
-# 1. Verificar lint apenas no arquivo específico (economiza recursos)
-npx eslint apps/api/src/services/example/example.service.spec.ts
-
-# 2. Se lint passou, executar apenas o teste específico
+# 1. Executar apenas o teste específico
 npm test example.service.spec.ts
 
-# 3. Verificar se o teste específico passa
-# 4. Se o teste falhar, corrigir antes de finalizar
+# 2. Verificar se o teste específico passa
+# 3. Se o teste falhar, corrigir antes de finalizar
 ```
 
 **IMPORTANTE**: Não finalize a implementação de testes se houver:
-- Erros de lint não corrigidos no arquivo específico
 - Teste específico falhando
 - Warnings críticos não resolvidos no arquivo
 
@@ -585,7 +576,6 @@ npm test example.service.spec.ts
 **PRIORIZE**: Itens marcados como "Crítico" na [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
 
 #### ✅ Crítico (Bloqueia entrega)
-- [ ] Lint executado sem erros no arquivo de teste específico
 - [ ] Teste específico executando e passando
 - [ ] Mocks de Prisma funcionais
 - [ ] Nomenclatura correta (.spec.ts)
