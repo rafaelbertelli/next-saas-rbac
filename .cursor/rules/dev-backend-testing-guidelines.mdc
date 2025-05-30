@@ -4,8 +4,8 @@ globs:
 alwaysApply: false
 ---
 ---
-description: BFF testing guidelines
-globs: ["./api/**/*.spec*", "./services/**/*.spec*", "./common/**/*.spec*", "*/middlewares/**/*.spec*", ]
+description: Backend testing guidelines
+globs: ["apps/api/**/*.spec*"]
 alwaysApply: true
 ---
 

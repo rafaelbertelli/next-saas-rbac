@@ -4,8 +4,8 @@ globs:
 alwaysApply: true
 ---
 ---
-description: BFF development guidelines
-globs: ["./api/*", "./services/*", "./common/*", "*/middlewares/*", ]
+description: Backend development guidelines
+globs: ["app/api/*"]
 alwaysApply: true
 ---
 

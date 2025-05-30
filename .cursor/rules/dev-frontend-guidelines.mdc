@@ -1,7 +1,7 @@
 ---
 description: 
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
 ---
 description: Frontend development guidelines - Conteúdo mesclado entre nosso padrão e https://github.dev/melisource/fury_common-cursor-rules
