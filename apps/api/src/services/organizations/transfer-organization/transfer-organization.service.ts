@@ -1,7 +1,7 @@
 import { Role } from "@/generated/prisma";
 import { prisma } from "@/infra/prisma/prisma-connection";
 import { getMembershipByUserIdRepository } from "@/repositories/members/get-membership-by-user-id";
-import { updateMembershipRepository } from "@/repositories/members/update-membership";
+import { transferMembershipRepository } from "@/repositories/members/transfer-membership";
 import { updateOrganizationRepository } from "@/repositories/organizations/update-organization";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { UnauthorizedError } from "@/routes/_error/4xx/unauthorized-error";
@@ -57,7 +57,7 @@ export async function transferOrganizationService({
   // update organization owner
   // update current user membership role to member
   const result = await prisma.$transaction(async (tx) => {
-    await updateMembershipRepository({
+    await transferMembershipRepository({
       organizationId: organization.id,
       userId: transferToUserId,
       role: Role.ADMIN,

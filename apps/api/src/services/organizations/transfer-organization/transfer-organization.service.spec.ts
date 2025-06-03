@@ -1,15 +1,20 @@
 jest.mock("@/services/membership/get-user-membership-organization");
 jest.mock("@/services/authorization/user-permissions/get-user-permissions");
 jest.mock("@/repositories/members/get-membership-by-user-id");
-jest.mock("@/repositories/members/update-membership");
+jest.mock("@/repositories/members/transfer-membership");
 jest.mock("@/repositories/organizations/update-organization");
+jest.mock("@/infra/prisma/prisma-connection", () => ({
+  prisma: {
+    $transaction: jest.fn(),
+  },
+}));
 jest.mock("@repo/auth", () => ({
   organizationSchema: { parse: jest.fn() },
 }));
 
 import { prisma } from "@/infra/prisma/prisma-connection";
 import { getMembershipByUserIdRepository } from "@/repositories/members/get-membership-by-user-id";
-import { updateMembershipRepository } from "@/repositories/members/update-membership";
+import { transferMembershipRepository } from "@/repositories/members/transfer-membership";
 import { updateOrganizationRepository } from "@/repositories/organizations/update-organization";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { UnauthorizedError } from "@/routes/_error/4xx/unauthorized-error";
@@ -65,7 +70,7 @@ describe("transferOrganizationService", () => {
       await cb({});
       return "transaction-result";
     });
-    (updateMembershipRepository as jest.Mock).mockResolvedValue(undefined);
+    (transferMembershipRepository as jest.Mock).mockResolvedValue(undefined);
     (updateOrganizationRepository as jest.Mock).mockResolvedValue(undefined);
 
     const result = await transferOrganizationService({
