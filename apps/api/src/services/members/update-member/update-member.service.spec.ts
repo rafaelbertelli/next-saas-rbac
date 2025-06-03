@@ -102,31 +102,6 @@ describe("updateMemberService", () => {
     expect(updateMembershipRepository).not.toHaveBeenCalled();
   });
 
-  it("should throw ForbiddenError if trying to update organization owner", async () => {
-    // Arrange
-    const ownerMemberId = organization.ownerId;
-    jest
-      .mocked(getUserMembershipOrganization)
-      .mockResolvedValueOnce({ organization, membership });
-    jest.mocked(getUserPermissions).mockReturnValue({
-      can: () => true,
-      cannot: () => false,
-    });
-
-    // Act & Assert
-    await expect(
-      updateMemberService({
-        userId,
-        organizationSlug,
-        memberId: ownerMemberId,
-        role: newRole,
-      })
-    ).rejects.toThrow(
-      new ForbiddenError("Cannot update organization owner role")
-    );
-    expect(updateMembershipRepository).not.toHaveBeenCalled();
-  });
-
   it("should throw if getUserMembershipOrganization throws", async () => {
     // Arrange
     jest

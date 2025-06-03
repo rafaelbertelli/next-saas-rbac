@@ -1,6 +1,7 @@
 import { FastifyInstance } from "fastify";
 
 import { getMembersRoute } from "./members/get-members";
+import { removeMemberRoute } from "./members/remove-member";
 import { updateMemberRoute } from "./members/update-member";
 import { createOrganizationRoute } from "./organizations/create-organization";
 import { getMembershipRoute } from "./organizations/get-membership";
@@ -51,4 +52,5 @@ export async function routes(app: FastifyInstance) {
   // Organizations -> Members
   getMembersRoute(app);
   updateMemberRoute(app);
+  removeMemberRoute(app);
 }
