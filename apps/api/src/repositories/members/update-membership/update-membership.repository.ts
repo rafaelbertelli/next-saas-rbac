@@ -3,22 +3,18 @@ import { prisma } from "@/infra/prisma/prisma-connection";
 
 export const updateMembershipRepository = async ({
   organizationId,
-  userId,
+  memberId,
   role,
-  tx,
 }: {
   organizationId: string;
-  userId: string;
+  memberId: string;
   role: Role;
-  tx?: PrismaTransactionClient;
 }) => {
   try {
-    const updatedMembership = await (tx ?? prisma).member.update({
+    const updatedMembership = await prisma.member.update({
       where: {
-        organizationId_userId: {
-          organizationId,
-          userId,
-        },
+        id: memberId,
+        organizationId,
       },
       data: {
         role,
