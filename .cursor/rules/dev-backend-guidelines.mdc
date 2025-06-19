@@ -1,139 +1,94 @@
 ---
 description: 
-globs: 
-alwaysApply: true
+globs: app/api/**/*.ts
+alwaysApply: false
 ---
----
-description: Backend development guidelines
-globs: ["app/api/*"]
-alwaysApply: true
----
-
 # Fastify Backend Development Guidelines
 
-## Instruções para LLM
+## LLM Instructions
 
-**AÇÃO OBRIGATÓRIA**: Quando solicitado para desenvolver código backend, siga EXATAMENTE esta sequência:
+**MANDATORY ACTION**: When requested to develop backend code, follow EXACTLY this sequence:
 
-1. **ANALISAR**: Execute análise técnica completa antes de qualquer implementação
-2. **ESTRUTURAR**: Organize o desenvolvimento seguindo os padrões estabelecidos
-3. **IMPLEMENTAR**: Use os patterns e melhores práticas definidas
-4. **VALIDAR**: Confirme que seguiu todas as diretrizes antes de finalizar
+1. **ANALYZE**: Execute complete technical analysis before any implementation
+2. **STRUCTURE**: Organize development following established patterns
+3. **IMPLEMENT**: Use defined patterns and best practices
+4. **VALIDATE**: Confirm that all guidelines were followed before finalizing
 
-## Fluxo de Desenvolvimento Linear
+## Linear Development Flow
 
 ```
-INÍCIO
-  ↓
-📋 Consultar [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
-  ↓
-🔍 Executar [Análise Técnica](mdc:#1-análise-técnica)
-  ↓
-🛠️ Aplicar [Fastify Patterns](mdc:#3-fastify-patterns) + [Service Layer](mdc:#4-service-layer)
-  ↓
-⚖️ Conflito? → [Resolução de Conflitos](mdc:#resolução-de-conflitos)
-  ↓
-✅ [Verificação e Validação](mdc:#9-verificação-e-validação)
-  ↓
-🎯 FINALIZADO
+START → 📋 [Priority Matrix] → 🔍 [Technical Analysis] → 🛠️ [Implementation] → ✅ [Validation] → 🎯 FINISHED
 ```
 
-## Modo Rápido (Para mudanças simples)
+## Quick Mode (For simple changes)
 
-**Use quando**: Pequenas correções, ajustes de configuração, ou mudanças triviais
+**Use when**: Small corrections, configuration adjustments, or trivial changes
 
-**Processo simplificado**:
-1. ✅ Verificar se é realmente simples (sem lógica complexa)
-2. 🛠️ Implementar seguindo padrões básicos
-3. ✅ Validar apenas itens "Críticos" do checklist
+**Simplified process**:
+1. ✅ Verify if it's really simple (no complex logic)
+2. 🛠️ Implement following basic patterns
+3. ✅ Validate only "Critical" checklist items
 
-**Pular para casos simples**: Análise detalhada, documentação extensa, validação completa
+## When to Apply
 
-## Quando Aplicar
+This rule should be applied when:
+- Developing API routes with Fastify
+- Implementing authentication/authorization middleware
+- Creating business logic services
+- Implementing repositories with Prisma
+- Implementing custom error handling
+- Developing input/output validation with Zod
 
-Esta rule deve ser aplicada quando:
-- Desenvolver rotas de API com Fastify
-- Implementar middleware de autenticação/autorização
-- Criar serviços de lógica de negócio
-- Implementar repositórios com Prisma
-- Implementar tratamento de erros customizado
-- Configurar logging e monitoramento
-- Desenvolver validações de entrada/saída com Zod
+## Quick Navigation Index
 
-## Índice de Navegação Rápida
+- 🚨 [Priority Matrix](mdc:#0-priority-matrix) - **Consult FIRST**
+- ⚖️ [Conflict Resolution](mdc:#conflict-resolution) - For difficult decisions
+- 🔍 [Technical Analysis](mdc:#1-technical-analysis) - Development start
+- 🛠️ [Implementation Patterns](mdc:#3-implementation-patterns) - During implementation
+- ✅ [Final Checklist](mdc:#8-verification-and-validation) - Before finalizing
 
-- 🚨 [Matriz de Prioridades](mdc:#0-matriz-de-prioridades) - **Consulte PRIMEIRO**
-- ⚖️ [Resolução de Conflitos](mdc:#resolução-de-conflitos) - Para decisões difíceis
-- 🔍 [Análise Técnica](mdc:#1-análise-técnica) - Início do desenvolvimento
-- 🛠️ [Fastify Patterns](mdc:#3-fastify-patterns) - Durante implementação
-- ✅ [Checklist Final](mdc:#9-verificação-e-validação) - Antes de finalizar
+## 0. Priority Matrix
 
-## 0. Matriz de Prioridades
+### Critical (Blocks development)
+- Correct TypeScript types
+- Implemented error handling
+- Functional authentication/authorization
 
-### Crítico (Bloqueia desenvolvimento)
-- Tipos TypeScript corretos
-- Tratamento de erro implementado
-- Autenticação/autorização funcionais
+### Important (Impacts quality)
+- Input/output validation with Zod
+- Route structure followed
+- Naming patterns followed
 
-### Importante (Impacta qualidade)
-- Logging apropriado com Pino
-- Validação de entrada/saída com Zod
-- Estrutura de rotas seguida
-- Padrões de nomenclatura seguidos
+### Optional (Incremental improvement)
+- Performance optimizations
+- Additional documentation
 
-### Opcional (Melhoria incremental)
-- Otimizações de performance
-- Documentação adicional
-- Monitoramento avançado
+## Conflict Resolution
 
-## Resolução de Conflitos
+### Order of Precedence:
+1. **Security > Performance**: Never compromise security for performance
+2. **Functionality > Patterns**: If a pattern prevents functionality, prioritize functionality
+3. **Project conventions > Personal preferences**: Follow what already exists in the project
 
-### Ordem de Precedência:
-1. **Segurança > Performance**: Nunca comprometa segurança por performance
-2. **Funcionalidade > Padrões**: Se um padrão impede a funcionalidade, priorize a funcionalidade
-3. **Legibilidade > Otimização**: Código legível é mais importante que micro-otimizações
-4. **Convenções do projeto > Preferências pessoais**: Siga o que já existe no projeto
+### Decision Protocol:
+1. **Identify the conflict**: Which guideline is being violated?
+2. **Consult precedence**: Use the order above to decide
+3. **Document the exception**: Explain why you diverged
+4. **Validate minimum**: Ensure "Critical" items are still met
 
-### Protocolo de Decisão:
-1. **Identifique o conflito**: Qual diretriz está sendo violada?
-2. **Consulte a precedência**: Use a ordem acima para decidir
-3. **Documente a exceção**: Explique por que divergiu
-4. **Valide o mínimo**: Garanta que itens "Críticos" ainda são atendidos
+## 1. Technical Analysis
 
-### Exemplos Práticos:
-```typescript
-// ❌ Conflito: Performance vs Segurança
-// Performance diz: cache dados sensíveis
-// Mas: dados contêm informações pessoais
+**BEFORE STARTING**: Consult the [Priority Matrix](mdc:#0-priority-matrix)
 
-// ✅ Resolução: Priorizar segurança
-// Não fazer cache de dados sensíveis, implementar cache seletivo
-```
+### Analysis Process
+**EXECUTE MANDATORILY before any implementation:**
 
-### Quando Divergir:
-- **Documente**: Adicione comentário explicando a exceção
-- **Valide críticos**: Confirme que segurança e funcionalidade não são comprometidas
-- **Priorize entrega**: Funcionalidade working > padrão perfeito
+- **Requirements**: Identify necessary API functionalities
+- **Security**: Map authentication/authorization needs
+- **Integration**: Check external APIs and dependencies
+- **Performance**: Analyze cache and optimization needs
 
-## 1. Análise Técnica
-
-**ANTES DE INICIAR**: Consulte a [Matriz de Prioridades](mdc:#0-matriz-de-prioridades)
-
-### Processo de Análise
-**EXECUTAR OBRIGATORIAMENTE antes de qualquer implementação:**
-
-- **Requisitos**: Identificar funcionalidades de API necessárias
-- **Segurança**: Mapear necessidades de autenticação/autorização
-- **Integração**: Verificar APIs externas e dependências
-- **Performance**: Analisar necessidades de cache e otimização
-
-**FERRAMENTAS**: Use `codebase_search` e `read_file` para analisar código existente.
-
-### Diretrizes de Análise
-- Identifique requisitos de segurança e performance
-- Use `codebase_search` e `read_file` para contexto
-- Documente decisões importantes de arquitetura
-- Prossiga com implementação quando abordagem estiver clara
+**TOOLS**: Use `codebase_search` and `read_file` to analyze existing code.
 
 ## 2. Technology Stack
 
@@ -143,126 +98,119 @@ Esta rule deve ser aplicada quando:
 - **Language**: TypeScript
 - **ORM**: Prisma
 - **Authentication**: @fastify/jwt
-- **Logging**: Pino (built-in do Fastify)
 - **Validation**: Zod + fastify-type-provider-zod
 - **Testing**: Jest + ts-jest
 - **Database**: PostgreSQL
 
-### Role Definition
-Você é um engenheiro backend sênior especializado em Node.js, Fastify, TypeScript, Prisma, e desenvolvimento de APIs REST.
-
-## 3. Fastify Patterns
+## 3. Implementation Patterns
 
 ### Route Structure
-- Use async function ou const para exports (ambos padrões aceitos)
-- Implemente tratamento de erro via throw de classes customizadas
-- Use `request` e `reply` como parâmetros (não `req`/`res`)
-- Use middleware de autenticação quando necessário
-- Estruture em pasta própria com `route.ts`, `schema.ts` e `index.ts`
+- Use async function or const for exports (both patterns accepted)
+- Implement error handling via throw of custom classes
+- Use `request` and `reply` as parameters (not `req`/`res`)
+- Structure in own folder with `route.ts`, `schema.ts` and `index.ts`
 
+**Route Template:**
 ```typescript
 import { authMiddleware } from "@/http/middlewares/auth";
-import { prisma } from "@/infra/prisma/prisma-connection";
-import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
-import { userProfileSchema } from "./schema";
+import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
 
 export const userProfileRoute = async (app: FastifyInstance) => {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(authMiddleware)
-    .get(
-      "/users",
-      {
-        schema: userProfileSchema,
-      },
-      async (request, reply) => {
-        const userId = await request.getCurrentUserId();
+    .get("/users", { schema: userProfileSchema }, async (request, reply) => {
+      const userId = await request.getCurrentUserId();
+      const user = await getUserService(userId);
 
-        const user = await prisma.user.findUnique({
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            avatarUrl: true,
-          },
-          where: {
-            id: userId,
-          },
-        });
-
-        if (!user) {
-          throw new NotFoundError("User not found");
-        }
-
-        return reply.status(200).send({
-          data: {
-            user,
-          },
-        });
+      if (!user) {
+        throw new NotFoundError("User not found");
       }
-    );
+
+      return reply.status(200).send({ data: { user } });
+    });
 };
 ```
 
-### Route POST Pattern
+### Service Layer
+- Use functions instead of classes
+- Define TypeScript types for parameters
+- Separate business logic from routes
+- Use repositories for data access
+
+**Service Template:**
 ```typescript
-import { authMiddleware } from "@/http/middlewares/auth";
-import { createOrganizationService } from "@/services/organizations/create-organization";
-import { FastifyInstance } from "fastify";
-import { ZodTypeProvider } from "fastify-type-provider-zod";
-import { createOrganizationSchema } from "./schema";
+type CreateOrganization = {
+  userId: string;
+  name: string;
+  domain?: string | null;
+  shouldAttachUsersByDomain?: boolean;
+};
 
-export async function createOrganizationRoute(app: FastifyInstance) {
-  app
-    .withTypeProvider<ZodTypeProvider>()
-    .register(authMiddleware)
-    .post(
-      "/organizations",
-      {
-        schema: createOrganizationSchema,
-      },
-      async (request, reply) => {
-        const userId = await request.getCurrentUserId();
-        const { name, domain, shouldAttachUsersByDomain } = request.body;
+export async function createOrganizationService({
+  userId,
+  name,
+  domain,
+  shouldAttachUsersByDomain = false,
+}: CreateOrganization) {
+  const slug = createSlug(name);
+  return await createOrganizationRepository({
+    userId,
+    name,
+    domain,
+    slug,
+    shouldAttachUsersByDomain,
+  });
+}
+```
 
-        const newOrganization = await createOrganizationService({
-          userId,
-          name,
-          domain,
-          shouldAttachUsersByDomain,
-        });
+### Repository Layer
+- Use Prisma client directly
+- Implement try/catch with specific errors
+- Define types for parameters
 
-        return reply.status(201).send({
-          message: "Organization created successfully",
-          data: {
-            organizationId: newOrganization.id,
+**Repository Template:**
+```typescript
+import { prisma } from "@/infra/prisma/prisma-connection";
+
+type CreateOrganizationRepository = {
+  userId: string;
+  name: string;
+  domain?: string | null;
+  slug: string;
+  shouldAttachUsersByDomain: boolean;
+};
+
+export async function createOrganizationRepository(params: CreateOrganizationRepository) {
+  try {
+    return await prisma.organization.create({
+      data: {
+        ...params,
+        ownerId: params.userId,
+        members: {
+          create: {
+            userId: params.userId,
+            role: "ADMIN",
           },
-        });
-      }
-    );
+        },
+      },
+    });
+  } catch (error) {
+    throw new Error("Failed to create organization");
+  }
 }
 ```
 
 ### Schema Patterns
-- Use `body` para definir schema de entrada
-- Use `response` para definir schemas de resposta
-- Inclua `tags` para organização no Swagger
-- Inclua `summary` para documentação
-- Use `security` para rotas autenticadas
-
 ```typescript
 import { z } from "zod";
 
 export const createOrganizationSchema = {
   tags: ["organizations"],
   summary: "Create a new organization",
-  security: [
-    {
-      bearerAuth: [],
-    },
-  ],
+  security: [{ bearerAuth: [] }],
   body: z.object({
     name: z.string(),
     domain: z.string().nullish(),
@@ -279,14 +227,114 @@ export const createOrganizationSchema = {
 };
 ```
 
-### Middleware Patterns
-- Use fastify-plugin para encapsular middleware
-- Use hooks (`preHandler`) para interceptar requests
-- Adicione métodos ao request via decoração
+### Error Handling
+```typescript
+export class NotFoundError extends Error {
+  public statusCode = 404;
+  constructor(message?: string) {
+    super(message ?? "Not Found");
+  }
+}
+
+// Usage in routes/services
+if (!user) {
+  throw new NotFoundError("User not found");
+}
+```
+
+### Authentication Service
+```typescript
+export async function getCurrentUserId(request: FastifyRequest) {
+  try {
+    const { sub } = await request.jwtVerify<{ sub: string }>();
+    if (!sub) throw new UnauthorizedError("Invalid token");
+    return sub;
+  } catch (error) {
+    throw new UnauthorizedError("Invalid token");
+  }
+}
+```
+
+## 4. EXACT Folder Structure
+
+```
+apps/api/src/
+├── http/
+│   ├── server.ts
+│   └── middlewares/auth.ts
+├── routes/
+│   ├── _error/
+│   ├── users/user-profile/
+│   ├── organizations/
+│   ├── projects/
+│   └── session/
+├── services/
+├── repositories/
+├── infra/prisma/
+└── utils/
+```
+
+## 5. Mandatory Patterns
+
+### Import/Export Patterns
+```typescript
+// Always use absolute path with @/
+import { prisma } from "@/infra/prisma/prisma-connection";
+import { authMiddleware } from "@/http/middlewares/auth";
+
+// In index.ts
+export * from "./user-profile.route";
+```
+
+### Response Patterns
+```typescript
+// Success with data
+return reply.status(200).send({ data: { user } });
+
+// Success with message
+return reply.status(201).send({
+  message: "Organization created successfully",
+  data: { organizationId: newOrganization.id },
+});
+```
+
+### Input Validation
+```typescript
+// Zod Schema Patterns
+export const createUserSchema = {
+  body: z.object({
+    name: z.string(),
+    email: z.string().email(),
+    domain: z.string().nullish(), // can be string, null or undefined
+    shouldAttach: z.boolean().optional(), // can be boolean or undefined
+  })
+};
+```
+
+### Security Patterns
+```typescript
+// JWT Configuration
+app.register(fastifyJwt, {
+  secret: env.JWT_SECRET,
+  sign: { algorithm: "HS256" },
+});
+
+// Data Protection - Use specific select
+const user = await prisma.user.findUnique({
+  select: {
+    id: true,
+    name: true,
+    email: true,
+    avatarUrl: true,
+    // passwordHash: false (don't include)
+  },
+  where: { id: userId },
+});
+```
+
+## 6. Middleware Patterns
 
 ```typescript
-import { getCurrentUserId } from "@/services/users/get-current-user-id";
-import { FastifyInstance } from "fastify";
 import fastifyPlugin from "fastify-plugin";
 
 export const authMiddleware = fastifyPlugin(async (app: FastifyInstance) => {
@@ -296,351 +344,50 @@ export const authMiddleware = fastifyPlugin(async (app: FastifyInstance) => {
 });
 ```
 
-### Error Handling Patterns
-- Use classes de erro customizadas com statusCode
-- Throw erros diretamente nas rotas/services
-- Error handler global processa e responde automaticamente
+## 7. TypeScript Extensions
 
 ```typescript
-export class NotFoundError extends Error {
-  public statusCode = 404;
-
-  constructor(message?: string) {
-    super(message ?? "Not Found");
-  }
-}
-
-// No handler de rota
-if (!user) {
-  throw new NotFoundError("User not found");
-}
-```
-
-### File Structure Pattern
-```
-src/routes/users/user-profile/
-├── user-profile.route.ts    # Implementação da rota
-├── schema.ts                # Schema Zod para validação
-└── index.ts                 # Export: export * from "./user-profile.route";
-```
-
-## 4. Service Layer
-
-### Service Structure
-- Use functions ao invés de classes
-- Defina tipos TypeScript para parâmetros
-- Separe lógica de negócio das rotas
-- Use repositórios para acesso a dados
-- Retorne dados estruturados
-
-```typescript
-import { createOrganizationRepository } from "@/repositories/organizations/create-organization";
-import { createSlug } from "@/utils/slug/create-slug";
-
-type CreateOrganization = {
-  userId: string;
-  name: string;
-  domain?: string | null;
-  shouldAttachUsersByDomain?: boolean;
-};
-
-export async function createOrganizationService({
-  userId,
-  name,
-  domain,
-  shouldAttachUsersByDomain = false,
-}: CreateOrganization) {
-  const slug = createSlug(name);
-
-  const organization = await createOrganizationRepository({
-    userId,
-    name,
-    domain,
-    slug,
-    shouldAttachUsersByDomain,
-  });
-
-  return organization;
-}
-```
-
-### Authentication Service Pattern
-- Use @fastify/jwt diretamente via request.jwtVerify
-- Throw UnauthorizedError para erros de auth
-- Valide presence do `sub` claim
-
-```typescript
-import { UnauthorizedError } from "@/routes/_error/4xx/unauthorized-error";
-import { FastifyRequest } from "fastify";
-
-export async function getCurrentUserId(request: FastifyRequest) {
-  try {
-    const { sub } = await request.jwtVerify<{ sub: string }>();
-
-    if (!sub) {
-      throw new UnauthorizedError("Invalid token");
-    }
-
-    return sub;
-  } catch (error) {
-    throw new UnauthorizedError("Invalid token");
+// In @types/fastify.d.ts
+declare module "fastify" {
+  interface FastifyRequest {
+    getCurrentUserId: () => Promise<string>;
   }
 }
 ```
 
-## 5. Repository Layer
+## 8. Verification and Validation
 
-### Repository Structure
-- Use Prisma client diretamente
-- Implemente try/catch com erros específicos
-- Use transações para operações complexas
-- Defina tipos para parâmetros
+### LLM Validation Checklist
 
-```typescript
-import { prisma } from "@/infra/prisma/prisma-connection";
+#### ✅ Critical (Blocks delivery)
+- [ ] Correct TypeScript types (no `any`)
+- [ ] Implemented error handling (throw custom classes)
+- [ ] Functional authentication/authorization (when applicable)
+- [ ] Folder structure followed exactly
+- [ ] Imports using absolute path (@/)
 
-type CreateOrganizationRepository = {
-  userId: string;
-  name: string;
-  domain?: string | null;
-  slug: string;
-  shouldAttachUsersByDomain: boolean;
-};
+#### ✅ Important (Impacts quality)
+- [ ] Zod schema defined correctly
+- [ ] Response structured with `data` wrapper
+- [ ] Service/Repository separation maintained
+- [ ] Error classes with statusCode
+- [ ] Async/await used consistently
 
-export async function createOrganizationRepository({
-  userId,
-  name,
-  domain,
-  slug,
-  shouldAttachUsersByDomain,
-}: CreateOrganizationRepository) {
-  try {
-    const organization = await prisma.organization.create({
-      data: {
-        name,
-        domain,
-        slug,
-        shouldAttachUsersByDomain,
-        ownerId: userId,
-        members: {
-          create: {
-            userId,
-            role: "ADMIN",
-          },
-        },
-      },
-    });
+**IMPORTANT**: Do not finalize without completing "Critical" items.
 
-    return organization;
-  } catch (error) {
-    throw new Error("Failed to create organization");
-  }
-}
-```
-
-### Prisma Configuration
-- Use tipos gerados em `@/generated/prisma`
-- Configure logging para desenvolvimento
-- Centralize conexão em arquivo específico
-
-```typescript
-import { PrismaClient } from "@/generated/prisma";
-
-export const prisma = new PrismaClient({
-  log: ["info", "query", "warn", "error"],
-});
-```
-
-## 6. Input Validation
-
-### Zod Schema Patterns
-- Use fastify-type-provider-zod para validação automática
-- Defina schemas no arquivo `schema.ts`
-- Use `.nullish()` para campos opcionais que podem ser null
-- Use `.optional()` para campos truly opcionais
-
-```typescript
-import { z } from 'zod';
-
-// No schema.ts
-export const createUserSchema = {
-  body: z.object({
-    name: z.string(),
-    email: z.string().email(),
-    domain: z.string().nullish(), // pode ser string, null ou undefined
-    shouldAttach: z.boolean().optional(), // pode ser boolean ou undefined
-  })
-};
-
-// Inferindo tipos
-type CreateUserRequest = z.infer<typeof createUserSchema.body>;
-```
-
-### Runtime Validation
-- Validação automática via schema na rota
-- Erros tratados pelo error handler global
-- Acesso a dados validados via `request.body`
-
-## 7. Security Patterns
-
-### JWT Configuration
-```typescript
-// No server.ts
-app.register(fastifyJwt, {
-  secret: env.JWT_SECRET,
-  sign: { algorithm: "HS256" },
-});
-```
-
-### Authentication Middleware
-```typescript
-export const authMiddleware = fastifyPlugin(async (app: FastifyInstance) => {
-  app.addHook("preHandler", async (request, reply) => {
-    request.getCurrentUserId = async () => await getCurrentUserId(request);
-  });
-});
-```
-
-### Data Protection
-- Sanitize dados sensíveis antes de retornar
-- Use select específico no Prisma
-- Nunca retorne passwordHash ou tokens
-
-```typescript
-const user = await prisma.user.findUnique({
-  select: {
-    id: true,
-    name: true,
-    email: true,
-    avatarUrl: true,
-    // passwordHash: false (não incluir)
-  },
-  where: { id: userId },
-});
-```
-
-## 8. Implementation Guidelines
-
-### Padrões Obrigatórios
-- Use import/export ES6
-- Defina tipos TypeScript explícitos
-- Implemente tratamento de erro robusto
-- Use async/await consistentemente
-- Estruture código em camadas (routes -> services -> repositories)
-
-### Estrutura de Pastas EXATA
-```
-apps/api/src/
-├── http/
-│   ├── server.ts
-│   └── middlewares/
-│       └── auth.ts
-├── routes/
-│   ├── _error/
-│   │   ├── error-handler.ts
-│   │   └── 4xx/
-│   ├── users/
-│   │   └── user-profile/
-│   │       ├── user-profile.route.ts
-│   │       ├── schema.ts
-│   │       └── index.ts
-│   ├── organizations/
-│   ├── projects/
-│   ├── session/
-│   └── index.ts
-├── services/
-│   ├── users/
-│   ├── organizations/
-│   └── projects/
-├── repositories/
-│   ├── users/
-│   ├── organizations/
-│   └── projects/
-├── infra/
-│   └── prisma/
-│       └── prisma-connection.ts
-├── utils/
-│   └── slug/
-│       └── create-slug.ts
-└── generated/
-    └── prisma/
-```
-
-### Import Patterns
-```typescript
-// Sempre use path absoluto com @/
-import { prisma } from "@/infra/prisma/prisma-connection";
-import { authMiddleware } from "@/http/middlewares/auth";
-import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
-import { getCurrentUserId } from "@/services/users/get-current-user-id";
-```
-
-### Export Patterns
-```typescript
-// Em index.ts
-export * from "./user-profile.route";
-
-// Em arquivos principais
-export const routeName = async (app: FastifyInstance) => { /* */ };
-export async function serviceName() { /* */ }
-export async function repositoryName() { /* */ }
-```
-
-### Response Patterns
-```typescript
-// Sucesso com dados
-return reply.status(200).send({
-  data: { user },
-});
-
-// Sucesso com mensagem
-return reply.status(201).send({
-  message: "Organization created successfully",
-  data: { organizationId: newOrganization.id },
-});
-
-// Erro via throw
-throw new NotFoundError("User not found");
-```
-
-## 9. Verificação e Validação
-
-### Checklist de Validação para LLM
-
-#### ✅ Crítico (Bloqueia entrega)
-- [ ] Tipos TypeScript corretos (sem `any`)
-- [ ] Tratamento de erro implementado (throw classes customizadas)
-- [ ] Autenticação/autorização funcionais (quando aplicável)
-- [ ] Estrutura de pastas seguida exatamente
-- [ ] Imports usando path absoluto (@/)
-
-#### ✅ Importante (Impacta qualidade)
-- [ ] Schema Zod definido corretamente
-- [ ] Response structured com `data` wrapper
-- [ ] Service/Repository separation mantida
-- [ ] Error classes com statusCode
-- [ ] Async/await usado consistentemente
-
-#### ✅ Opcional (Melhoria incremental)
-- [ ] Logging implementado onde apropriado
-- [ ] Documentação no schema (summary, tags)
-- [ ] Validação de edge cases
-
-**IMPORTANTE**: Não finalize sem completar itens "Críticos".
-
-## Documentation e Tools
+## Documentation and Tools
 
 ### Swagger/OpenAPI
-- Configurado automaticamente via fastify-swagger
-- Schemas Zod geram documentação automaticamente
-- Disponível em `/docs` em desenvolvimento
+- Configured automatically via fastify-swagger
+- Zod schemas generate automatic documentation
+- Available at `/docs` in development
 
 ### TypeScript Extension
-- Extensões de tipos em `@types/fastify.d.ts`
-- Decoração de request com métodos customizados
+- TypeScript extensions in `@types/fastify.d.ts`
+- Request decoration with custom methods
 
 ```typescript
-// Em @types/fastify.d.ts
+// In @types/fastify.d.ts
 declare module "fastify" {
   interface FastifyRequest {
     getCurrentUserId: () => Promise<string>;
