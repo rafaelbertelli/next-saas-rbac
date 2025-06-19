@@ -4,7 +4,7 @@ import { updateOrganizationRepository } from "@/repositories/organizations/updat
 import { ConflictError } from "@/routes/_error/4xx/conflict-error";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
-import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
+import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 import { updateOrganizationService } from "./update-organization.service";
 
 jest.mock("@/services/membership/get-user-membership-organization");
@@ -38,7 +38,7 @@ describe("updateOrganizationService", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.mocked(getUserMembershipOrganization).mockResolvedValue({
+    jest.mocked(getUserMembershipOrganizationService).mockResolvedValue({
       organization: baseOrg,
       membership: baseMembership,
     });
@@ -60,7 +60,7 @@ describe("updateOrganizationService", () => {
       name: "New Name",
       userId,
     });
-    expect(getUserMembershipOrganization).toHaveBeenCalledWith({
+    expect(getUserMembershipOrganizationService).toHaveBeenCalledWith({
       userId,
       organizationSlug: slug,
     });

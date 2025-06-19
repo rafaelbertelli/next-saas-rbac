@@ -3,7 +3,7 @@ import { removeMembershipRepository } from "@/repositories/members/remove-member
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
-import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
+import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 
 type RemoveMemberServiceParams = {
   userId: string;
@@ -16,10 +16,11 @@ export async function removeMemberService({
   organizationSlug,
   memberId,
 }: RemoveMemberServiceParams) {
-  const { organization, membership } = await getUserMembershipOrganization({
-    userId,
-    organizationSlug,
-  });
+  const { organization, membership } =
+    await getUserMembershipOrganizationService({
+      userId,
+      organizationSlug,
+    });
 
   // check user permission to remove members
   const { cannot } = getUserPermissions(userId, membership.role);

@@ -4,7 +4,7 @@ import { updateProjectByIdRepository } from "@/repositories/projects/update-proj
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
-import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
+import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 import { updateProjectService } from "./update-project.service";
 
 jest.mock("@/services/membership/get-user-membership-organization");
@@ -68,7 +68,7 @@ describe("updateProjectService", () => {
   it("should update a project successfully", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,
@@ -92,7 +92,7 @@ describe("updateProjectService", () => {
     });
 
     // Assert
-    expect(getUserMembershipOrganization).toHaveBeenCalledWith({
+    expect(getUserMembershipOrganizationService).toHaveBeenCalledWith({
       userId,
       organizationSlug,
     });
@@ -113,7 +113,7 @@ describe("updateProjectService", () => {
   it("should update project with only some fields", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,
@@ -149,7 +149,7 @@ describe("updateProjectService", () => {
   it("should update project with same name", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,
@@ -184,7 +184,7 @@ describe("updateProjectService", () => {
   it("should throw ForbiddenError if user cannot update project", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => false,
@@ -207,7 +207,7 @@ describe("updateProjectService", () => {
   it("should throw NotFoundError if project does not exist", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,
@@ -227,10 +227,10 @@ describe("updateProjectService", () => {
     expect(updateProjectByIdRepository).not.toHaveBeenCalled();
   });
 
-  it("should throw if getUserMembershipOrganization throws", async () => {
+  it("should throw if getUserMembershipOrganizationService throws", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockRejectedValueOnce(new Error("Organization not found"));
 
     // Act & Assert
@@ -250,7 +250,7 @@ describe("updateProjectService", () => {
   it("should throw if getProjectByIdRepository throws", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,
@@ -275,7 +275,7 @@ describe("updateProjectService", () => {
   it("should throw if updateProjectByIdRepository throws", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,

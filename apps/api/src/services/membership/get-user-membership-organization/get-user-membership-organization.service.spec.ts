@@ -1,7 +1,7 @@
 import { getMembershipBySlugRepository } from "@/repositories/members/get-membership-by-slug";
 
 import { getCurrentUserId } from "@/services/users/get-current-user-id";
-import { getUserMembershipOrganization } from "./get-user-membership-organization.service";
+import { getUserMembershipOrganizationService } from "./get-user-membership-organization.service";
 
 jest.mock("@/services/users/get-current-user-id");
 jest.mock("@/repositories/members/get-membership-by-slug");
@@ -37,7 +37,7 @@ describe("getUserMembershipOrganization", () => {
     });
 
     // Act
-    const result = await getUserMembershipOrganization({
+    const result = await getUserMembershipOrganizationService({
       userId: mockUserId,
       organizationSlug: "org-test",
     });
@@ -57,7 +57,7 @@ describe("getUserMembershipOrganization", () => {
 
     // Act & Assert
     await expect(
-      getUserMembershipOrganization({
+      getUserMembershipOrganizationService({
         userId: mockUserId,
         organizationSlug: "org-test",
       })

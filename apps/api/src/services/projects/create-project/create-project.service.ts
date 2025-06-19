@@ -3,7 +3,7 @@ import { getProjectBySlugRepository } from "@/repositories/projects/get-project-
 import { ConflictError } from "@/routes/_error/4xx/conflict-error";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
-import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
+import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 import { createSlug } from "@/utils/slug/create-slug";
 import { projectSchema } from "@repo/auth";
 
@@ -20,10 +20,11 @@ export async function createProjectService({
   name,
   description,
 }: CreateProjectServiceParams) {
-  const { organization, membership } = await getUserMembershipOrganization({
-    userId,
-    organizationSlug: slug,
-  });
+  const { organization, membership } =
+    await getUserMembershipOrganizationService({
+      userId,
+      organizationSlug: slug,
+    });
 
   // check user permission to create a project
   const { cannot } = getUserPermissions(userId, membership.role);

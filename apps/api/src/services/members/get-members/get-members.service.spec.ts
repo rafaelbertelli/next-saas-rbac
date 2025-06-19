@@ -2,7 +2,7 @@ import { Role } from "@/generated/prisma";
 import { getMembersByOrganizationRepository } from "@/repositories/members/get-members-by-organization";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
-import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
+import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 import { getMembersService } from "./get-members.service";
 
 jest.mock("@/repositories/members/get-members-by-organization");
@@ -61,7 +61,7 @@ describe("getMembersService", () => {
   it("should return members when user has permission", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,
@@ -78,7 +78,7 @@ describe("getMembersService", () => {
     });
 
     // Assert
-    expect(getUserMembershipOrganization).toHaveBeenCalledWith({
+    expect(getUserMembershipOrganizationService).toHaveBeenCalledWith({
       userId,
       organizationSlug,
     });
@@ -92,7 +92,7 @@ describe("getMembersService", () => {
   it("should return empty array when no members exist", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,
@@ -107,7 +107,7 @@ describe("getMembersService", () => {
     });
 
     // Assert
-    expect(getUserMembershipOrganization).toHaveBeenCalledWith({
+    expect(getUserMembershipOrganizationService).toHaveBeenCalledWith({
       userId,
       organizationSlug,
     });
@@ -121,7 +121,7 @@ describe("getMembersService", () => {
   it("should throw ForbiddenError if user cannot get members", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => false,
@@ -137,10 +137,10 @@ describe("getMembersService", () => {
     expect(getMembersByOrganizationRepository).not.toHaveBeenCalled();
   });
 
-  it("should throw if getUserMembershipOrganization throws", async () => {
+  it("should throw if getUserMembershipOrganizationService throws", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockRejectedValueOnce(new Error("Organization not found"));
 
     // Act & Assert
@@ -154,7 +154,7 @@ describe("getMembersService", () => {
   it("should throw if getMembersByOrganizationRepository throws", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,
@@ -179,7 +179,7 @@ describe("getMembersService", () => {
       role: Role.MEMBER,
     };
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership: memberMembership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,
@@ -207,7 +207,7 @@ describe("getMembersService", () => {
       role: Role.BILLING,
     };
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership: billingMembership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,

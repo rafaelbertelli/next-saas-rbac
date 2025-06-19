@@ -1,7 +1,7 @@
 import { deleteOrganizationRepository } from "@/repositories/organizations/delete-organization";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
-import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
+import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 import { organizationSchema } from "@repo/auth";
 
 type ShutdownOrganization = {
@@ -13,10 +13,11 @@ export async function shutdownOrganizationService({
   slug,
   userId,
 }: ShutdownOrganization) {
-  const { membership, organization } = await getUserMembershipOrganization({
-    userId,
-    organizationSlug: slug,
-  });
+  const { membership, organization } =
+    await getUserMembershipOrganizationService({
+      userId,
+      organizationSlug: slug,
+    });
 
   // check user permission
   const { cannot } = getUserPermissions(userId, membership.role);

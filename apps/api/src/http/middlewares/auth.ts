@@ -6,7 +6,7 @@ export const authMiddleware = fastifyPlugin(async (app: FastifyInstance) => {
   app.addHook("preHandler", async (request, reply) => {
     request.getCurrentUserId = async () => await getCurrentUserId(request);
 
-    // request.getUserMembershipOrganization = async (organizationSlug: string) =>
-    //   await getUserMembershipOrganization(request, organizationSlug);
+    // request.getUserMembershipOrganizationService = async (organizationSlug: string) =>
+    //   await getUserMembershipOrganizationService(request, organizationSlug);
   });
 });

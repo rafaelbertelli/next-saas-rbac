@@ -4,7 +4,7 @@ import { getProjectBySlugRepository } from "@/repositories/projects/get-project-
 import { ConflictError } from "@/routes/_error/4xx/conflict-error";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
-import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
+import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 import { createSlug } from "@/utils/slug/create-slug";
 import { createProjectService } from "./create-project.service";
 
@@ -59,7 +59,7 @@ describe("createProjectService", () => {
   it("should create a project and return it", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,
@@ -77,7 +77,7 @@ describe("createProjectService", () => {
     });
 
     // Assert
-    expect(getUserMembershipOrganization).toHaveBeenCalledWith({
+    expect(getUserMembershipOrganizationService).toHaveBeenCalledWith({
       userId,
       organizationSlug: slug,
     });
@@ -100,7 +100,7 @@ describe("createProjectService", () => {
   it("should throw ForbiddenError if user cannot create project", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => false,
@@ -150,7 +150,7 @@ describe("createProjectService", () => {
       },
     };
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,
@@ -174,7 +174,7 @@ describe("createProjectService", () => {
   it("should throw if createProjectRepository throws", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,
@@ -194,7 +194,7 @@ describe("createProjectService", () => {
   it("should throw if getProjectBySlugRepository throws", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,
@@ -211,10 +211,10 @@ describe("createProjectService", () => {
     expect(createProjectRepository).not.toHaveBeenCalled();
   });
 
-  it("should throw if getUserMembershipOrganization throws", async () => {
+  it("should throw if getUserMembershipOrganizationService throws", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockRejectedValueOnce(new Error("Organization not found"));
 
     // Act & Assert

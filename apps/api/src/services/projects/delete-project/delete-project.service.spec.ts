@@ -4,7 +4,7 @@ import { getProjectByIdRepository } from "@/repositories/projects/get-project-by
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
-import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
+import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 import { deleteProjectService } from "./delete-project.service";
 
 jest.mock("@/services/membership/get-user-membership-organization");
@@ -54,7 +54,7 @@ describe("deleteProjectService", () => {
   it("should delete a project and return it", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,
@@ -71,7 +71,7 @@ describe("deleteProjectService", () => {
     });
 
     // Assert
-    expect(getUserMembershipOrganization).toHaveBeenCalledWith({
+    expect(getUserMembershipOrganizationService).toHaveBeenCalledWith({
       userId,
       organizationSlug: slug,
     });
@@ -89,7 +89,7 @@ describe("deleteProjectService", () => {
   it("should throw ForbiddenError if user cannot delete project", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => false,
@@ -107,7 +107,7 @@ describe("deleteProjectService", () => {
   it("should throw NotFoundError if project is not found", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,
@@ -129,7 +129,7 @@ describe("deleteProjectService", () => {
   it("should throw if getProjectByIdRepository throws", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,
@@ -149,7 +149,7 @@ describe("deleteProjectService", () => {
   it("should throw if deleteProjectByIdRepository throws", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockResolvedValueOnce({ organization, membership });
     jest.mocked(getUserPermissions).mockReturnValue({
       can: () => true,
@@ -166,10 +166,10 @@ describe("deleteProjectService", () => {
     ).rejects.toThrow("Failed to delete project by id");
   });
 
-  it("should throw if getUserMembershipOrganization throws", async () => {
+  it("should throw if getUserMembershipOrganizationService throws", async () => {
     // Arrange
     jest
-      .mocked(getUserMembershipOrganization)
+      .mocked(getUserMembershipOrganizationService)
       .mockRejectedValueOnce(new Error("Organization not found"));
 
     // Act & Assert

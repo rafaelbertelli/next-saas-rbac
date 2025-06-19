@@ -2,7 +2,7 @@ import { Role } from "@/generated/prisma";
 import { updateMembershipRepository } from "@/repositories/members/update-membership/update-membership.repository";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
-import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
+import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 
 type UpdateMemberServiceParams = {
   userId: string;
@@ -17,10 +17,11 @@ export async function updateMemberService({
   memberId,
   role,
 }: UpdateMemberServiceParams) {
-  const { organization, membership } = await getUserMembershipOrganization({
-    userId,
-    organizationSlug,
-  });
+  const { organization, membership } =
+    await getUserMembershipOrganizationService({
+      userId,
+      organizationSlug,
+    });
 
   // check user permission to update members
   const { cannot } = getUserPermissions(userId, membership.role);

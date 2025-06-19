@@ -6,7 +6,7 @@ import { updateOrganizationRepository } from "@/repositories/organizations/updat
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { UnauthorizedError } from "@/routes/_error/4xx/unauthorized-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
-import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
+import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 import { organizationSchema } from "@repo/auth";
 
 type TransferOrganization = {
@@ -20,10 +20,11 @@ export async function transferOrganizationService({
   userId,
   transferToUserId,
 }: TransferOrganization) {
-  const { membership, organization } = await getUserMembershipOrganization({
-    userId,
-    organizationSlug: slug,
-  });
+  const { membership, organization } =
+    await getUserMembershipOrganizationService({
+      userId,
+      organizationSlug: slug,
+    });
 
   // check user permission to transfer organization
   const { cannot } = getUserPermissions(userId, membership.role);

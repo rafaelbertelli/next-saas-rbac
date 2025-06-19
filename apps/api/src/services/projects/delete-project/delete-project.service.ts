@@ -3,7 +3,7 @@ import { getProjectByIdRepository } from "@/repositories/projects/get-project-by
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
-import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
+import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 import { projectSchema } from "@repo/auth";
 
 type DeleteProjectServiceParams = {
@@ -17,10 +17,11 @@ export async function deleteProjectService({
   slug,
   projectId,
 }: DeleteProjectServiceParams) {
-  const { organization, membership } = await getUserMembershipOrganization({
-    userId,
-    organizationSlug: slug,
-  });
+  const { organization, membership } =
+    await getUserMembershipOrganizationService({
+      userId,
+      organizationSlug: slug,
+    });
 
   // check user permission to delete a project
   const { cannot } = getUserPermissions(userId, membership.role);

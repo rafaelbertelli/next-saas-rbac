@@ -6,7 +6,7 @@ type GetUserMembershipOrganization = {
   organizationSlug: string;
 };
 
-export async function getUserMembershipOrganization({
+export async function getUserMembershipOrganizationService({
   userId,
   organizationSlug,
 }: GetUserMembershipOrganization) {

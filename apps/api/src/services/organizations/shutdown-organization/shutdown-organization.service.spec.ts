@@ -1,7 +1,7 @@
 import { deleteOrganizationRepository } from "@/repositories/organizations/delete-organization";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
-import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
+import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 import { shutdownOrganizationService } from "./shutdown-organization.service";
 
 jest.mock("@/services/membership/get-user-membership-organization");
@@ -27,7 +27,7 @@ describe("shutdownOrganizationService", () => {
   });
 
   it("should shutdown organization when user has permission", async () => {
-    (getUserMembershipOrganization as jest.Mock).mockResolvedValue({
+    (getUserMembershipOrganizationService as jest.Mock).mockResolvedValue({
       organization,
       membership,
     });
@@ -38,7 +38,7 @@ describe("shutdownOrganizationService", () => {
     (deleteOrganizationRepository as jest.Mock).mockResolvedValue(deletedOrg);
 
     const result = await shutdownOrganizationService({ slug, userId });
-    expect(getUserMembershipOrganization).toHaveBeenCalledWith({
+    expect(getUserMembershipOrganizationService).toHaveBeenCalledWith({
       userId,
       organizationSlug: slug,
     });
@@ -50,7 +50,7 @@ describe("shutdownOrganizationService", () => {
   });
 
   it("should throw ForbiddenError if user cannot delete organization", async () => {
-    (getUserMembershipOrganization as jest.Mock).mockResolvedValue({
+    (getUserMembershipOrganizationService as jest.Mock).mockResolvedValue({
       organization,
       membership,
     });
@@ -64,9 +64,11 @@ describe("shutdownOrganizationService", () => {
     expect(deleteOrganizationRepository).not.toHaveBeenCalled();
   });
 
-  it("should propagate error from getUserMembershipOrganization", async () => {
+  it("should propagate error from getUserMembershipOrganizationService", async () => {
     const error = new Error("Membership error");
-    (getUserMembershipOrganization as jest.Mock).mockRejectedValue(error);
+    (getUserMembershipOrganizationService as jest.Mock).mockRejectedValue(
+      error
+    );
 
     await expect(shutdownOrganizationService({ slug, userId })).rejects.toThrow(
       error
@@ -74,7 +76,7 @@ describe("shutdownOrganizationService", () => {
   });
 
   it("should propagate error from deleteOrganizationRepository", async () => {
-    (getUserMembershipOrganization as jest.Mock).mockResolvedValue({
+    (getUserMembershipOrganizationService as jest.Mock).mockResolvedValue({
       organization,
       membership,
     });

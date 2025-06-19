@@ -1,7 +1,7 @@
 import { getMembersByOrganizationRepository } from "@/repositories/members/get-members-by-organization";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
-import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
+import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 
 type GetMembersServiceParams = {
   userId: string;
@@ -12,10 +12,11 @@ export async function getMembersService({
   userId,
   organizationSlug,
 }: GetMembersServiceParams) {
-  const { organization, membership } = await getUserMembershipOrganization({
-    userId,
-    organizationSlug,
-  });
+  const { organization, membership } =
+    await getUserMembershipOrganizationService({
+      userId,
+      organizationSlug,
+    });
 
   // check user permission to get members
   const { cannot } = getUserPermissions(userId, membership.role);

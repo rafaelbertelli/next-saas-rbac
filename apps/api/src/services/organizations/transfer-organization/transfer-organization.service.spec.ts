@@ -19,7 +19,7 @@ import { updateOrganizationRepository } from "@/repositories/organizations/updat
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { UnauthorizedError } from "@/routes/_error/4xx/unauthorized-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
-import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
+import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 import { organizationSchema } from "@repo/auth";
 import { transferOrganizationService } from "./transfer-organization.service";
 
@@ -52,7 +52,7 @@ describe("transferOrganizationService", () => {
   });
 
   it("should transfer organization when user has permission and target is member", async () => {
-    (getUserMembershipOrganization as jest.Mock).mockResolvedValue({
+    (getUserMembershipOrganizationService as jest.Mock).mockResolvedValue({
       organization,
       membership,
     });
@@ -78,7 +78,7 @@ describe("transferOrganizationService", () => {
       userId,
       transferToUserId,
     });
-    expect(getUserMembershipOrganization).toHaveBeenCalledWith({
+    expect(getUserMembershipOrganizationService).toHaveBeenCalledWith({
       userId,
       organizationSlug: slug,
     });
@@ -96,7 +96,7 @@ describe("transferOrganizationService", () => {
   });
 
   it("should throw ForbiddenError if user cannot transfer organization", async () => {
-    (getUserMembershipOrganization as jest.Mock).mockResolvedValue({
+    (getUserMembershipOrganizationService as jest.Mock).mockResolvedValue({
       organization,
       membership,
     });
@@ -116,7 +116,7 @@ describe("transferOrganizationService", () => {
   });
 
   it("should throw UnauthorizedError if target user is not a member", async () => {
-    (getUserMembershipOrganization as jest.Mock).mockResolvedValue({
+    (getUserMembershipOrganizationService as jest.Mock).mockResolvedValue({
       organization,
       membership,
     });
@@ -135,16 +135,18 @@ describe("transferOrganizationService", () => {
     expect(prisma.$transaction).not.toHaveBeenCalled();
   });
 
-  it("should propagate error from getUserMembershipOrganization", async () => {
+  it("should propagate error from getUserMembershipOrganizationService", async () => {
     const error = new Error("Membership error");
-    (getUserMembershipOrganization as jest.Mock).mockRejectedValue(error);
+    (getUserMembershipOrganizationService as jest.Mock).mockRejectedValue(
+      error
+    );
     await expect(
       transferOrganizationService({ slug, userId, transferToUserId })
     ).rejects.toThrow(error);
   });
 
   it("should propagate error from prisma.$transaction", async () => {
-    (getUserMembershipOrganization as jest.Mock).mockResolvedValue({
+    (getUserMembershipOrganizationService as jest.Mock).mockResolvedValue({
       organization,
       membership,
     });
