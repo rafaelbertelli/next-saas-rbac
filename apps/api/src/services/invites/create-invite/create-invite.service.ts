@@ -5,7 +5,7 @@ import { BadRequestError } from "@/routes/_error/4xx/bad-request-error";
 import { ConflictError } from "@/routes/_error/4xx/conflict-error";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
-import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
+import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 
 type CreateInviteService = {
   email: string;
@@ -20,10 +20,11 @@ export async function createInviteService({
   organizationSlug,
   userId,
 }: CreateInviteService) {
-  const { membership, organization } = await getUserMembershipOrganization({
-    userId,
-    organizationSlug,
-  });
+  const { membership, organization } =
+    await getUserMembershipOrganizationService({
+      userId,
+      organizationSlug,
+    });
 
   // Check user permission
   const { cannot } = getUserPermissions(userId, membership.role);

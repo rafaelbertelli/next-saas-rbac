@@ -4,7 +4,7 @@ import { BadRequestError } from "@/routes/_error/4xx/bad-request-error";
 import { ConflictError } from "@/routes/_error/4xx/conflict-error";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
-import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
+import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 import { createInviteService } from "./create-invite.service";
 
 jest.mock("@/infra/prisma/prisma-connection", () => ({
@@ -61,7 +61,7 @@ describe("createInviteService", () => {
 
   it("should create invite successfully", async () => {
     // Arrange
-    (getUserMembershipOrganization as jest.Mock).mockResolvedValue({
+    (getUserMembershipOrganizationService as jest.Mock).mockResolvedValue({
       membership: mockMembership,
       organization: mockOrganization,
     });
@@ -78,7 +78,7 @@ describe("createInviteService", () => {
     const result = await createInviteService(defaultInput);
 
     // Assert
-    expect(getUserMembershipOrganization).toHaveBeenCalledWith({
+    expect(getUserMembershipOrganizationService).toHaveBeenCalledWith({
       userId: "user-1",
       organizationSlug: "test-org",
     });
@@ -111,7 +111,7 @@ describe("createInviteService", () => {
 
   it("should throw ForbiddenError if user cannot create invites", async () => {
     // Arrange
-    (getUserMembershipOrganization as jest.Mock).mockResolvedValue({
+    (getUserMembershipOrganizationService as jest.Mock).mockResolvedValue({
       membership: mockMembership,
       organization: mockOrganization,
     });
@@ -128,7 +128,7 @@ describe("createInviteService", () => {
       "User does not have permission to create invites"
     );
 
-    expect(getUserMembershipOrganization).toHaveBeenCalledWith({
+    expect(getUserMembershipOrganizationService).toHaveBeenCalledWith({
       userId: "user-1",
       organizationSlug: "test-org",
     });
@@ -148,7 +148,7 @@ describe("createInviteService", () => {
       email: "test@test.com", // Same domain as organization
     };
 
-    (getUserMembershipOrganization as jest.Mock).mockResolvedValue({
+    (getUserMembershipOrganizationService as jest.Mock).mockResolvedValue({
       membership: mockMembership,
       organization: orgWithDomainAttach,
     });
@@ -165,7 +165,7 @@ describe("createInviteService", () => {
       "Users with domain test.com will be added automatically to the organization on login"
     );
 
-    expect(getUserMembershipOrganization).toHaveBeenCalledWith({
+    expect(getUserMembershipOrganizationService).toHaveBeenCalledWith({
       userId: "user-1",
       organizationSlug: "test-org",
     });
@@ -186,7 +186,7 @@ describe("createInviteService", () => {
       ],
     };
 
-    (getUserMembershipOrganization as jest.Mock).mockResolvedValue({
+    (getUserMembershipOrganizationService as jest.Mock).mockResolvedValue({
       membership: mockMembership,
       organization: mockOrganization,
     });
@@ -228,7 +228,7 @@ describe("createInviteService", () => {
       status: "PENDING",
     };
 
-    (getUserMembershipOrganization as jest.Mock).mockResolvedValue({
+    (getUserMembershipOrganizationService as jest.Mock).mockResolvedValue({
       membership: mockMembership,
       organization: mockOrganization,
     });
@@ -278,7 +278,7 @@ describe("createInviteService", () => {
       memberships: [], // No memberships in this organization
     };
 
-    (getUserMembershipOrganization as jest.Mock).mockResolvedValue({
+    (getUserMembershipOrganizationService as jest.Mock).mockResolvedValue({
       membership: mockMembership,
       organization: mockOrganization,
     });
@@ -335,7 +335,7 @@ describe("createInviteService", () => {
       role: "ADMIN" as const,
     };
 
-    (getUserMembershipOrganization as jest.Mock).mockResolvedValue({
+    (getUserMembershipOrganizationService as jest.Mock).mockResolvedValue({
       membership: mockMembership,
       organization: mockOrganization,
     });
