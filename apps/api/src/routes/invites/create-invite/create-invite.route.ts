@@ -1,5 +1,5 @@
 import { authMiddleware } from "@/http/middlewares/auth";
-import { createInviteService } from "@/services/invites/create-invite.service";
+import { createInviteService } from "@/services/invites/create-invite/create-invite.service";
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { createInviteSchema } from "./schema";
