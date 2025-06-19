@@ -1,9 +1,10 @@
 // Invite-related models
 
 model Invite {
-  id    String @id @default(uuid())
-  email String
-  role  Role
+  id     String       @id @default(uuid())
+  email  String
+  role   Role
+  status InviteStatus @default(PENDING)
 
   inviter   User?   @relation(fields: [inviterId], references: [id])
   inviterId String? @map("inviter_id")

@@ -13,3 +13,9 @@ enum TokenType {
 enum AccountProvider {
   GITHUB
 }
+
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
