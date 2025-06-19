@@ -5,36 +5,36 @@ alwaysApply: false
 ---
 # Fastify Backend Testing Guidelines
 
-## Fluxo de Execução Obrigatório
+## Mandatory Execution Flow
 
-**QUANDO APLICAR**: Testes de rotas Fastify, services, repositórios, middleware, utils e error handlers
+**WHEN TO APPLY**: Tests for Fastify routes, services, repositories, middleware, utils and error handlers
 
-**COMANDO PADRÃO**: `npm test [arquivo.spec.ts]`
+**DEFAULT COMMAND**: `npm test [file.spec.ts]`
 
-### Fluxo Único com Branches Condicionais
+### Single Flow with Conditional Branches
 
-1. **IDENTIFICAR** tipo de código a testar
-2. **SE simples** (Utils, Services básicos) → **Mock** dependências → **Implementar** AAA pattern
-3. **SE médio** (Repositories, Middleware, Error Handlers) → **Analisar** código fonte → **Mock** Prisma/JWT → **Implementar** cenários
-4. **SE complexo** (Routes, Auth flows) → **Analisar** código → **Mock** todas dependências → **Testar** status codes → **Validar** schemas
-5. **EXECUTAR** teste → **VALIDAR** resultado
+1. **IDENTIFY** type of code to test
+2. **IF simple** (Utils, Basic Services) → **Mock** dependencies → **Implement** AAA pattern
+3. **IF medium** (Repositories, Middleware, Error Handlers) → **Analyze** source code → **Mock** Prisma/JWT → **Implement** scenarios
+4. **IF complex** (Routes, Auth flows) → **Analyze** code → **Mock** all dependencies → **Test** status codes → **Validate** schemas
+5. **EXECUTE** test → **VALIDATE** result
 
-## Configurações Obrigatórias
+## Mandatory Configurations
 
-### Estrutura de Arquivos
+### File Structure
 ```
 src/services/organizations/create-organization/
 ├── create-organization.service.ts
-└── create-organization.service.spec.ts    # MESMO DIRETÓRIO
+└── create-organization.service.spec.ts    # SAME DIRECTORY
 ```
 
-### Stack Tecnológico
+### Technology Stack
 - **Framework**: Jest + ts-jest
 - **Mocking**: Jest mocks  
 - **Database**: Prisma mocks
 - **Auth**: JWT mocks
 
-## Templates Concisos
+## Concise Templates
 
 ### Service Testing
 ```typescript
@@ -102,9 +102,9 @@ describe("utilFunction", () => {
 });
 ```
 
-**📚 EXEMPLOS COMPLETOS**: Ver arquivos existentes no projeto em `apps/api/src/**/*.spec.ts`
+**📚 COMPLETE EXAMPLES**: See existing files in the project at `apps/api/src/**/*.spec.ts`
 
-## Estratégias de Mocking
+## Mocking Strategies
 
 ### Prisma Centralized Mock
 ```typescript
@@ -135,18 +135,58 @@ const mockRequest = {
 } as unknown as FastifyRequest;
 ```
 
-## Comandos de Validação
+## Test Prioritization
 
-**EXECUTAR ANTES DE FINALIZAR:**
+### ✅ CRITICAL (Mandatory)
+- [ ] Test executes and passes
+- [ ] Functional mocks (Prisma/JWT)  
+- [ ] Correct naming `.spec.ts`
+- [ ] AAA pattern followed
+
+### ⚠️ IMPORTANT
+- [ ] Success + error scenarios
+- [ ] Correct status codes (for routes)
+- [ ] Organized describe/it structure
+
+### 💡 OPTIONAL
+- [ ] Edge cases
+- [ ] Performance
+- [ ] High coverage
+
+## Validation Commands
+
+**EXECUTE BEFORE FINALIZING:**
 ```bash
-# Testar arquivo específico
+# Test specific file
 npm test example.service.spec.ts
 
-# Com watch para desenvolvimento
+# With watch for development
 npm test example.service.spec.ts --watch
 ```
 
-**NÃO FINALIZAR SE:**
-- Teste não passa
-- Warnings críticos
-- Mocks não funcionam
+**DO NOT FINALIZE IF:**
+- Test doesn't pass
+- Critical warnings
+- Mocks don't work
+
+## Jest Configuration Reference
+
+```typescript
+// jest.config.ts - Minimal configuration
+export default {
+  preset: "ts-jest",
+  testEnvironment: "node", 
+  testMatch: ["**/*.spec.ts"],
+  moduleNameMapper: { "^@/(.*)$": "<rootDir>/src/$1" },
+};
+```
+
+```json
+// package.json - Essential scripts  
+{
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch"
+  }
+}
+```
