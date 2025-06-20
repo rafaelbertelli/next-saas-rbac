@@ -17,5 +17,6 @@ model Invite {
 
   @@unique([email, organizationId])
   @@index([email])
+  @@index([organizationId, status])
   @@map("invites")
 }
