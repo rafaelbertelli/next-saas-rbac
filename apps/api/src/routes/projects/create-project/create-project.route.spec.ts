@@ -1,5 +1,5 @@
-import { createProjectService } from "@/services/projects/create-project/create-project.service";
-import { createProjectRoute } from "./create-project.route";
+import { createProjectService } from "@/services/projects/create-project";
+import { createProjectRoute } from ".";
 
 jest.mock("@/http/middlewares/auth", () => ({
   authMiddleware: jest.fn((app) => {

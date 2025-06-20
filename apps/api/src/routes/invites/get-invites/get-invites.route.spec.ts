@@ -1,6 +1,6 @@
 import { authMiddleware } from "@/http/middlewares/auth";
 import { getInvitesByOrganizationService } from "@/services/invites/get-invites-by-organization";
-import { getInvitesRoute } from "./get-invites.route";
+import { getInvitesRoute } from ".";
 
 // Mock dependencies
 jest.mock("@/http/middlewares/auth");

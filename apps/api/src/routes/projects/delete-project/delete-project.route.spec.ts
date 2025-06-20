@@ -1,5 +1,5 @@
 import { deleteProjectService } from "@/services/projects/delete-project";
-import { deleteProjectRoute } from "./delete-project.route";
+import { deleteProjectRoute } from ".";
 
 jest.mock("@/http/middlewares/auth", () => ({
   authMiddleware: jest.fn((app) => {

@@ -1,1 +1,1 @@
-export * from "./reset-password.route";
+export * from "./password-reset.route";

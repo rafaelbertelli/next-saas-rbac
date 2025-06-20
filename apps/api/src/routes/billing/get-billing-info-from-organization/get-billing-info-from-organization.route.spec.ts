@@ -1,5 +1,5 @@
-import { getBillingInfoFromOrganizationService } from "@/services/billing/get-billing-info-from-organization/get-billing-info-from-organization.service";
-import { getBillingInfoFromOrganizationRoute } from "./get-billing-info-from-organization.route";
+import { getBillingInfoFromOrganizationService } from "@/services/billing/get-billing-info-from-organization";
+import { getBillingInfoFromOrganizationRoute } from ".";
 
 // Mock the service
 jest.mock(

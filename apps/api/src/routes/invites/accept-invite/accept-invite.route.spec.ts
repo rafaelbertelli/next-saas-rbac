@@ -1,6 +1,6 @@
 import { BadRequestError } from "@/routes/_error/4xx/bad-request-error";
-import { acceptInviteService } from "@/services/invites/accept-invite/accept-invite.service";
-import { acceptInviteRoute } from "./accept-invite.route";
+import { acceptInviteService } from "@/services/invites/accept-invite";
+import { acceptInviteRoute } from ".";
 
 jest.mock("@/http/middlewares/auth", () => ({
   authMiddleware: jest.fn((app) => {

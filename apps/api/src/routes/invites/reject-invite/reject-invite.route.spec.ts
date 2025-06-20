@@ -1,7 +1,7 @@
 import { BadRequestError } from "@/routes/_error/4xx/bad-request-error";
 import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
 import { rejectInviteService } from "@/services/invites/reject-invite";
-import { rejectInviteRoute } from "./reject-invite.route";
+import { rejectInviteRoute } from ".";
 
 jest.mock("@/http/middlewares/auth", () => ({
   authMiddleware: jest.fn((app) => {

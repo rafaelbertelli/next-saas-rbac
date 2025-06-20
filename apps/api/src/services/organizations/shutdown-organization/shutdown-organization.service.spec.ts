@@ -2,7 +2,7 @@ import { deleteOrganizationRepository } from "@/repositories/organizations/delet
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
 import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
-import { shutdownOrganizationService } from "./shutdown-organization.service";
+import { shutdownOrganizationService } from "./";
 
 jest.mock("@/services/membership/get-user-membership-organization");
 jest.mock("@/services/authorization/user-permissions/get-user-permissions");

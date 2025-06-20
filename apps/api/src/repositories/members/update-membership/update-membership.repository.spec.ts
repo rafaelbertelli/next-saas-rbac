@@ -1,6 +1,6 @@
 import { Role } from "@/generated/prisma";
 import { prisma } from "@/infra/prisma/prisma-connection";
-import { updateMembershipRepository } from "./update-membership.repository";
+import { updateMembershipRepository } from ".";
 
 jest.mock("@/infra/prisma/prisma-connection", () => ({
   prisma: {

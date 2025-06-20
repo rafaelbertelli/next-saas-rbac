@@ -1,6 +1,6 @@
 import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
 import { getInviteService } from "@/services/invites/get-invite";
-import { getInviteRoute } from "./get-invite.route";
+import { getInviteRoute } from ".";
 
 jest.mock("@/services/invites/get-invite");
 

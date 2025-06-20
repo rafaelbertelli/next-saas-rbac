@@ -14,6 +14,16 @@ const config: Config = {
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
   },
+  verbose: false,
+  collectCoverage: true,
+  coveragePathIgnorePatterns: [
+    "/node_modules/",
+    "/dist/",
+    "/test/",
+    "generated",
+    "http/server.ts",
+    "routes/index.ts",
+  ],
 };
 
 export default config;

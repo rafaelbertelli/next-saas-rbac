@@ -1,5 +1,5 @@
 import { getOrganizationBySlugService } from "@/services/organizations/get-organization-by-slug";
-import { getOrganizationRoute } from "./get-organization.route";
+import { getOrganizationRoute } from ".";
 
 jest.mock("@/http/middlewares/auth", () => ({
   authMiddleware: jest.fn((app) => {

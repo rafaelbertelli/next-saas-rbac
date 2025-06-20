@@ -1,5 +1,5 @@
 import { prisma } from "@/infra/prisma/prisma-connection";
-import { passwordRecoverRoute } from "./password-recover.route";
+import { passwordRecoverRoute } from ".";
 
 jest.mock("@/infra/prisma/prisma-connection", () => ({
   prisma: {

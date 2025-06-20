@@ -1,6 +1,6 @@
 import { prisma } from "@/infra/prisma/prisma-connection";
 import { BadGatewayError } from "@/routes/_error/5xx/bad-gateway-error";
-import { authenticateWithGithubRoute } from "./authenticate-with-github.route";
+import { authenticateWithGithubRoute } from ".";
 
 jest.mock("@/infra/prisma/prisma-connection", () => ({
   prisma: {

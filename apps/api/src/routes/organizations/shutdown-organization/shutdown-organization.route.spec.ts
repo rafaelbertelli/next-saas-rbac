@@ -1,5 +1,5 @@
 import { shutdownOrganizationService } from "@/services/organizations/shutdown-organization/shutdown-organization.service";
-import { shutdownOrganizationRoute } from "./shutdown-organization.route";
+import { shutdownOrganizationRoute } from ".";
 
 jest.mock("@/http/middlewares/auth", () => ({
   authMiddleware: jest.fn((app) => {

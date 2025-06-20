@@ -1,5 +1,5 @@
 import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
-import { getMembershipRoute } from "./get-membership.route";
+import { getMembershipRoute } from ".";
 
 jest.mock("@/http/middlewares/auth", () => ({
   authMiddleware: jest.fn((app) => {

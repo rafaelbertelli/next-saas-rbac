@@ -1,6 +1,6 @@
 import { prisma } from "@/infra/prisma/prisma-connection";
 import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
-import { userProfileRoute } from "./user-profile.route";
+import { userProfileRoute } from ".";
 
 jest.mock("@/http/middlewares/auth", () => ({
   authMiddleware: jest.fn((app) => {

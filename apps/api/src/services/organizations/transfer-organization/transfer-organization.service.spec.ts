@@ -21,7 +21,7 @@ import { UnauthorizedError } from "@/routes/_error/4xx/unauthorized-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
 import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 import { organizationSchema } from "@repo/auth";
-import { transferOrganizationService } from "./transfer-organization.service";
+import { transferOrganizationService } from "./";
 
 describe("transferOrganizationService", () => {
   const userId = "user-1";

@@ -1,6 +1,6 @@
 import { authMiddleware } from "@/http/middlewares/auth";
 import { revokeInviteService } from "@/services/invites/revoke-invite";
-import { revokeInviteRoute } from "./revoke-invite.route";
+import { revokeInviteRoute } from ".";
 
 // Mock dependencies
 jest.mock("@/http/middlewares/auth");

@@ -5,7 +5,7 @@ import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
 import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
-import { removeMemberService } from "./remove-member.service";
+import { removeMemberService } from ".";
 
 jest.mock(
   "@/repositories/members/get-member-by-id/get-member-by-id.repository"

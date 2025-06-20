@@ -1,5 +1,5 @@
 import { updateOrganizationService } from "@/services/organizations/update-organization";
-import { updateOrganizationRoute } from "./update-organization.route";
+import { updateOrganizationRoute } from ".";
 
 jest.mock("@/http/middlewares/auth", () => ({
   authMiddleware: jest.fn((app) => {

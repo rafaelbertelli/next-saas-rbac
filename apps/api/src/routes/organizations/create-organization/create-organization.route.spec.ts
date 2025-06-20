@@ -1,6 +1,6 @@
 import { checkDuplicateOrganizationService } from "@/services/organizations/check-duplicate-organization";
 import { createOrganizationService } from "@/services/organizations/create-organization";
-import { createOrganizationRoute } from "./create-organization.route";
+import { createOrganizationRoute } from ".";
 
 jest.mock("@/http/middlewares/auth", () => ({
   authMiddleware: jest.fn((app) => {

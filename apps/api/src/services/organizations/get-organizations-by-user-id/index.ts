@@ -1,1 +1,1 @@
-export * from "./get-organization-by-slug.service";
+export * from "./get-organizations-by-user-id.service";

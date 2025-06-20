@@ -1,6 +1,6 @@
 import { getOrganizationsByUserIdRepository } from "@/repositories/organizations/get-organizations-by-user-id";
 import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
-import { getOrganizationsByUserIdService } from "./get-organizations-by-user-id.service";
+import { getOrganizationsByUserIdService } from "./";
 
 jest.mock("@/repositories/organizations/get-organizations-by-user-id");
 

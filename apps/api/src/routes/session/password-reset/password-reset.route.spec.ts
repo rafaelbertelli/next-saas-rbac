@@ -2,7 +2,7 @@ import { prisma } from "@/infra/prisma/prisma-connection";
 import { NotFoundError } from "@/routes/_error/4xx/not-found-error";
 import { UnauthorizedError } from "@/routes/_error/4xx/unauthorized-error";
 import { hash } from "bcryptjs";
-import { passwordResetRoute } from "./password-reset.route";
+import { passwordResetRoute } from ".";
 
 jest.mock("@/infra/prisma/prisma-connection", () => ({
   prisma: {

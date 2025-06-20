@@ -1,7 +1,7 @@
 import { prisma } from "@/infra/prisma/prisma-connection";
 import { UnauthorizedError } from "@/routes/_error/4xx/unauthorized-error";
 import { compare } from "bcryptjs";
-import { authenticateWithEmailAndPasswordRoute } from "./authenticate-with-email-and-password.route";
+import { authenticateWithEmailAndPasswordRoute } from ".";
 
 jest.mock("@/infra/prisma/prisma-connection", () => ({
   prisma: {

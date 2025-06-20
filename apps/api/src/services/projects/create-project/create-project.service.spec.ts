@@ -6,7 +6,7 @@ import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
 import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 import { createSlug } from "@/utils/slug/create-slug";
-import { createProjectService } from "./create-project.service";
+import { createProjectService } from "./";
 
 jest.mock("@/services/membership/get-user-membership-organization");
 jest.mock("@/services/authorization/user-permissions/get-user-permissions");

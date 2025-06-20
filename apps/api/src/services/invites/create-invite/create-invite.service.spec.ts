@@ -5,7 +5,7 @@ import { ConflictError } from "@/routes/_error/4xx/conflict-error";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
 import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
-import { createInviteService } from "./create-invite.service";
+import { createInviteService } from ".";
 
 jest.mock("@/infra/prisma/prisma-connection", () => ({
   prisma: {

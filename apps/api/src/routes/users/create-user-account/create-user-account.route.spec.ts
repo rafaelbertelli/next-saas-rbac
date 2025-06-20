@@ -1,7 +1,7 @@
 import { prisma } from "@/infra/prisma/prisma-connection";
 import { ConflictError } from "@/routes/_error/4xx/conflict-error";
 import { hash } from "bcryptjs";
-import { createUserAccountRoute } from "./create-user-account.route";
+import { createUserAccountRoute } from ".";
 
 jest.mock("@/infra/prisma/prisma-connection", () => ({
   prisma: {

@@ -3,9 +3,9 @@ import { getMembershipBySlugRepository } from "@/repositories/members/get-member
 import { BadRequestError } from "@/routes/_error/4xx/bad-request-error";
 import { addMemberService } from "@/services/members/add-member";
 import { getUserByIdService } from "@/services/users/get-user-by-id";
+import { acceptInviteService } from ".";
 import { getInviteService } from "../get-invite";
 import { updateInviteStatusService } from "../update-invite-status";
-import { acceptInviteService } from "./accept-invite.service";
 
 jest.mock("@/infra/prisma/prisma-connection", () => ({
   prisma: {

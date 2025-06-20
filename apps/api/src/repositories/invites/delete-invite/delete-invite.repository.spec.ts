@@ -1,5 +1,5 @@
 import { prisma } from "@/infra/prisma/prisma-connection";
-import { deleteInviteRepository } from "./delete-invite.repository";
+import { deleteInviteRepository } from ".";
 
 jest.mock("@/infra/prisma/prisma-connection", () => ({
   prisma: {

@@ -1,9 +1,9 @@
 import { authMiddleware } from "@/http/middlewares/auth";
+import { getOrganizationsByUserIdService } from "@/services/organizations/get-organizations-by-user-id";
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { getOrganizationsByUserIdSchema } from "./schema";
 
-import { getOrganizationsByUserIdService } from "@/services/organizations/get-organizations-by-user-id/get-organizations-by-user-id.service";
 export async function getOrganizationsByUserIdRoute(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()

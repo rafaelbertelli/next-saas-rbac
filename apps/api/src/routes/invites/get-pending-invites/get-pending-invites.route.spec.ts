@@ -1,6 +1,6 @@
 import { authMiddleware } from "@/http/middlewares/auth";
 import { getPendingInvitesService } from "@/services/invites/get-pending-invites";
-import { getPendingInvitesRoute } from "./get-pending-invites.route";
+import { getPendingInvitesRoute } from ".";
 
 // Mock dependencies
 jest.mock("@/http/middlewares/auth");

@@ -1,6 +1,6 @@
 import { Role } from "@/generated/prisma";
 import { getMembersService } from "@/services/members/get-members";
-import { getMembersRoute } from "./get-members.route";
+import { getMembersRoute } from ".";
 
 jest.mock("@/http/middlewares/auth", () => ({
   authMiddleware: jest.fn((app) => {

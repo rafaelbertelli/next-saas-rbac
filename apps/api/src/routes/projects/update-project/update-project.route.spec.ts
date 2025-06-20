@@ -1,6 +1,6 @@
 import { updateProjectService } from "@/services/projects/update-project";
 import { FastifyInstance } from "fastify";
-import { updateProjectRoute } from "./update-project.route";
+import { updateProjectRoute } from ".";
 
 jest.mock("@/services/projects/update-project");
 

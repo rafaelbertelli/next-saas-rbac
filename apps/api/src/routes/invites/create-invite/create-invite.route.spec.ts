@@ -1,8 +1,8 @@
 import { BadRequestError } from "@/routes/_error/4xx/bad-request-error";
 import { ConflictError } from "@/routes/_error/4xx/conflict-error";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
-import { createInviteService } from "@/services/invites/create-invite/create-invite.service";
-import { createInviteRoute } from "./create-invite.route";
+import { createInviteService } from "@/services/invites/create-invite";
+import { createInviteRoute } from ".";
 
 jest.mock("@/http/middlewares/auth", () => ({
   authMiddleware: jest.fn((app) => {

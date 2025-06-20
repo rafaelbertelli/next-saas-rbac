@@ -3,7 +3,7 @@ import { amountOfProjectsRepository } from "@/repositories/projects/amount-of-pr
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
 import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
-import { getBillingInfoFromOrganizationService } from "./get-billing-info-from-organization.service";
+import { getBillingInfoFromOrganizationService } from ".";
 
 // Mock dependencies
 jest.mock("@/repositories/members/amount-of-members-not-billable");

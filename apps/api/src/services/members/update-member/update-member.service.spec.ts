@@ -3,7 +3,7 @@ import { updateMembershipRepository } from "@/repositories/members/update-member
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
 import { getUserPermissions } from "@/services/authorization/user-permissions/get-user-permissions";
 import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
-import { updateMemberService } from "./update-member.service";
+import { updateMemberService } from ".";
 
 jest.mock(
   "@/repositories/members/update-membership/update-membership.repository"

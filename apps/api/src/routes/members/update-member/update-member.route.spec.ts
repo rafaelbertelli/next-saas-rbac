@@ -1,6 +1,6 @@
 import { Role } from "@/generated/prisma";
-import { updateMemberService } from "@/services/members/update-member/update-member.service";
-import { updateMemberRoute } from "./update-member.route";
+import { updateMemberService } from "@/services/members/update-member";
+import { updateMemberRoute } from ".";
 
 jest.mock("@/http/middlewares/auth", () => ({
   authMiddleware: jest.fn((app) => {
