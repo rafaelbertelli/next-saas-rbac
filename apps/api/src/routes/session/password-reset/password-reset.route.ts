@@ -49,22 +49,24 @@ export async function passwordResetRoute(app: FastifyInstance) {
 
       const hashedPassword = await hash(password, 10);
 
-      await prisma.user.update({
-        where: {
-          id: userFromToken.id,
-        },
-        data: {
-          passwordHash: hashedPassword,
-        },
-      });
+      await prisma.$transaction(async (tx) => {
+        await tx.user.update({
+          where: {
+            id: userFromToken.id,
+          },
+          data: {
+            passwordHash: hashedPassword,
+          },
+        });
 
-      await prisma.token.update({
-        where: {
-          id: tokenFromDb.id,
-        },
-        data: {
-          used: true,
-        },
+        await tx.token.update({
+          where: {
+            id: tokenFromDb.id,
+          },
+          data: {
+            used: true,
+          },
+        });
       });
 
       return reply.status(204).send();

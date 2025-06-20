@@ -14,6 +14,7 @@ jest.mock("@/infra/prisma/prisma-connection", () => ({
       findUnique: jest.fn(),
       update: jest.fn(),
     },
+    $transaction: jest.fn(),
   },
 }));
 
@@ -79,11 +80,21 @@ describe("passwordResetRoute", () => {
 
   it("should reset password with valid token", async () => {
     // Arrange
+    const mockTx = {
+      user: {
+        update: jest.fn().mockResolvedValue(mockUpdatedUser),
+      },
+      token: {
+        update: jest.fn().mockResolvedValue(mockUpdatedToken),
+      },
+    };
+
     jest.mocked(prisma.token.findUnique).mockResolvedValueOnce(mockToken);
     jest.mocked(prisma.user.findUnique).mockResolvedValueOnce(mockUser);
     (hash as jest.Mock).mockResolvedValue("$2a$10$newhash");
-    jest.mocked(prisma.user.update).mockResolvedValueOnce(mockUpdatedUser);
-    jest.mocked(prisma.token.update).mockResolvedValueOnce(mockUpdatedToken);
+    jest.mocked(prisma.$transaction).mockImplementation(async (callback) => {
+      return await callback(mockTx as any);
+    });
 
     const mockRequest = {
       body: {
@@ -120,11 +131,12 @@ describe("passwordResetRoute", () => {
       where: { id: "user-1" },
     });
     expect(hash).toHaveBeenCalledWith("newpassword123", 10);
-    expect(prisma.user.update).toHaveBeenCalledWith({
+    expect(prisma.$transaction).toHaveBeenCalledWith(expect.any(Function));
+    expect(mockTx.user.update).toHaveBeenCalledWith({
       where: { id: "user-1" },
       data: { passwordHash: "$2a$10$newhash" },
     });
-    expect(prisma.token.update).toHaveBeenCalledWith({
+    expect(mockTx.token.update).toHaveBeenCalledWith({
       where: { id: "token-1" },
       data: { used: true },
     });
@@ -368,5 +380,51 @@ describe("passwordResetRoute", () => {
     await expect(routeHandler(mockRequest, mockReply)).rejects.toThrow(
       "Hashing failed"
     );
+  });
+
+  it("should handle transaction errors", async () => {
+    // Arrange
+    jest.mocked(prisma.token.findUnique).mockResolvedValueOnce(mockToken);
+    jest.mocked(prisma.user.findUnique).mockResolvedValueOnce(mockUser);
+    (hash as jest.Mock).mockResolvedValue("$2a$10$newhash");
+    const transactionError = new Error("Transaction failed");
+    jest.mocked(prisma.$transaction).mockRejectedValue(transactionError);
+
+    const mockRequest = {
+      body: {
+        token: "token-1",
+        password: "newpassword123",
+      },
+      log: {
+        error: jest.fn(),
+      },
+    };
+    const mockReply = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    };
+
+    let routeHandler: any;
+    const mockApp = {
+      withTypeProvider: jest.fn().mockReturnThis(),
+      post: jest.fn((path, options, handler) => {
+        routeHandler = handler;
+      }),
+    };
+
+    await passwordResetRoute(mockApp as any);
+
+    // Act & Assert
+    await expect(routeHandler(mockRequest, mockReply)).rejects.toThrow(
+      "Transaction failed"
+    );
+    expect(prisma.token.findUnique).toHaveBeenCalledWith({
+      where: { id: "token-1" },
+    });
+    expect(prisma.user.findUnique).toHaveBeenCalledWith({
+      where: { id: "user-1" },
+    });
+    expect(hash).toHaveBeenCalledWith("newpassword123", 10);
+    expect(prisma.$transaction).toHaveBeenCalledWith(expect.any(Function));
   });
 });
