@@ -39,7 +39,7 @@ describe("deleteProjectRoute", () => {
 
   it("should call deleteProjectService with correct parameters", async () => {
     // Arrange
-    jest.mocked(deleteProjectService).mockResolvedValueOnce(undefined);
+    jest.mocked(deleteProjectService).mockResolvedValueOnce(undefined as any);
 
     const mockRequest = {
       getCurrentUserId: jest.fn().mockResolvedValue("user-1"),
@@ -118,7 +118,7 @@ describe("deleteProjectRoute", () => {
 
   it("should work with different organizations and projects", async () => {
     // Arrange
-    jest.mocked(deleteProjectService).mockResolvedValueOnce(undefined);
+    jest.mocked(deleteProjectService).mockResolvedValueOnce(undefined as any);
 
     const mockRequest = {
       getCurrentUserId: jest.fn().mockResolvedValue("user-2"),
@@ -158,7 +158,7 @@ describe("deleteProjectRoute", () => {
 
   it("should return 204 No Content on successful deletion", async () => {
     // Arrange
-    jest.mocked(deleteProjectService).mockResolvedValueOnce(undefined);
+    jest.mocked(deleteProjectService).mockResolvedValueOnce(undefined as any);
 
     const mockRequest = {
       getCurrentUserId: jest.fn().mockResolvedValue("user-1"),

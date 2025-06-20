@@ -57,7 +57,7 @@ describe("getProjectRoute", () => {
 
   it("should call getProjectService with correct parameters", async () => {
     // Arrange
-    jest.mocked(getProjectService).mockResolvedValueOnce(mockProject);
+    jest.mocked(getProjectService).mockResolvedValueOnce(mockProject as any);
 
     const mockRequest = {
       getCurrentUserId: jest.fn().mockResolvedValue("user-1"),
@@ -124,7 +124,9 @@ describe("getProjectRoute", () => {
         avatarUrl: null,
       },
     };
-    jest.mocked(getProjectService).mockResolvedValueOnce(projectWithNulls);
+    jest
+      .mocked(getProjectService)
+      .mockResolvedValueOnce(projectWithNulls as any);
 
     const mockRequest = {
       getCurrentUserId: jest.fn().mockResolvedValue("user-1"),
@@ -220,7 +222,9 @@ describe("getProjectRoute", () => {
       name: "Different Project",
       slug: "different-project",
     };
-    jest.mocked(getProjectService).mockResolvedValueOnce(differentProject);
+    jest
+      .mocked(getProjectService)
+      .mockResolvedValueOnce(differentProject as any);
 
     const mockRequest = {
       getCurrentUserId: jest.fn().mockResolvedValue("user-2"),
