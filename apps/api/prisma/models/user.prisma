@@ -26,7 +26,7 @@ model Token {
   type TokenType
   used Boolean   @default(false) @map("used")
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @map("user_id")
 
   expiresAt DateTime @map("expires_at")

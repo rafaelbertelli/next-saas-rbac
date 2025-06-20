@@ -6,10 +6,10 @@ model Invite {
   role   Role
   status InviteStatus @default(PENDING)
 
-  inviter   User?   @relation(fields: [inviterId], references: [id])
+  inviter   User?   @relation(fields: [inviterId], references: [id], onDelete: SetNull)
   inviterId String? @map("inviter_id")
 
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String       @map("organization_id")
 
   createdAt DateTime @default(now()) @map("created_at")

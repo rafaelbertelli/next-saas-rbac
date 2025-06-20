@@ -5,7 +5,7 @@ model Account {
   provider          AccountProvider
   providerAccountId String          @unique @map("provider_account_id")
 
-  owner   User   @relation(fields: [ownerId], references: [id])
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   ownerId String @map("owner_id")
 
   createdAt DateTime @default(now()) @map("created_at")
