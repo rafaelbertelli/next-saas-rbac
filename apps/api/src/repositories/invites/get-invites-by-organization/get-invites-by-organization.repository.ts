@@ -1,13 +1,15 @@
+import { InviteStatus } from "@/generated/prisma";
 import { prisma } from "@/infra/prisma/prisma-connection";
 
 export async function getInvitesByOrganizationRepository(
-  organizationId: string
+  organizationId: string,
+  status?: InviteStatus
 ) {
   try {
     const invites = await prisma.invite.findMany({
       where: {
         organizationId,
-        status: "PENDING",
+        ...(status && { status }),
       },
       include: {
         inviter: {
