@@ -1,4 +1,4 @@
-import { getUserMembershipOrganization } from "@/services/membership/get-user-membership-organization";
+import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 import { getMembershipRoute } from "./get-membership.route";
 
 jest.mock("@/http/middlewares/auth", () => ({
@@ -58,7 +58,7 @@ describe("getMembershipRoute", () => {
 
   it("should return membership and organization data for valid user", async () => {
     // Arrange
-    jest.mocked(getUserMembershipOrganization).mockResolvedValueOnce({
+    jest.mocked(getUserMembershipOrganizationService).mockResolvedValueOnce({
       membership: mockMembership,
       organization: mockOrganization,
     });
@@ -88,7 +88,7 @@ describe("getMembershipRoute", () => {
     await routeHandler(mockRequest, mockReply);
 
     // Assert
-    expect(getUserMembershipOrganization).toHaveBeenCalledWith({
+    expect(getUserMembershipOrganizationService).toHaveBeenCalledWith({
       organizationSlug: "test-org",
       userId: "user-1",
     });
@@ -105,7 +105,9 @@ describe("getMembershipRoute", () => {
   it("should handle service errors", async () => {
     // Arrange
     const error = new Error("Organization not found");
-    jest.mocked(getUserMembershipOrganization).mockRejectedValueOnce(error);
+    jest
+      .mocked(getUserMembershipOrganizationService)
+      .mockRejectedValueOnce(error);
 
     const mockRequest = {
       getCurrentUserId: jest.fn().mockResolvedValue("user-1"),
@@ -132,7 +134,7 @@ describe("getMembershipRoute", () => {
     await expect(routeHandler(mockRequest, mockReply)).rejects.toThrow(
       "Organization not found"
     );
-    expect(getUserMembershipOrganization).toHaveBeenCalledWith({
+    expect(getUserMembershipOrganizationService).toHaveBeenCalledWith({
       organizationSlug: "nonexistent-org",
       userId: "user-1",
     });
@@ -141,7 +143,7 @@ describe("getMembershipRoute", () => {
   it("should work with different organization slugs", async () => {
     // Arrange
     const differentOrg = { ...mockOrganization, slug: "different-org" };
-    jest.mocked(getUserMembershipOrganization).mockResolvedValueOnce({
+    jest.mocked(getUserMembershipOrganizationService).mockResolvedValueOnce({
       membership: mockMembership,
       organization: differentOrg,
     });
@@ -171,7 +173,7 @@ describe("getMembershipRoute", () => {
     await routeHandler(mockRequest, mockReply);
 
     // Assert
-    expect(getUserMembershipOrganization).toHaveBeenCalledWith({
+    expect(getUserMembershipOrganizationService).toHaveBeenCalledWith({
       organizationSlug: "different-org",
       userId: "user-1",
     });
@@ -186,7 +188,7 @@ describe("getMembershipRoute", () => {
 
   it("should work with different user IDs", async () => {
     // Arrange
-    jest.mocked(getUserMembershipOrganization).mockResolvedValueOnce({
+    jest.mocked(getUserMembershipOrganizationService).mockResolvedValueOnce({
       membership: mockMembership,
       organization: mockOrganization,
     });
@@ -216,7 +218,7 @@ describe("getMembershipRoute", () => {
     await routeHandler(mockRequest, mockReply);
 
     // Assert
-    expect(getUserMembershipOrganization).toHaveBeenCalledWith({
+    expect(getUserMembershipOrganizationService).toHaveBeenCalledWith({
       organizationSlug: "test-org",
       userId: "user-2",
     });
