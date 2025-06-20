@@ -1,4 +1,4 @@
-import { deleteInviteRepository } from "@/repositories/invites/delete-invite.repository";
+import { deleteInviteRepository } from "@/repositories/invites/delete-invite";
 import { getInviteByOrganizationRepository } from "@/repositories/invites/get-invite-by-organization";
 import { BadRequestError } from "@/routes/_error/4xx/bad-request-error";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
@@ -38,6 +38,11 @@ export async function revokeInviteService({
 
   if (!invite) {
     throw new NotFoundError("Invite not found");
+  }
+
+  // Check if invite belongs to the organization
+  if (invite.organizationId !== organization.id) {
+    throw new BadRequestError("Invite does not belong to this organization");
   }
 
   if (invite.status !== "PENDING") {

@@ -1,4 +1,4 @@
-import { deleteInviteRepository } from "@/repositories/invites/delete-invite.repository";
+import { deleteInviteRepository } from "@/repositories/invites/delete-invite";
 import { getInviteByOrganizationRepository } from "@/repositories/invites/get-invite-by-organization";
 import { BadRequestError } from "@/routes/_error/4xx/bad-request-error";
 import { ForbiddenError } from "@/routes/_error/4xx/forbidden-error";
@@ -7,7 +7,7 @@ import { getUserPermissions } from "@/services/authorization/user-permissions/ge
 import { getUserMembershipOrganizationService } from "@/services/membership/get-user-membership-organization";
 import { revokeInviteService } from "./revoke-invite.service";
 
-jest.mock("@/repositories/invites/delete-invite.repository");
+jest.mock("@/repositories/invites/delete-invite");
 jest.mock("@/repositories/invites/get-invite-by-organization");
 jest.mock("@/services/authorization/user-permissions/get-user-permissions");
 jest.mock("@/services/membership/get-user-membership-organization");
