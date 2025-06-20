@@ -5,6 +5,7 @@ import { createInviteRoute } from "./invites/create-invite/create-invite.route";
 import { getInviteRoute } from "./invites/get-invite/get-invite.route";
 import { getInvitesRoute } from "./invites/get-invites/get-invites.route";
 import { rejectInviteRoute } from "./invites/reject-invite/reject-invite.route";
+import { revokeInviteRoute } from "./invites/revoke-invite/revoke-invite.route";
 import { getMembersRoute } from "./members/get-members";
 import { removeMemberRoute } from "./members/remove-member";
 import { updateMemberRoute } from "./members/update-member";
@@ -67,4 +68,5 @@ export async function routes(app: FastifyInstance) {
   getInviteRoute(app);
   acceptInviteRoute(app);
   rejectInviteRoute(app);
+  revokeInviteRoute(app);
 }
