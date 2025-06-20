@@ -25,13 +25,15 @@ export const getPendingInvitesSchema = {
               slug: z.string(),
               avatarUrl: z.string().nullable(),
             }),
-            inviter: z.object({
-              id: z.string().uuid(),
-              name: z.string().nullable(),
-              email: z.string().email(),
-            }),
-            createdAt: z.string(),
-            updatedAt: z.string(),
+            inviter: z
+              .object({
+                id: z.string().uuid(),
+                name: z.string().nullable(),
+                email: z.string().email(),
+              })
+              .nullable(),
+            createdAt: z.date(),
+            updatedAt: z.date(),
           })
         ),
       }),

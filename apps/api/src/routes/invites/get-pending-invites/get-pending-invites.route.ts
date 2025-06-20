@@ -1,6 +1,5 @@
 import { authMiddleware } from "@/http/middlewares/auth";
-import { prisma } from "@/infra/prisma/prisma-connection";
-import { getPendingInvitesService } from "@/services/invites/get-pending-invites.service";
+import { getPendingInvitesService } from "@/services/invites/get-pending-invites";
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { getPendingInvitesSchema } from "./schema";
@@ -16,18 +15,7 @@ export async function getPendingInvitesRoute(app: FastifyInstance) {
       },
       async (request, reply) => {
         const userId = await request.getCurrentUserId();
-
-        // Get user email
-        const user = await prisma.user.findUnique({
-          where: { id: userId },
-          select: { email: true },
-        });
-
-        if (!user) {
-          throw new Error("User not found");
-        }
-
-        const invites = await getPendingInvitesService(user.email);
+        const invites = await getPendingInvitesService(userId);
 
         return reply.status(200).send({
           message: "Pending invites retrieved successfully",
