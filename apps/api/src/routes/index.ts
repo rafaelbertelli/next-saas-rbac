@@ -1,5 +1,6 @@
 import { FastifyInstance } from "fastify";
 
+import { getBillingInfoFromOrganizationRoute } from "./billing/get-billing-info-from-organization";
 import { acceptInviteRoute } from "./invites/accept-invite/accept-invite.route";
 import { createInviteRoute } from "./invites/create-invite/create-invite.route";
 import { getInviteRoute } from "./invites/get-invite/get-invite.route";
@@ -64,6 +65,9 @@ export async function routes(app: FastifyInstance) {
   // Organizations -> Invites
   createInviteRoute(app);
   getInvitesRoute(app);
+
+  // Organizations -> Billing
+  getBillingInfoFromOrganizationRoute(app);
 
   // Invites
   getInviteRoute(app);
