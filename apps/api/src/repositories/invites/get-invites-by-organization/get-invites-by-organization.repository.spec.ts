@@ -316,7 +316,7 @@ describe("getInvitesByOrganizationRepository", () => {
       {
         ...mockInvites[0],
         inviter: {
-          ...mockInvites[0].inviter,
+          ...mockInvites[0]?.inviter,
           avatarUrl: null,
         },
       },
