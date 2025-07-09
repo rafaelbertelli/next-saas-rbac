@@ -1,8 +1,7 @@
 ---
-description: 
-globs: apps/api/**/*.spec.ts
 alwaysApply: false
 ---
+
 # Fastify Backend Testing Guidelines
 
 ## Mandatory Execution Flow
@@ -22,6 +21,7 @@ alwaysApply: false
 ## Mandatory Configurations
 
 ### File Structure
+
 ```
 src/services/organizations/create-organization/
 ├── create-organization.service.ts
@@ -29,14 +29,16 @@ src/services/organizations/create-organization/
 ```
 
 ### Technology Stack
+
 - **Framework**: Jest + ts-jest
-- **Mocking**: Jest mocks  
+- **Mocking**: Jest mocks
 - **Database**: Prisma mocks
 - **Auth**: JWT mocks
 
 ## Concise Templates
 
 ### Service Testing
+
 ```typescript
 import { serviceName } from "./service-name.service";
 jest.mock("@/path/dependency");
@@ -49,7 +51,8 @@ describe("serviceName", () => {
 });
 ```
 
-### Repository Testing  
+### Repository Testing
+
 ```typescript
 import { prisma } from "@/infra/prisma/prisma-connection";
 jest.mock("@/infra/prisma/prisma-connection");
@@ -63,10 +66,14 @@ describe("repositoryName", () => {
 ```
 
 ### Middleware Testing
+
 ```typescript
 describe("middlewareName", () => {
-  let mockApp: any; let preHandler: any;
-  beforeEach(() => mockApp = { addHook: jest.fn((_, fn) => preHandler = fn) });
+  let mockApp: any;
+  let preHandler: any;
+  beforeEach(
+    () => (mockApp = { addHook: jest.fn((_, fn) => (preHandler = fn)) })
+  );
   it("should add functionality to request", async () => {
     // Setup → Call preHandler → Assert functionality added
   });
@@ -74,6 +81,7 @@ describe("middlewareName", () => {
 ```
 
 ### Authentication Testing
+
 ```typescript
 describe("authService", () => {
   it("should return user id for valid token + throw for invalid", async () => {
@@ -83,6 +91,7 @@ describe("authService", () => {
 ```
 
 ### Error Handler Testing
+
 ```typescript
 describe("errorHandler", () => {
   let mockRequest: any; let mockReply: any;
@@ -94,6 +103,7 @@ describe("errorHandler", () => {
 ```
 
 ### Utility Testing
+
 ```typescript
 describe("utilFunction", () => {
   it("should transform input correctly", () => {
@@ -107,11 +117,12 @@ describe("utilFunction", () => {
 ## Mocking Strategies
 
 ### Prisma Centralized Mock
+
 ```typescript
 // __mocks__/prisma-connection.ts
 const mockMethods = {
   findFirst: jest.fn(),
-  findUnique: jest.fn(), 
+  findUnique: jest.fn(),
   create: jest.fn(),
   update: jest.fn(),
   delete: jest.fn(),
@@ -128,27 +139,31 @@ export const prisma = {
 ```
 
 ### JWT Mock Pattern
+
 ```typescript
 // Mock request.jwtVerify in tests
 const mockRequest = {
-  jwtVerify: jest.fn().mockResolvedValue({ sub: "user-id" })
+  jwtVerify: jest.fn().mockResolvedValue({ sub: "user-id" }),
 } as unknown as FastifyRequest;
 ```
 
 ## Test Prioritization
 
 ### ✅ CRITICAL (Mandatory)
+
 - [ ] Test executes and passes
-- [ ] Functional mocks (Prisma/JWT)  
+- [ ] Functional mocks (Prisma/JWT)
 - [ ] Correct naming `.spec.ts`
 - [ ] AAA pattern followed
 
 ### ⚠️ IMPORTANT
+
 - [ ] Success + error scenarios
 - [ ] Correct status codes (for routes)
 - [ ] Organized describe/it structure
 
 ### 💡 OPTIONAL
+
 - [ ] Edge cases
 - [ ] Performance
 - [ ] High coverage
@@ -156,6 +171,7 @@ const mockRequest = {
 ## Validation Commands
 
 **EXECUTE BEFORE FINALIZING:**
+
 ```bash
 # Test specific file
 npm test example.service.spec.ts
@@ -165,6 +181,7 @@ npm test example.service.spec.ts --watch
 ```
 
 **DO NOT FINALIZE IF:**
+
 - Test doesn't pass
 - Critical warnings
 - Mocks don't work
@@ -175,14 +192,14 @@ npm test example.service.spec.ts --watch
 // jest.config.ts - Minimal configuration
 export default {
   preset: "ts-jest",
-  testEnvironment: "node", 
+  testEnvironment: "node",
   testMatch: ["**/*.spec.ts"],
   moduleNameMapper: { "^@/(.*)$": "<rootDir>/src/$1" },
 };
 ```
 
 ```json
-// package.json - Essential scripts  
+// package.json - Essential scripts
 {
   "scripts": {
     "test": "jest",

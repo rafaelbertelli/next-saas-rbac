@@ -4,5 +4,24 @@
       "mode": "auto"
     }
   ],
-  "postman.settings.dotenv-detection-notification-visibility": false
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#8abc91",
+    "activityBar.background": "#8abc91",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#7a71ae",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "commandCenter.border": "#15202b99",
+    "sash.hoverBorder": "#8abc91",
+    "statusBar.background": "#6aa972",
+    "statusBar.foreground": "#15202b",
+    "statusBarItem.hoverBackground": "#528e5a",
+    "statusBarItem.remoteBackground": "#6aa972",
+    "statusBarItem.remoteForeground": "#15202b",
+    "titleBar.activeBackground": "#6aa972",
+    "titleBar.activeForeground": "#15202b",
+    "titleBar.inactiveBackground": "#6aa97299",
+    "titleBar.inactiveForeground": "#15202b99"
+  },
+  "peacock.color": "#6aa972"
 }

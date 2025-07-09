@@ -1,8 +1,7 @@
 ---
-description: 
-globs: app/api/**/*.ts
 alwaysApply: false
 ---
+
 # Fastify Backend Development Guidelines
 
 ## LLM Instructions
@@ -25,6 +24,7 @@ START → 📋 [Priority Matrix] → 🔍 [Technical Analysis] → 🛠️ [Impl
 **Use when**: Small corrections, configuration adjustments, or trivial changes
 
 **Simplified process**:
+
 1. ✅ Verify if it's really simple (no complex logic)
 2. 🛠️ Implement following basic patterns
 3. ✅ Validate only "Critical" checklist items
@@ -32,6 +32,7 @@ START → 📋 [Priority Matrix] → 🔍 [Technical Analysis] → 🛠️ [Impl
 ## When to Apply
 
 This rule should be applied when:
+
 - Developing API routes with Fastify
 - Implementing authentication/authorization middleware
 - Creating business logic services
@@ -50,27 +51,32 @@ This rule should be applied when:
 ## 0. Priority Matrix
 
 ### Critical (Blocks development)
+
 - Correct TypeScript types
 - Implemented error handling
 - Functional authentication/authorization
 
 ### Important (Impacts quality)
+
 - Input/output validation with Zod
 - Route structure followed
 - Naming patterns followed
 
 ### Optional (Incremental improvement)
+
 - Performance optimizations
 - Additional documentation
 
 ## Conflict Resolution
 
-### Order of Precedence:
+### Order of Precedence
+
 1. **Security > Performance**: Never compromise security for performance
 2. **Functionality > Patterns**: If a pattern prevents functionality, prioritize functionality
 3. **Project conventions > Personal preferences**: Follow what already exists in the project
 
-### Decision Protocol:
+### Decision Protocol
+
 1. **Identify the conflict**: Which guideline is being violated?
 2. **Consult precedence**: Use the order above to decide
 3. **Document the exception**: Explain why you diverged
@@ -81,6 +87,7 @@ This rule should be applied when:
 **BEFORE STARTING**: Consult the [Priority Matrix](mdc:#0-priority-matrix)
 
 ### Analysis Process
+
 **EXECUTE MANDATORILY before any implementation:**
 
 - **Requirements**: Identify necessary API functionalities
@@ -93,6 +100,7 @@ This rule should be applied when:
 ## 2. Technology Stack
 
 ### Core Technologies
+
 - **Runtime**: Node.js
 - **Framework**: Fastify
 - **Language**: TypeScript
@@ -105,12 +113,14 @@ This rule should be applied when:
 ## 3. Implementation Patterns
 
 ### Route Structure
+
 - Use async function or const for exports (both patterns accepted)
 - Implement error handling via throw of custom classes
 - Use `request` and `reply` as parameters (not `req`/`res`)
 - Structure in own folder with `route.ts`, `schema.ts` and `index.ts`
 
 **Route Template:**
+
 ```typescript
 import { authMiddleware } from "@/http/middlewares/auth";
 import { FastifyInstance } from "fastify";
@@ -135,12 +145,14 @@ export const userProfileRoute = async (app: FastifyInstance) => {
 ```
 
 ### Service Layer
+
 - Use functions instead of classes
 - Define TypeScript types for parameters
 - Separate business logic from routes
 - Use repositories for data access
 
 **Service Template:**
+
 ```typescript
 type CreateOrganization = {
   userId: string;
@@ -167,11 +179,13 @@ export async function createOrganizationService({
 ```
 
 ### Repository Layer
+
 - Use Prisma client directly
 - Implement try/catch with specific errors
 - Define types for parameters
 
 **Repository Template:**
+
 ```typescript
 import { prisma } from "@/infra/prisma/prisma-connection";
 
@@ -183,7 +197,9 @@ type CreateOrganizationRepository = {
   shouldAttachUsersByDomain: boolean;
 };
 
-export async function createOrganizationRepository(params: CreateOrganizationRepository) {
+export async function createOrganizationRepository(
+  params: CreateOrganizationRepository
+) {
   try {
     return await prisma.organization.create({
       data: {
@@ -204,6 +220,7 @@ export async function createOrganizationRepository(params: CreateOrganizationRep
 ```
 
 ### Schema Patterns
+
 ```typescript
 import { z } from "zod";
 
@@ -228,6 +245,7 @@ export const createOrganizationSchema = {
 ```
 
 ### Error Handling
+
 ```typescript
 export class NotFoundError extends Error {
   public statusCode = 404;
@@ -243,6 +261,7 @@ if (!user) {
 ```
 
 ### Authentication Service
+
 ```typescript
 export async function getCurrentUserId(request: FastifyRequest) {
   try {
@@ -277,6 +296,7 @@ apps/api/src/
 ## 5. Mandatory Patterns
 
 ### Import/Export Patterns
+
 ```typescript
 // Always use absolute path with @/
 import { prisma } from "@/infra/prisma/prisma-connection";
@@ -287,6 +307,7 @@ export * from "./user-profile.route";
 ```
 
 ### Response Patterns
+
 ```typescript
 // Success with data
 return reply.status(200).send({ data: { user } });
@@ -299,6 +320,7 @@ return reply.status(201).send({
 ```
 
 ### Input Validation
+
 ```typescript
 // Zod Schema Patterns
 export const createUserSchema = {
@@ -307,11 +329,12 @@ export const createUserSchema = {
     email: z.string().email(),
     domain: z.string().nullish(), // can be string, null or undefined
     shouldAttach: z.boolean().optional(), // can be boolean or undefined
-  })
+  }),
 };
 ```
 
 ### Security Patterns
+
 ```typescript
 // JWT Configuration
 app.register(fastifyJwt, {
@@ -360,6 +383,7 @@ declare module "fastify" {
 ### LLM Validation Checklist
 
 #### ✅ Critical (Blocks delivery)
+
 - [ ] Correct TypeScript types (no `any`)
 - [ ] Implemented error handling (throw custom classes)
 - [ ] Functional authentication/authorization (when applicable)
@@ -367,6 +391,7 @@ declare module "fastify" {
 - [ ] Imports using absolute path (@/)
 
 #### ✅ Important (Impacts quality)
+
 - [ ] Zod schema defined correctly
 - [ ] Response structured with `data` wrapper
 - [ ] Service/Repository separation maintained
@@ -378,11 +403,13 @@ declare module "fastify" {
 ## Documentation and Tools
 
 ### Swagger/OpenAPI
+
 - Configured automatically via fastify-swagger
 - Zod schemas generate automatic documentation
 - Available at `/docs` in development
 
 ### TypeScript Extension
+
 - TypeScript extensions in `@types/fastify.d.ts`
 - Request decoration with custom methods
 
