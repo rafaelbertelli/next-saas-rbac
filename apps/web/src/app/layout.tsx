@@ -17,6 +17,8 @@ export const metadata: Metadata = {
   description: "Software as a service throught Next.js + RBAC",
 };
 
+const useDarkMode = !true;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -25,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased ${useDarkMode ? "dark" : ""}`}
       >
         {children}
       </body>
