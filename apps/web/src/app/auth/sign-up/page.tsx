@@ -18,11 +18,11 @@ export default function SignUpPage() {
           <Input name="email" id="email" type="email" required />
         </div>
         <div className="space-y-1">
-          <Label htmlFor="psw">Senha</Label>
+          <Label htmlFor="password">Senha</Label>
           <Input name="psw" id="psw" type="password" required />
         </div>
         <div className="space-y-1">
-          <Label htmlFor="psw-confirmation">Confirme sua senha</Label>
+          <Label htmlFor="password-confirmation">Confirme sua senha</Label>
           <Input
             name="psw-confirmation"
             id="psw-confirmation"
