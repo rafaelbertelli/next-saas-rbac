@@ -1,31 +1,55 @@
 "use client";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { FormInput } from "@/components/ui/form-input";
 import { Separator } from "@/components/ui/separator";
-import { Loader2 } from "lucide-react";
+import { useFormState } from "@/hooks/use-form-state";
+import { AlertTriangle, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useActionState } from "react";
 import { signInWithEmailAndPassword } from "./actions";
+import { INITIAL_STATE } from "./contants";
+import { SignInWithEmailAndPasswordState } from "./types";
 
 export default function SignInForm() {
-  const [state, formAction, isPending] = useActionState(
-    signInWithEmailAndPassword,
-    null
-  );
+  const { state, handleSubmit, isPending } =
+    useFormState<SignInWithEmailAndPasswordState>(
+      signInWithEmailAndPassword,
+      INITIAL_STATE
+    );
 
   return (
-    <form action={formAction} className="space-y-4">
-      {JSON.stringify(state)}
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {state.hasError && (
+        <Alert variant="destructive">
+          <AlertTriangle className="size-4" />
+          <AlertTitle>Erro ao realizar login</AlertTitle>
+          <AlertDescription>
+            <span className="text-xs">{state.message}</span>
+          </AlertDescription>
+        </Alert>
+      )}
+
+      <FormInput
+        label="Email"
+        name="email"
+        type="email"
+        error={state.errors.email?.[0]}
+        disabled={isPending}
+        required
+      />
+
+      <FormInput
+        label="Senha"
+        name="password"
+        type="password"
+        error={state.errors.password?.[0]}
+        disabled={isPending}
+        required
+      />
+
       <div className="space-y-1">
-        <Label htmlFor="email">Email</Label>
-        <Input name="email" id="email" type="email" required />
-      </div>
-      <div className="space-y-1">
-        <Label htmlFor="password">Senha</Label>
-        <Input name="password" id="password" type="password" required />
         <Link
           href={"/auth/forgot-password"}
           className="text-foreground text-sm font-medium hover:underline"
