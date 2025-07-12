@@ -5,10 +5,49 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "command": "npm run dev",
+      "command": "pnpm run dev",
       "name": "Run dev",
       "request": "launch",
       "type": "node-terminal"
+    },
+    {
+      "name": "Next.js: debug server-side",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "cd apps/web && pnpm dev",
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/apps/web/.next/**"
+      ],
+      "sourceMaps": true,
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Next.js: debug client-side",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/apps/web",
+      "sourceMapPathOverrides": {
+        "webpack://_N_E/*": "${webRoot}/*"
+      }
+    },
+    {
+      "name": "Next.js: debug full stack",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "cd apps/web && pnpm dev",
+      "serverReadyAction": {
+        "pattern": "started server on .+, url: (https?://.+)",
+        "uriFormat": "%s",
+        "action": "debugWithChrome"
+      },
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/apps/web/.next/**"
+      ],
+      "sourceMaps": true,
+      "cwd": "${workspaceFolder}"
     }
   ]
 }
