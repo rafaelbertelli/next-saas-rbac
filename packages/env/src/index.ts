@@ -11,9 +11,12 @@ export const env = createEnv({
     GITHUB_OAUTH_REDIRECT_URI: z.string(),
     GITHUB_OAUTH_LOGIN_URI: z.string(),
     GITHUB_OAUTH_GRANTED_ACCESS_URI: z.string(),
+    GITHUB_OAUTH_IDENTITY_URI: z.string(),
   },
   client: {},
-  shared: {},
+  shared: {
+    NEXT_PUBLIC_API_URL: z.string().url(),
+  },
   runtimeEnv: {
     SERVER_PORT: process.env.SERVER_PORT,
     DATABASE_URL: process.env.DATABASE_URL,
@@ -24,6 +27,8 @@ export const env = createEnv({
     GITHUB_OAUTH_LOGIN_URI: process.env.GITHUB_OAUTH_LOGIN_URI,
     GITHUB_OAUTH_GRANTED_ACCESS_URI:
       process.env.GITHUB_OAUTH_GRANTED_ACCESS_URI,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    GITHUB_OAUTH_IDENTITY_URI: process.env.GITHUB_OAUTH_IDENTITY_URI,
   },
   emptyStringAsUndefined: true,
 });

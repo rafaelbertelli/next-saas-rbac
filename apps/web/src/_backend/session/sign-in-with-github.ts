@@ -1,31 +1,28 @@
 "use server";
 
+import { env } from "@repo/env";
 import { redirect } from "next/navigation";
 import { setGithubOAuthState } from "./auth-github";
 
-// TODO: move to .env when configure .env
-const GITHUB_CLIENT_ID =
-  process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID || "Ov23liq7YIyeKDHMB7iH";
-
-const GITHUB_REDIRECT_URI =
-  process.env.NEXT_PUBLIC_GITHUB_REDIRECT_URI ||
-  "http://localhost:3000/api/auth/callback";
+const GITHUB_OAUTH_CLIENT_ID = env.GITHUB_OAUTH_CLIENT_ID;
+const GITHUB_OAUTH_REDIRECT_URI = env.GITHUB_OAUTH_REDIRECT_URI;
+const GITHUB_OAUTH_IDENTITY_URI = env.GITHUB_OAUTH_IDENTITY_URI;
 
 export async function signInWithGithub() {
-  if (!GITHUB_CLIENT_ID) {
+  if (
+    !GITHUB_OAUTH_CLIENT_ID ||
+    !GITHUB_OAUTH_REDIRECT_URI ||
+    !GITHUB_OAUTH_IDENTITY_URI
+  ) {
     throw new Error("GitHub Client ID not configured");
   }
-
-  const githubSignInURL = new URL(
-    "login/oauth/authorize",
-    "https://github.com"
-  );
 
   // Adiciona um state parameter para segurança
   const state = Math.random().toString(36).substring(7);
 
-  githubSignInURL.searchParams.set("client_id", GITHUB_CLIENT_ID);
-  githubSignInURL.searchParams.set("redirect_uri", GITHUB_REDIRECT_URI);
+  const githubSignInURL = new URL(GITHUB_OAUTH_IDENTITY_URI);
+  githubSignInURL.searchParams.set("client_id", GITHUB_OAUTH_CLIENT_ID);
+  githubSignInURL.searchParams.set("redirect_uri", GITHUB_OAUTH_REDIRECT_URI);
   githubSignInURL.searchParams.set("scope", "user");
   githubSignInURL.searchParams.set("state", state);
 

@@ -1,3 +1,4 @@
+import { env } from "@repo/env";
 import ky, { type Options } from "ky";
 import { getAuthToken } from "../../_backend/session/auth-token";
 
@@ -10,16 +11,18 @@ class HttpClientError extends Error {
 
 // Cliente base sem autenticação
 const baseClient = ky.create({
-  prefixUrl: "http://localhost:8080",
+  prefixUrl: env.NEXT_PUBLIC_API_URL,
 });
 
 // Cliente com autenticação
 const authenticatedClient = ky.create({
-  prefixUrl: "http://localhost:8080",
+  prefixUrl: env.NEXT_PUBLIC_API_URL,
   hooks: {
     beforeRequest: [
       async (request) => {
         const token = await getAuthToken();
+        // https://app.rocketseat.com.br/classroom/front-end/group/desenvolvendo-o-front-end/lesson/obtendo-usuario-autenticado
+        // 10:00
         if (!token) {
           throw new HttpClientError("Não autorizado: Token não encontrado");
         }
