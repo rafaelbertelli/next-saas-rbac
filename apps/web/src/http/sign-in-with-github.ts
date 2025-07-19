@@ -11,16 +11,20 @@ interface SignInWithGithubHttpResponse {
   };
 }
 
-export async function signInWithGithubHttp({
+export function signInWithGithubHttp({
   code,
 }: SignInWithGithubHttpRequest): Promise<SignInWithGithubHttpResponse> {
-  const response = await httpClient
-    .post("session/authenticate-with-github", {
+  console.log("code.......", code);
+
+  const response = httpClient.post<SignInWithGithubHttpResponse>(
+    "session/authenticate-with-github",
+    {
+      requireAuth: false,
       json: {
         code,
       },
-    })
-    .json<SignInWithGithubHttpResponse>();
+    }
+  );
 
   return response;
 }

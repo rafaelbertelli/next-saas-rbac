@@ -16,14 +16,16 @@ export async function signInWithPasswordHttp({
   email,
   password,
 }: SignInWithPasswordHttpRequest): Promise<SignInWithPasswordHttpResponse> {
-  const response = await httpClient
-    .post("session/email-and-password", {
+  const response = await httpClient.post<SignInWithPasswordHttpResponse>(
+    "session/email-and-password",
+    {
+      requireAuth: false,
       json: {
         email,
         password,
       },
-    })
-    .json<SignInWithPasswordHttpResponse>();
+    }
+  );
 
   return response;
 }
