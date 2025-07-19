@@ -3,11 +3,16 @@
 import { redirect } from "next/navigation";
 import { setGithubOAuthState } from "./auth-github";
 
-const GITHUB_CLIENT_ID = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
-const GITHUB_REDIRECT_URI = process.env.NEXT_PUBLIC_GITHUB_REDIRECT_URI || "";
+// TODO: move to .env when configure .env
+const GITHUB_CLIENT_ID =
+  process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID || "Ov23liq7YIyeKDHMB7iH";
+
+const GITHUB_REDIRECT_URI =
+  process.env.NEXT_PUBLIC_GITHUB_REDIRECT_URI ||
+  "http://localhost:3000/api/auth/callback";
 
 export async function signInWithGithub() {
-  if (!GITHUB_CLIENT_ID || !GITHUB_REDIRECT_URI) {
+  if (!GITHUB_CLIENT_ID) {
     throw new Error("GitHub Client ID not configured");
   }
 

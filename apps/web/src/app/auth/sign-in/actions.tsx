@@ -1,9 +1,9 @@
 "use server";
 
+import { setAuthToken } from "@/_backend/session/auth-token";
 import { signInWithPasswordHttp } from "@/http/sign-in-with-password";
 import { HTTPError } from "ky";
 import { redirect } from "next/navigation";
-import { setAuthCookies } from "../_backend/auth";
 import { SignInWithEmailAndPasswordSchema } from "./schema";
 import { SignInWithEmailAndPasswordState } from "./types";
 
@@ -29,7 +29,7 @@ export async function signInWithEmailAndPassword(
   try {
     const { data } = await signInWithPasswordHttp({ email, password });
 
-    await setAuthCookies(data.token);
+    await setAuthToken(data.token);
   } catch (error) {
     if (error instanceof HTTPError) {
       const { message } = await error.response.json();

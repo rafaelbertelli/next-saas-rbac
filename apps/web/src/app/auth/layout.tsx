@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
-import { isAuthenticated } from "./_backend/auth";
+import { isAuthenticated } from "../../_backend/session/auth-token";
 
 export default async function AuthLayout({
   children,

@@ -14,8 +14,6 @@ interface SignInWithGithubHttpResponse {
 export function signInWithGithubHttp({
   code,
 }: SignInWithGithubHttpRequest): Promise<SignInWithGithubHttpResponse> {
-  console.log("code.......", code);
-
   const response = httpClient.post<SignInWithGithubHttpResponse>(
     "session/authenticate-with-github",
     {

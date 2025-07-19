@@ -1,5 +1,5 @@
-import { getAuthToken } from "@/app/auth/_backend/auth";
 import ky, { type Options } from "ky";
+import { getAuthToken } from "../../_backend/session/auth-token";
 
 class HttpClientError extends Error {
   constructor(message: string) {
