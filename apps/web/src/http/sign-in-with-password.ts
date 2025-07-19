@@ -1,21 +1,21 @@
 import { httpClient } from "./http-client";
 
-interface SignInWithPasswordRequest {
+interface SignInWithPasswordHttpRequest {
   email: string;
   password: string;
 }
 
-interface SignInWithPasswordResponse {
+interface SignInWithPasswordHttpResponse {
   message: string;
   data: {
     token: string;
   };
 }
 
-export async function signInWithPassword({
+export async function signInWithPasswordHttp({
   email,
   password,
-}: SignInWithPasswordRequest): Promise<SignInWithPasswordResponse> {
+}: SignInWithPasswordHttpRequest): Promise<SignInWithPasswordHttpResponse> {
   const response = await httpClient
     .post("session/email-and-password", {
       json: {
@@ -23,7 +23,7 @@ export async function signInWithPassword({
         password,
       },
     })
-    .json<SignInWithPasswordResponse>();
+    .json<SignInWithPasswordHttpResponse>();
 
   return response;
 }

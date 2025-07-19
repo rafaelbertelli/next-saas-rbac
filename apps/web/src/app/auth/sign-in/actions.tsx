@@ -1,13 +1,11 @@
 "use server";
 
-import { signInWithPassword } from "@/http/sign-in-with-password";
+import { signInWithPasswordHttp } from "@/http/sign-in-with-password";
 import { HTTPError } from "ky";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { setAuthCookies } from "../_backend/auth";
 import { SignInWithEmailAndPasswordSchema } from "./schema";
 import { SignInWithEmailAndPasswordState } from "./types";
-
-const COOKIE_MAX_AGE = 7 * 24 * 60 * 60; // 7 dias
 
 export async function signInWithEmailAndPassword(
   formData: FormData
@@ -29,13 +27,9 @@ export async function signInWithEmailAndPassword(
   const { email, password } = result.data;
 
   try {
-    const { data } = await signInWithPassword({ email, password });
+    const { data } = await signInWithPasswordHttp({ email, password });
 
-    const cookieStore = await cookies();
-    cookieStore.set("token", data.token, {
-      maxAge: COOKIE_MAX_AGE,
-      path: "/",
-    });
+    await setAuthCookies(data.token);
   } catch (error) {
     if (error instanceof HTTPError) {
       const { message } = await error.response.json();
