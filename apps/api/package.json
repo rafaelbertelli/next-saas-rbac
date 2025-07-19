@@ -4,7 +4,7 @@
   "main": "src/http/server.ts",
   "scripts": {
     "env:load": "dotenv -e ../../.env --",
-    "dev": "pnpm env:load tsx watch src/http/server.ts",
+    "dev": "NODE_OPTIONS='--inspect=9230' pnpm env:load tsx watch src/http/server.ts",
     "build": "tsc",
     "start": "node dist/http/server.js",
     "prisma:seed": "pnpm env:load prisma db seed",
