@@ -48,6 +48,33 @@
       ],
       "sourceMaps": true,
       "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Attach: Next.js (3000)",
+      "type": "node",
+      "request": "attach",
+      "port": 9229,
+      "cwd": "${workspaceFolder}/apps/web",
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/apps/web/.next/**"
+      ],
+      "sourceMaps": true
+    },
+    {
+      "name": "Attach: API (8080)",
+      "type": "node",
+      "request": "attach",
+      "port": 9230,
+      "cwd": "${workspaceFolder}/apps/api",
+      "skipFiles": ["<node_internals>/**"],
+      "sourceMaps": true
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Attach: Full Stack (Web + API)",
+      "configurations": ["Attach: Next.js (3000)", "Attach: API (8080)"]
     }
   ]
 }
