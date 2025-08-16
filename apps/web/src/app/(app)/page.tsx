@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { getUserProfile } from "../_backend/users/get-user-profile";
+import { getUserProfile } from "../../_backend/users/get-user-profile";
 
 export default async function Home() {
   const { user } = await getUserProfile();

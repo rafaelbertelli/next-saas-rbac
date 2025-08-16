@@ -1,3 +1,5 @@
+"use server";
+
 import { getUserProfileHttp } from "@/http/get-user-profile";
 import { redirect } from "next/navigation";
 
