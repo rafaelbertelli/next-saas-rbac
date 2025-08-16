@@ -2,7 +2,8 @@ import { useState, useTransition } from "react";
 
 export function useFormState<T>(
   action: (formData: FormData) => Promise<T>,
-  initialState: T
+  initialState: T,
+  onSuccess?: (state: T) => void
 ) {
   const [state, setState] = useState<T>(initialState);
 
@@ -15,6 +16,10 @@ export function useFormState<T>(
     startTransition(async () => {
       const response = await action(formData);
       setState(response);
+
+      if (onSuccess) {
+        onSuccess(response);
+      }
     });
   }
 
