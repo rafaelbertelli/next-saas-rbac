@@ -18,9 +18,7 @@ export async function shutdownOrganizationRoute(app: FastifyInstance) {
 
         const userId = await req.getCurrentUserId();
 
-        const data = await shutdownOrganizationService({ slug, userId });
-        console.log(data);
-        debugger;
+        await shutdownOrganizationService({ slug, userId });
 
         return res.status(204).send();
       }

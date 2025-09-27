@@ -25,8 +25,6 @@ export async function transferOrganizationRoute(app: FastifyInstance) {
           transferToUserId,
         });
 
-        console.log(data);
-
         return res.status(204).send();
       }
     );
