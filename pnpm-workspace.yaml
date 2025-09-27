@@ -3,8 +3,8 @@ packages:
   - packages/*
   - config/*
 onlyBuiltDependencies:
-  - '@prisma/client'
-  - '@prisma/engines'
+  - "@prisma/client"
+  - "@prisma/engines"
   - core-js-pure
   - esbuild
   - prisma
