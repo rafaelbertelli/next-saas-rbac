@@ -1,6 +1,6 @@
-import { getUserOrganizations } from "@/_backend/organizations/get-user-organizations";
+import { getOrganizationSlug } from "@/_backend/organizations/get-organization-slug";
+import { getOrganizations } from "@/_backend/organizations/get-organizations";
 import { ChevronsUpDown, PlusCircle } from "lucide-react";
-import { cookies } from "next/headers";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
@@ -14,11 +14,10 @@ import {
 } from "./ui/dropdown-menu";
 
 export async function OrganizationSwitcher() {
-  const currentOrg = (await cookies()).get("org")?.value;
+  const currentOrg = await getOrganizationSlug();
+  const { organizations } = await getOrganizations();
 
-  const { organizations } = await getUserOrganizations();
-
-  const currentOrganization = organizations.find(
+  const currentOrganization = organizations?.find(
     (org) => org.slug === currentOrg
   );
 

@@ -24,6 +24,7 @@ export function getMembershipRoute(app: FastifyInstance) {
         data: {
           membership,
           organization,
+          user: { id: userId },
         },
       });
     }

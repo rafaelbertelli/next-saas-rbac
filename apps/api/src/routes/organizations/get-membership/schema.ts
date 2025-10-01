@@ -24,6 +24,9 @@ export const GetMembershipSchema = {
           id: z.string(),
           name: z.string(),
         }),
+        user: z.object({
+          id: z.string(),
+        }),
       }),
     }),
   },
