@@ -3,7 +3,7 @@
 import { signInWithGithub } from "@/_backend/session/sign-in-with-github";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { FormInput } from "@/components/ui/form-input";
+import { FormInput } from "@/components/ui/form-fields";
 import { Separator } from "@/components/ui/separator";
 import { useFormState } from "@/hooks/use-form-state";
 import { AlertTriangle, Loader2 } from "lucide-react";
