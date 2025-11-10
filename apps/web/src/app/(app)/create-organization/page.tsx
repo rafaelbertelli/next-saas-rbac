@@ -1,10 +1,10 @@
-import { OrganizationForm } from "./organization-form";
+import { PageMain } from "@/components/page-main";
+import { PageWrapper } from "@/components/page-wrapper";
 
 export default function CreateOrganizationPage() {
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Create Organization</h1>
-      <OrganizationForm />
-    </div>
+    <PageWrapper>
+      <PageMain title="Create Organization" />
+    </PageWrapper>
   );
 }
