@@ -21,12 +21,9 @@ export async function OrganizationSwitcher() {
     (org) => org.slug === currentOrg
   );
 
-  console.log({ currentOrg, currentOrganization });
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="focus-visible:ring-primary flex w-[168px] items-center gap-2 rounded p-1 text-sm font-medium outline-none focus-visible:ring-2">
-        {/* <span className="text-muted-foreground">Select Organization</span> */}
         {currentOrganization ? (
           <>
             <Avatar className="mr-2 size-4">
